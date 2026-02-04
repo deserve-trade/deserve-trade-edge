@@ -1,79 +1,62 @@
-# Welcome to React Router!
+# Deserve — Prop Capital Launchpad
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Deserve is a landing page for a prop-capital market where traders launch challenges, tokenize performance, and let the market allocate capital. The experience is designed around transparent stats, public challenges, and a tokenized path to scaling trading capital.
 
-## Features
+## Product Snapshot
+- Launch a challenge with clear rules, goals, risk limits, and duration.
+- Trade transparently with public stats, PnL, and risk metrics.
+- Scale capital as profits buy back trader tokens from the market.
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Landing Page Structure
+- Hero with the core message, CTAs, and live-style challenge snapshots.
+- How it works section with the 3-step flow.
+- Why Deserve value pillars: Trader Personality, Tokenized Capital, Prop Capital Market, Community Driven.
+- Trading Gems grid with demo trader cards and risk profiles.
+- $DSRV token spotlight and core token facts.
+- Roadmap with monthly milestones.
+- FAQ and final CTA.
 
-## Getting Started
+## $DSRV Token (Landing Copy)
+- Not equity and no governance rights.
+- Collateral and settlement unit of the trading pool.
+- Facilitates capital flow between traders and investors.
+- Fees in prop tokens and DSRV rebalance pools.
+- Protocol buys DSRV if treasury is short when seeding pools.
+- Planned launch on Pump.Fun with capped supply.
 
-### Installation
+## Status
+This is a marketing landing page. The Trading Gems data is demo-only and the product is not launched yet.
 
-Install the dependencies:
+## Tech Stack
+- React Router 7
+- Vite
+- Cloudflare Workers (Wrangler)
+- Tailwind CSS
 
-```bash
-npm install
-```
+## Local Development
+1. Install dependencies.
+   ```bash
+   npm install
+   ```
+2. Start the dev server.
+   ```bash
+   npm run dev
+   ```
+3. Open the app at `http://localhost:5173`.
 
-### Development
+## Environment & Secrets
+- Local development uses `.dev.vars`.
+- Use `.dev.vars.example` as a template.
+- Production secrets should be stored with `wrangler secret put`.
 
-Start the development server with HMR:
+## Build & Deploy
+1. Build for production.
+   ```bash
+   npm run build
+   ```
+2. Deploy to Cloudflare.
+   ```bash
+   npm run deploy
+   ```
 
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Previewing the Production Build
-
-Preview the production build locally:
-
-```bash
-npm run preview
-```
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-Deployment is done using the Wrangler CLI.
-
-To build and deploy directly to production:
-
-```sh
-npm run deploy
-```
-
-To deploy a preview URL:
-
-```sh
-npx wrangler versions upload
-```
-
-You can then promote a version to production after verification or roll it out progressively.
-
-```sh
-npx wrangler versions deploy
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+The deploy script uses `scripts/build-prod.mjs` to avoid embedding `.dev.vars` into the production build output.

@@ -1,0 +1,35 @@
+<svg width="1500" height="500" viewBox="0 0 1500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brand" x1="100" y1="40" x2="1400" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF2EC4"/>
+      <stop offset="0.5" stop-color="#8B5BFF"/>
+      <stop offset="1" stop-color="#00EAFF"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 120) rotate(90) scale(520)">
+      <stop offset="0" stop-color="#15182B"/>
+      <stop offset="1" stop-color="#05060B"/>
+    </radialGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="rgba(255,255,255,0.08)"/>
+      <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1500" height="500" fill="url(#bg)"/>
+  <rect width="1500" height="500" fill="url(#sheen)"/>
+
+  <circle cx="260" cy="60" r="200" fill="url(#brand)" opacity="0.18"/>
+  <circle cx="1260" cy="60" r="280" fill="url(#brand)" opacity="0.14"/>
+  <circle cx="1200" cy="420" r="240" fill="url(#brand)" opacity="0.12"/>
+
+  <g opacity="0.18" stroke="white">
+    <path d="M0 120 H1500" stroke-opacity="0.2"/>
+    <path d="M0 250 H1500" stroke-opacity="0.12"/>
+    <path d="M0 380 H1500" stroke-opacity="0.08"/>
+  </g>
+
+  <g transform="translate(120,130)" fill="white">
+    <text x="0" y="0" font-size="72" font-family="Unbounded, Rubik, Arial, sans-serif" font-weight="600" letter-spacing="-1">deserve</text>
+    <text x="0" y="56" font-size="24" font-family="Rubik, Arial, sans-serif" opacity="0.7">trade in public</text>
+  </g>
+</svg>

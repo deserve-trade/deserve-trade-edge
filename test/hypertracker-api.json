@@ -1,0 +1,2993 @@
+{
+  "coin": "ETH",
+  "heatmap": [
+    {
+      "coin": "ETH",
+      "priceBinIndex": 0,
+      "priceBinStart": 0,
+      "priceBinEnd": 17.3556,
+      "liquidationValue": 85999434.14772,
+      "positionsCount": 1946,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 1,
+      "priceBinStart": 17.3556,
+      "priceBinEnd": 34.7112,
+      "liquidationValue": 406658.48508,
+      "positionsCount": 19,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 2,
+      "priceBinStart": 34.7112,
+      "priceBinEnd": 52.0668,
+      "liquidationValue": 13365.83682,
+      "positionsCount": 32,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 3,
+      "priceBinStart": 52.0668,
+      "priceBinEnd": 69.4224,
+      "liquidationValue": 10059.30576,
+      "positionsCount": 22,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 4,
+      "priceBinStart": 69.4224,
+      "priceBinEnd": 86.778,
+      "liquidationValue": 6650653.77108,
+      "positionsCount": 29,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 5,
+      "priceBinStart": 86.778,
+      "priceBinEnd": 104.1336,
+      "liquidationValue": 46305.31932,
+      "positionsCount": 23,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 6,
+      "priceBinStart": 104.1336,
+      "priceBinEnd": 121.4892,
+      "liquidationValue": 273675.82824,
+      "positionsCount": 16,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 7,
+      "priceBinStart": 121.4892,
+      "priceBinEnd": 138.8448,
+      "liquidationValue": 61015.34736,
+      "positionsCount": 15,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 8,
+      "priceBinStart": 138.8448,
+      "priceBinEnd": 156.2004,
+      "liquidationValue": 151767.77976,
+      "positionsCount": 13,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 9,
+      "priceBinStart": 156.2004,
+      "priceBinEnd": 173.556,
+      "liquidationValue": 707302.60164,
+      "positionsCount": 10,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 10,
+      "priceBinStart": 173.556,
+      "priceBinEnd": 190.9116,
+      "liquidationValue": 717923.36106,
+      "positionsCount": 13,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 11,
+      "priceBinStart": 190.9116,
+      "priceBinEnd": 208.2672,
+      "liquidationValue": 138444.75342,
+      "positionsCount": 9,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 12,
+      "priceBinStart": 208.2672,
+      "priceBinEnd": 225.6228,
+      "liquidationValue": 117109.8036,
+      "positionsCount": 13,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 13,
+      "priceBinStart": 225.6228,
+      "priceBinEnd": 242.9784,
+      "liquidationValue": 150736.56786,
+      "positionsCount": 7,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 14,
+      "priceBinStart": 242.9784,
+      "priceBinEnd": 260.334,
+      "liquidationValue": 90213.54102,
+      "positionsCount": 11,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 15,
+      "priceBinStart": 260.334,
+      "priceBinEnd": 277.6896,
+      "liquidationValue": 388884.0366,
+      "positionsCount": 15,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 16,
+      "priceBinStart": 277.6896,
+      "priceBinEnd": 295.0452,
+      "liquidationValue": 111348.61218,
+      "positionsCount": 15,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 17,
+      "priceBinStart": 295.0452,
+      "priceBinEnd": 312.4008,
+      "liquidationValue": 2604.49704,
+      "positionsCount": 6,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 18,
+      "priceBinStart": 312.4008,
+      "priceBinEnd": 329.7564,
+      "liquidationValue": 232621.4457,
+      "positionsCount": 15,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 19,
+      "priceBinStart": 329.7564,
+      "priceBinEnd": 347.112,
+      "liquidationValue": 980302.71852,
+      "positionsCount": 11,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 20,
+      "priceBinStart": 347.112,
+      "priceBinEnd": 364.4676,
+      "liquidationValue": 135540.87228,
+      "positionsCount": 7,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 21,
+      "priceBinStart": 364.4676,
+      "priceBinEnd": 381.8232,
+      "liquidationValue": 24112.7136,
+      "positionsCount": 13,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 22,
+      "priceBinStart": 381.8232,
+      "priceBinEnd": 399.1788,
+      "liquidationValue": 293158.35702,
+      "positionsCount": 12,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 23,
+      "priceBinStart": 399.1788,
+      "priceBinEnd": 416.5344,
+      "liquidationValue": 262579.52538,
+      "positionsCount": 12,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 24,
+      "priceBinStart": 416.5344,
+      "priceBinEnd": 433.89,
+      "liquidationValue": 874424.88072,
+      "positionsCount": 10,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 25,
+      "priceBinStart": 433.89,
+      "priceBinEnd": 451.2456,
+      "liquidationValue": 405531.23886,
+      "positionsCount": 10,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 26,
+      "priceBinStart": 451.2456,
+      "priceBinEnd": 468.6012,
+      "liquidationValue": 122420.90646,
+      "positionsCount": 18,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 27,
+      "priceBinStart": 468.6012,
+      "priceBinEnd": 485.9568,
+      "liquidationValue": 3146.85954,
+      "positionsCount": 11,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 28,
+      "priceBinStart": 485.9568,
+      "priceBinEnd": 503.3124,
+      "liquidationValue": 329755.24296,
+      "positionsCount": 36,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 29,
+      "priceBinStart": 503.3124,
+      "priceBinEnd": 520.668,
+      "liquidationValue": 215694.52902,
+      "positionsCount": 12,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 30,
+      "priceBinStart": 520.668,
+      "priceBinEnd": 538.0236,
+      "liquidationValue": 13017209.67612,
+      "positionsCount": 6,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 31,
+      "priceBinStart": 538.0236,
+      "priceBinEnd": 555.3792,
+      "liquidationValue": 488040.05052,
+      "positionsCount": 10,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 32,
+      "priceBinStart": 555.3792,
+      "priceBinEnd": 572.7348,
+      "liquidationValue": 231752.79792,
+      "positionsCount": 9,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 33,
+      "priceBinStart": 572.7348,
+      "priceBinEnd": 590.0904,
+      "liquidationValue": 140466.68082,
+      "positionsCount": 7,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 34,
+      "priceBinStart": 590.0904,
+      "priceBinEnd": 607.446,
+      "liquidationValue": 95571.504,
+      "positionsCount": 9,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 35,
+      "priceBinStart": 607.446,
+      "priceBinEnd": 624.8016,
+      "liquidationValue": 207970.7085,
+      "positionsCount": 6,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 36,
+      "priceBinStart": 624.8016,
+      "priceBinEnd": 642.1572,
+      "liquidationValue": 38401.00056,
+      "positionsCount": 9,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 37,
+      "priceBinStart": 642.1572,
+      "priceBinEnd": 659.5128,
+      "liquidationValue": 391484.19474,
+      "positionsCount": 9,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 38,
+      "priceBinStart": 659.5128,
+      "priceBinEnd": 676.8684,
+      "liquidationValue": 253643.12694,
+      "positionsCount": 8,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 39,
+      "priceBinStart": 676.8684,
+      "priceBinEnd": 694.224,
+      "liquidationValue": 472792.5774,
+      "positionsCount": 8,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 40,
+      "priceBinStart": 694.224,
+      "priceBinEnd": 711.5796,
+      "liquidationValue": 18591.89724,
+      "positionsCount": 10,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 41,
+      "priceBinStart": 711.5796,
+      "priceBinEnd": 728.9352,
+      "liquidationValue": 39079.31526,
+      "positionsCount": 8,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 42,
+      "priceBinStart": 728.9352,
+      "priceBinEnd": 746.2908,
+      "liquidationValue": 47251.19952,
+      "positionsCount": 7,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 43,
+      "priceBinStart": 746.2908,
+      "priceBinEnd": 763.6464,
+      "liquidationValue": 66438.97236,
+      "positionsCount": 6,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 44,
+      "priceBinStart": 763.6464,
+      "priceBinEnd": 781.002,
+      "liquidationValue": 50726.94768,
+      "positionsCount": 9,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 45,
+      "priceBinStart": 781.002,
+      "priceBinEnd": 798.3576,
+      "liquidationValue": 122508.26298,
+      "positionsCount": 6,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 46,
+      "priceBinStart": 798.3576,
+      "priceBinEnd": 815.7132,
+      "liquidationValue": 8930.9025,
+      "positionsCount": 5,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 47,
+      "priceBinStart": 815.7132,
+      "priceBinEnd": 833.0688,
+      "liquidationValue": 297563.2083,
+      "positionsCount": 14,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 48,
+      "priceBinStart": 833.0688,
+      "priceBinEnd": 850.4244,
+      "liquidationValue": 316232.91648,
+      "positionsCount": 8,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 49,
+      "priceBinStart": 850.4244,
+      "priceBinEnd": 867.78,
+      "liquidationValue": 156351.68298,
+      "positionsCount": 5,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 50,
+      "priceBinStart": 867.78,
+      "priceBinEnd": 885.1356,
+      "liquidationValue": 54790.47216,
+      "positionsCount": 6,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 51,
+      "priceBinStart": 885.1356,
+      "priceBinEnd": 902.4912,
+      "liquidationValue": 34392.72474,
+      "positionsCount": 5,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 52,
+      "priceBinStart": 902.4912,
+      "priceBinEnd": 919.8468,
+      "liquidationValue": 291288.86964,
+      "positionsCount": 11,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 53,
+      "priceBinStart": 919.8468,
+      "priceBinEnd": 937.2024,
+      "liquidationValue": 223983.27432,
+      "positionsCount": 22,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 54,
+      "priceBinStart": 937.2024,
+      "priceBinEnd": 954.558,
+      "liquidationValue": 518604.1299,
+      "positionsCount": 13,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 55,
+      "priceBinStart": 954.558,
+      "priceBinEnd": 971.9136,
+      "liquidationValue": 168791.30928,
+      "positionsCount": 14,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 56,
+      "priceBinStart": 971.9136,
+      "priceBinEnd": 989.2692,
+      "liquidationValue": 801812.8107,
+      "positionsCount": 10,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 57,
+      "priceBinStart": 989.2692,
+      "priceBinEnd": 1006.6248,
+      "liquidationValue": 758295.66852,
+      "positionsCount": 18,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 58,
+      "priceBinStart": 1006.6248,
+      "priceBinEnd": 1023.9804,
+      "liquidationValue": 302128.59888,
+      "positionsCount": 17,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 59,
+      "priceBinStart": 1023.9804,
+      "priceBinEnd": 1041.336,
+      "liquidationValue": 1738249.53948,
+      "positionsCount": 6,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 60,
+      "priceBinStart": 1041.336,
+      "priceBinEnd": 1058.6916,
+      "liquidationValue": 603165.24126,
+      "positionsCount": 10,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 61,
+      "priceBinStart": 1058.6916,
+      "priceBinEnd": 1076.0472,
+      "liquidationValue": 5788.0926,
+      "positionsCount": 8,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 62,
+      "priceBinStart": 1076.0472,
+      "priceBinEnd": 1093.4028,
+      "liquidationValue": 1120990.39398,
+      "positionsCount": 18,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 63,
+      "priceBinStart": 1093.4028,
+      "priceBinEnd": 1110.7584,
+      "liquidationValue": 39125.59686,
+      "positionsCount": 13,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 64,
+      "priceBinStart": 1110.7584,
+      "priceBinEnd": 1128.114,
+      "liquidationValue": 202031.62218,
+      "positionsCount": 11,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 65,
+      "priceBinStart": 1128.114,
+      "priceBinEnd": 1145.4696,
+      "liquidationValue": 483764.49846,
+      "positionsCount": 14,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 66,
+      "priceBinStart": 1145.4696,
+      "priceBinEnd": 1162.8252,
+      "liquidationValue": 22906.4994,
+      "positionsCount": 10,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 67,
+      "priceBinStart": 1162.8252,
+      "priceBinEnd": 1180.1808,
+      "liquidationValue": 47554.344,
+      "positionsCount": 10,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 68,
+      "priceBinStart": 1180.1808,
+      "priceBinEnd": 1197.5364,
+      "liquidationValue": 392844.29526,
+      "positionsCount": 11,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 69,
+      "priceBinStart": 1197.5364,
+      "priceBinEnd": 1214.892,
+      "liquidationValue": 606460.49118,
+      "positionsCount": 18,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 70,
+      "priceBinStart": 1214.892,
+      "priceBinEnd": 1232.2476,
+      "liquidationValue": 1729641.16188,
+      "positionsCount": 9,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 71,
+      "priceBinStart": 1232.2476,
+      "priceBinEnd": 1249.6032,
+      "liquidationValue": 3466104.2316,
+      "positionsCount": 18,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 72,
+      "priceBinStart": 1249.6032,
+      "priceBinEnd": 1266.9588,
+      "liquidationValue": 18928.01736,
+      "positionsCount": 11,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 73,
+      "priceBinStart": 1266.9588,
+      "priceBinEnd": 1284.3144,
+      "liquidationValue": 73480.13928,
+      "positionsCount": 10,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 74,
+      "priceBinStart": 1284.3144,
+      "priceBinEnd": 1301.67,
+      "liquidationValue": 388034.19072,
+      "positionsCount": 12,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 75,
+      "priceBinStart": 1301.67,
+      "priceBinEnd": 1319.0256,
+      "liquidationValue": 120720.63618,
+      "positionsCount": 13,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 76,
+      "priceBinStart": 1319.0256,
+      "priceBinEnd": 1336.3812,
+      "liquidationValue": 414554.70456,
+      "positionsCount": 10,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 77,
+      "priceBinStart": 1336.3812,
+      "priceBinEnd": 1353.7368,
+      "liquidationValue": 453020.49936,
+      "positionsCount": 16,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 78,
+      "priceBinStart": 1353.7368,
+      "priceBinEnd": 1371.0924,
+      "liquidationValue": 318615.5511,
+      "positionsCount": 14,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 79,
+      "priceBinStart": 1371.0924,
+      "priceBinEnd": 1388.448,
+      "liquidationValue": 16183185.25248,
+      "positionsCount": 11,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 80,
+      "priceBinStart": 1388.448,
+      "priceBinEnd": 1405.8036,
+      "liquidationValue": 187345.31346,
+      "positionsCount": 9,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 81,
+      "priceBinStart": 1405.8036,
+      "priceBinEnd": 1423.1592,
+      "liquidationValue": 129449.92446,
+      "positionsCount": 13,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 82,
+      "priceBinStart": 1423.1592,
+      "priceBinEnd": 1440.5148,
+      "liquidationValue": 556284.5838,
+      "positionsCount": 25,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 83,
+      "priceBinStart": 1440.5148,
+      "priceBinEnd": 1457.8704,
+      "liquidationValue": 28195.03998,
+      "positionsCount": 18,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 84,
+      "priceBinStart": 1457.8704,
+      "priceBinEnd": 1475.226,
+      "liquidationValue": 537134.41476,
+      "positionsCount": 17,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 85,
+      "priceBinStart": 1475.226,
+      "priceBinEnd": 1492.5816,
+      "liquidationValue": 578695.29156,
+      "positionsCount": 36,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 86,
+      "priceBinStart": 1492.5816,
+      "priceBinEnd": 1509.9372,
+      "liquidationValue": 889856.3232,
+      "positionsCount": 42,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 87,
+      "priceBinStart": 1509.9372,
+      "priceBinEnd": 1527.2928,
+      "liquidationValue": 3300078.53718,
+      "positionsCount": 34,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 88,
+      "priceBinStart": 1527.2928,
+      "priceBinEnd": 1544.6484,
+      "liquidationValue": 1484807.7375,
+      "positionsCount": 35,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 89,
+      "priceBinStart": 1544.6484,
+      "priceBinEnd": 1562.004,
+      "liquidationValue": 10625883.08238,
+      "positionsCount": 26,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 90,
+      "priceBinStart": 1562.004,
+      "priceBinEnd": 1579.3596,
+      "liquidationValue": 262357.3737,
+      "positionsCount": 24,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 91,
+      "priceBinStart": 1579.3596,
+      "priceBinEnd": 1596.7152,
+      "liquidationValue": 274527.9882,
+      "positionsCount": 35,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 92,
+      "priceBinStart": 1596.7152,
+      "priceBinEnd": 1614.0708,
+      "liquidationValue": 381760.14132,
+      "positionsCount": 34,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 93,
+      "priceBinStart": 1614.0708,
+      "priceBinEnd": 1631.4264,
+      "liquidationValue": 588784.3911,
+      "positionsCount": 26,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 94,
+      "priceBinStart": 1631.4264,
+      "priceBinEnd": 1648.782,
+      "liquidationValue": 466617.74418,
+      "positionsCount": 42,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 95,
+      "priceBinStart": 1648.782,
+      "priceBinEnd": 1666.1376,
+      "liquidationValue": 474480.98802,
+      "positionsCount": 24,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 96,
+      "priceBinStart": 1666.1376,
+      "priceBinEnd": 1683.4932,
+      "liquidationValue": 190621.76148,
+      "positionsCount": 23,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 97,
+      "priceBinStart": 1683.4932,
+      "priceBinEnd": 1700.8488,
+      "liquidationValue": 178916.56632,
+      "positionsCount": 31,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 98,
+      "priceBinStart": 1700.8488,
+      "priceBinEnd": 1718.2044,
+      "liquidationValue": 379562.6331,
+      "positionsCount": 21,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 99,
+      "priceBinStart": 1718.2044,
+      "priceBinEnd": 1735.56,
+      "liquidationValue": 318451.54068,
+      "positionsCount": 23,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 100,
+      "priceBinStart": 1735.56,
+      "priceBinEnd": 1752.9156,
+      "liquidationValue": 623104.51158,
+      "positionsCount": 19,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 101,
+      "priceBinStart": 1752.9156,
+      "priceBinEnd": 1770.2712,
+      "liquidationValue": 292978.14804,
+      "positionsCount": 18,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 102,
+      "priceBinStart": 1770.2712,
+      "priceBinEnd": 1787.6268,
+      "liquidationValue": 290877.54192,
+      "positionsCount": 24,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 103,
+      "priceBinStart": 1787.6268,
+      "priceBinEnd": 1804.9824,
+      "liquidationValue": 779494.37688,
+      "positionsCount": 24,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 104,
+      "priceBinStart": 1804.9824,
+      "priceBinEnd": 1822.338,
+      "liquidationValue": 539788.95378,
+      "positionsCount": 21,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 105,
+      "priceBinStart": 1822.338,
+      "priceBinEnd": 1839.6936,
+      "liquidationValue": 257128.70994,
+      "positionsCount": 18,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 106,
+      "priceBinStart": 1839.6936,
+      "priceBinEnd": 1857.0492,
+      "liquidationValue": 253760.5665,
+      "positionsCount": 18,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 107,
+      "priceBinStart": 1857.0492,
+      "priceBinEnd": 1874.4048,
+      "liquidationValue": 2033054.07516,
+      "positionsCount": 21,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 108,
+      "priceBinStart": 1874.4048,
+      "priceBinEnd": 1891.7604,
+      "liquidationValue": 21817203.51348,
+      "positionsCount": 28,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 109,
+      "priceBinStart": 1891.7604,
+      "priceBinEnd": 1909.116,
+      "liquidationValue": 1741850.82648,
+      "positionsCount": 35,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 110,
+      "priceBinStart": 1909.116,
+      "priceBinEnd": 1926.4716,
+      "liquidationValue": 983866.69098,
+      "positionsCount": 29,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 111,
+      "priceBinStart": 1926.4716,
+      "priceBinEnd": 1943.8272,
+      "liquidationValue": 786292.27614,
+      "positionsCount": 25,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 112,
+      "priceBinStart": 1943.8272,
+      "priceBinEnd": 1961.1828,
+      "liquidationValue": 43880787.41382,
+      "positionsCount": 39,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 113,
+      "priceBinStart": 1961.1828,
+      "priceBinEnd": 1978.5384,
+      "liquidationValue": 468029.62224,
+      "positionsCount": 45,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 114,
+      "priceBinStart": 1978.5384,
+      "priceBinEnd": 1995.894,
+      "liquidationValue": 1646639.45118,
+      "positionsCount": 56,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 115,
+      "priceBinStart": 1995.894,
+      "priceBinEnd": 2013.2496,
+      "liquidationValue": 1703173.58262,
+      "positionsCount": 56,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 116,
+      "priceBinStart": 2013.2496,
+      "priceBinEnd": 2030.6052,
+      "liquidationValue": 897812.70876,
+      "positionsCount": 55,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 117,
+      "priceBinStart": 2030.6052,
+      "priceBinEnd": 2047.9608,
+      "liquidationValue": 558093557.12022,
+      "positionsCount": 62,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 118,
+      "priceBinStart": 2047.9608,
+      "priceBinEnd": 2065.3164,
+      "liquidationValue": 3289266.28764,
+      "positionsCount": 58,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 119,
+      "priceBinStart": 2065.3164,
+      "priceBinEnd": 2082.672,
+      "liquidationValue": 373735.4904,
+      "positionsCount": 39,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 120,
+      "priceBinStart": 2082.672,
+      "priceBinEnd": 2100.0276,
+      "liquidationValue": 544551.61968,
+      "positionsCount": 45,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 121,
+      "priceBinStart": 2100.0276,
+      "priceBinEnd": 2117.3832,
+      "liquidationValue": 31836671.80776,
+      "positionsCount": 55,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 122,
+      "priceBinStart": 2117.3832,
+      "priceBinEnd": 2134.7388,
+      "liquidationValue": 14777808.8895,
+      "positionsCount": 56,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 123,
+      "priceBinStart": 2134.7388,
+      "priceBinEnd": 2152.0944,
+      "liquidationValue": 337657.5369,
+      "positionsCount": 53,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 124,
+      "priceBinStart": 2152.0944,
+      "priceBinEnd": 2169.45,
+      "liquidationValue": 476568.28818,
+      "positionsCount": 66,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 125,
+      "priceBinStart": 2169.45,
+      "priceBinEnd": 2186.8056,
+      "liquidationValue": 3538652.66442,
+      "positionsCount": 41,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 126,
+      "priceBinStart": 2186.8056,
+      "priceBinEnd": 2204.1612,
+      "liquidationValue": 2463486.83964,
+      "positionsCount": 66,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 127,
+      "priceBinStart": 2204.1612,
+      "priceBinEnd": 2221.5168,
+      "liquidationValue": 4103956.66428,
+      "positionsCount": 54,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 128,
+      "priceBinStart": 2221.5168,
+      "priceBinEnd": 2238.8724,
+      "liquidationValue": 4747642.31412,
+      "positionsCount": 48,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 129,
+      "priceBinStart": 2238.8724,
+      "priceBinEnd": 2256.228,
+      "liquidationValue": 4014396.27234,
+      "positionsCount": 70,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 130,
+      "priceBinStart": 2256.228,
+      "priceBinEnd": 2273.5836,
+      "liquidationValue": 1160237.48004,
+      "positionsCount": 70,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 131,
+      "priceBinStart": 2273.5836,
+      "priceBinEnd": 2290.9392,
+      "liquidationValue": 1069120.00152,
+      "positionsCount": 63,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 132,
+      "priceBinStart": 2290.9392,
+      "priceBinEnd": 2308.2948,
+      "liquidationValue": 10748309.48478,
+      "positionsCount": 63,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 133,
+      "priceBinStart": 2308.2948,
+      "priceBinEnd": 2325.6504,
+      "liquidationValue": 996960.6234,
+      "positionsCount": 63,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 134,
+      "priceBinStart": 2325.6504,
+      "priceBinEnd": 2343.006,
+      "liquidationValue": 1774127.61432,
+      "positionsCount": 54,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 135,
+      "priceBinStart": 2343.006,
+      "priceBinEnd": 2360.3616,
+      "liquidationValue": 3188219.3811,
+      "positionsCount": 67,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 136,
+      "priceBinStart": 2360.3616,
+      "priceBinEnd": 2377.7172,
+      "liquidationValue": 5214842.62794,
+      "positionsCount": 79,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 137,
+      "priceBinStart": 2377.7172,
+      "priceBinEnd": 2395.0728,
+      "liquidationValue": 897482.95236,
+      "positionsCount": 73,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 138,
+      "priceBinStart": 2395.0728,
+      "priceBinEnd": 2412.4284,
+      "liquidationValue": 11859645.82626,
+      "positionsCount": 83,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 139,
+      "priceBinStart": 2412.4284,
+      "priceBinEnd": 2429.784,
+      "liquidationValue": 312506.3799,
+      "positionsCount": 70,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 140,
+      "priceBinStart": 2429.784,
+      "priceBinEnd": 2447.1396,
+      "liquidationValue": 4249081.00962,
+      "positionsCount": 75,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 141,
+      "priceBinStart": 2447.1396,
+      "priceBinEnd": 2464.4952,
+      "liquidationValue": 21909667.4973,
+      "positionsCount": 84,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 142,
+      "priceBinStart": 2464.4952,
+      "priceBinEnd": 2481.8508,
+      "liquidationValue": 15823723.29678,
+      "positionsCount": 70,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 143,
+      "priceBinStart": 2481.8508,
+      "priceBinEnd": 2499.2064,
+      "liquidationValue": 5904118.83564,
+      "positionsCount": 61,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 144,
+      "priceBinStart": 2499.2064,
+      "priceBinEnd": 2516.562,
+      "liquidationValue": 1238668.88274,
+      "positionsCount": 74,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 145,
+      "priceBinStart": 2516.562,
+      "priceBinEnd": 2533.9176,
+      "liquidationValue": 5397011.6337,
+      "positionsCount": 84,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 146,
+      "priceBinStart": 2533.9176,
+      "priceBinEnd": 2551.2732,
+      "liquidationValue": 1042850.85462,
+      "positionsCount": 83,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 147,
+      "priceBinStart": 2551.2732,
+      "priceBinEnd": 2568.6288,
+      "liquidationValue": 16143427.62252,
+      "positionsCount": 94,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 148,
+      "priceBinStart": 2568.6288,
+      "priceBinEnd": 2585.9844,
+      "liquidationValue": 8228712.85812,
+      "positionsCount": 92,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 149,
+      "priceBinStart": 2585.9844,
+      "priceBinEnd": 2603.34,
+      "liquidationValue": 6504552.59472,
+      "positionsCount": 80,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 150,
+      "priceBinStart": 2603.34,
+      "priceBinEnd": 2620.6956,
+      "liquidationValue": 2205362.49678,
+      "positionsCount": 84,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 151,
+      "priceBinStart": 2620.6956,
+      "priceBinEnd": 2638.0512,
+      "liquidationValue": 8775637.8561,
+      "positionsCount": 96,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 152,
+      "priceBinStart": 2638.0512,
+      "priceBinEnd": 2655.4068,
+      "liquidationValue": 167218754.81076,
+      "positionsCount": 122,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 153,
+      "priceBinStart": 2655.4068,
+      "priceBinEnd": 2672.7624,
+      "liquidationValue": 3833528.93658,
+      "positionsCount": 138,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 154,
+      "priceBinStart": 2672.7624,
+      "priceBinEnd": 2690.118,
+      "liquidationValue": 1953641.7918,
+      "positionsCount": 80,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 155,
+      "priceBinStart": 2690.118,
+      "priceBinEnd": 2707.4736,
+      "liquidationValue": 13232726.31024,
+      "positionsCount": 104,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 156,
+      "priceBinStart": 2707.4736,
+      "priceBinEnd": 2724.8292,
+      "liquidationValue": 11071289.68002,
+      "positionsCount": 137,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 157,
+      "priceBinStart": 2724.8292,
+      "priceBinEnd": 2742.1848,
+      "liquidationValue": 66968652.83382,
+      "positionsCount": 120,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 158,
+      "priceBinStart": 2742.1848,
+      "priceBinEnd": 2759.5404,
+      "liquidationValue": 15633530.79714,
+      "positionsCount": 134,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 159,
+      "priceBinStart": 2759.5404,
+      "priceBinEnd": 2776.896,
+      "liquidationValue": 3044548.85652,
+      "positionsCount": 128,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 160,
+      "priceBinStart": 2776.896,
+      "priceBinEnd": 2794.2516,
+      "liquidationValue": 6244756.0398,
+      "positionsCount": 94,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 161,
+      "priceBinStart": 2794.2516,
+      "priceBinEnd": 2811.6072,
+      "liquidationValue": 21533733.05238,
+      "positionsCount": 41,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 162,
+      "priceBinStart": 2811.6072,
+      "priceBinEnd": 2828.9628,
+      "liquidationValue": 6430388.6448,
+      "positionsCount": 48,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 163,
+      "priceBinStart": 2828.9628,
+      "priceBinEnd": 2846.3184,
+      "liquidationValue": 953895.5946,
+      "positionsCount": 87,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 164,
+      "priceBinStart": 2846.3184,
+      "priceBinEnd": 2863.674,
+      "liquidationValue": 5066145.9216,
+      "positionsCount": 64,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 165,
+      "priceBinStart": 2863.674,
+      "priceBinEnd": 2881.0296,
+      "liquidationValue": 1056111.69006,
+      "positionsCount": 8,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 166,
+      "priceBinStart": 2881.0296,
+      "priceBinEnd": 2898.3852,
+      "liquidationValue": 20424.35934,
+      "positionsCount": 5,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 169,
+      "priceBinStart": 2933.0964,
+      "priceBinEnd": 2950.452,
+      "liquidationValue": 28414.0098,
+      "positionsCount": 11,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 170,
+      "priceBinStart": 2950.452,
+      "priceBinEnd": 2967.8076,
+      "liquidationValue": 303597.1719,
+      "positionsCount": 45,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 171,
+      "priceBinStart": 2967.8076,
+      "priceBinEnd": 2985.1632,
+      "liquidationValue": 7375821.35958,
+      "positionsCount": 38,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 172,
+      "priceBinStart": 2985.1632,
+      "priceBinEnd": 3002.5188,
+      "liquidationValue": 618011.2215,
+      "positionsCount": 22,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 173,
+      "priceBinStart": 3002.5188,
+      "priceBinEnd": 3019.8744,
+      "liquidationValue": 123891690.00492,
+      "positionsCount": 25,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 174,
+      "priceBinStart": 3019.8744,
+      "priceBinEnd": 3037.23,
+      "liquidationValue": 1127717.7138,
+      "positionsCount": 22,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 175,
+      "priceBinStart": 3037.23,
+      "priceBinEnd": 3054.5856,
+      "liquidationValue": 289868.02452,
+      "positionsCount": 20,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 176,
+      "priceBinStart": 3054.5856,
+      "priceBinEnd": 3071.9412,
+      "liquidationValue": 344729.9439,
+      "positionsCount": 26,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 177,
+      "priceBinStart": 3071.9412,
+      "priceBinEnd": 3089.2968,
+      "liquidationValue": 141352.10568,
+      "positionsCount": 21,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 178,
+      "priceBinStart": 3089.2968,
+      "priceBinEnd": 3106.6524,
+      "liquidationValue": 8864611.91802,
+      "positionsCount": 22,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 179,
+      "priceBinStart": 3106.6524,
+      "priceBinEnd": 3124.008,
+      "liquidationValue": 548809.52688,
+      "positionsCount": 27,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 180,
+      "priceBinStart": 3124.008,
+      "priceBinEnd": 3141.3636,
+      "liquidationValue": 1515189.58308,
+      "positionsCount": 37,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 181,
+      "priceBinStart": 3141.3636,
+      "priceBinEnd": 3158.7192,
+      "liquidationValue": 1610760.79782,
+      "positionsCount": 27,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 182,
+      "priceBinStart": 3158.7192,
+      "priceBinEnd": 3176.0748,
+      "liquidationValue": 244997.14554,
+      "positionsCount": 26,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 183,
+      "priceBinStart": 3176.0748,
+      "priceBinEnd": 3193.4304,
+      "liquidationValue": 32330673.79614,
+      "positionsCount": 17,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 184,
+      "priceBinStart": 3193.4304,
+      "priceBinEnd": 3210.786,
+      "liquidationValue": 445727.09772,
+      "positionsCount": 9,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 185,
+      "priceBinStart": 3210.786,
+      "priceBinEnd": 3228.1416,
+      "liquidationValue": 262775.3544,
+      "positionsCount": 12,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 186,
+      "priceBinStart": 3228.1416,
+      "priceBinEnd": 3245.4972,
+      "liquidationValue": 5997576.1383,
+      "positionsCount": 14,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 187,
+      "priceBinStart": 3245.4972,
+      "priceBinEnd": 3262.8528,
+      "liquidationValue": 6176246.54436,
+      "positionsCount": 20,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 188,
+      "priceBinStart": 3262.8528,
+      "priceBinEnd": 3280.2084,
+      "liquidationValue": 13698051.64074,
+      "positionsCount": 19,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 189,
+      "priceBinStart": 3280.2084,
+      "priceBinEnd": 3297.564,
+      "liquidationValue": 15961754.69766,
+      "positionsCount": 24,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 190,
+      "priceBinStart": 3297.564,
+      "priceBinEnd": 3314.9196,
+      "liquidationValue": 5693097.30192,
+      "positionsCount": 16,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 191,
+      "priceBinStart": 3314.9196,
+      "priceBinEnd": 3332.2752,
+      "liquidationValue": 1047017.93418,
+      "positionsCount": 11,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 192,
+      "priceBinStart": 3332.2752,
+      "priceBinEnd": 3349.6308,
+      "liquidationValue": 2885706.06642,
+      "positionsCount": 19,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 193,
+      "priceBinStart": 3349.6308,
+      "priceBinEnd": 3366.9864,
+      "liquidationValue": 989910.20016,
+      "positionsCount": 18,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 194,
+      "priceBinStart": 3366.9864,
+      "priceBinEnd": 3384.342,
+      "liquidationValue": 6144017.19516,
+      "positionsCount": 16,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 195,
+      "priceBinStart": 3384.342,
+      "priceBinEnd": 3401.6976,
+      "liquidationValue": 34523.47026,
+      "positionsCount": 22,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 196,
+      "priceBinStart": 3401.6976,
+      "priceBinEnd": 3419.0532,
+      "liquidationValue": 1385935.19838,
+      "positionsCount": 29,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 197,
+      "priceBinStart": 3419.0532,
+      "priceBinEnd": 3436.4088,
+      "liquidationValue": 728599.6584,
+      "positionsCount": 18,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 198,
+      "priceBinStart": 3436.4088,
+      "priceBinEnd": 3453.7644,
+      "liquidationValue": 1473226.05636,
+      "positionsCount": 19,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 199,
+      "priceBinStart": 3453.7644,
+      "priceBinEnd": 3471.12,
+      "liquidationValue": 16901246.01204,
+      "positionsCount": 30,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 200,
+      "priceBinStart": 3471.12,
+      "priceBinEnd": 3488.4756,
+      "liquidationValue": 1868783.89968,
+      "positionsCount": 22,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 201,
+      "priceBinStart": 3488.4756,
+      "priceBinEnd": 3505.8312,
+      "liquidationValue": 690107.54094,
+      "positionsCount": 15,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 202,
+      "priceBinStart": 3505.8312,
+      "priceBinEnd": 3523.1868,
+      "liquidationValue": 198145.41408,
+      "positionsCount": 14,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 203,
+      "priceBinStart": 3523.1868,
+      "priceBinEnd": 3540.5424,
+      "liquidationValue": 146975.32008,
+      "positionsCount": 12,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 204,
+      "priceBinStart": 3540.5424,
+      "priceBinEnd": 3557.898,
+      "liquidationValue": 519149.67426,
+      "positionsCount": 21,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 205,
+      "priceBinStart": 3557.898,
+      "priceBinEnd": 3575.2536,
+      "liquidationValue": 1467290.1519,
+      "positionsCount": 12,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 206,
+      "priceBinStart": 3575.2536,
+      "priceBinEnd": 3592.6092,
+      "liquidationValue": 4060496.21706,
+      "positionsCount": 12,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 207,
+      "priceBinStart": 3592.6092,
+      "priceBinEnd": 3609.9648,
+      "liquidationValue": 21653027.3475,
+      "positionsCount": 14,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 208,
+      "priceBinStart": 3609.9648,
+      "priceBinEnd": 3627.3204,
+      "liquidationValue": 38257098.91668,
+      "positionsCount": 18,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 209,
+      "priceBinStart": 3627.3204,
+      "priceBinEnd": 3644.676,
+      "liquidationValue": 1950322.82256,
+      "positionsCount": 19,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 210,
+      "priceBinStart": 3644.676,
+      "priceBinEnd": 3662.0316,
+      "liquidationValue": 1267487.85654,
+      "positionsCount": 15,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 211,
+      "priceBinStart": 3662.0316,
+      "priceBinEnd": 3679.3872,
+      "liquidationValue": 1799290.05246,
+      "positionsCount": 16,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 212,
+      "priceBinStart": 3679.3872,
+      "priceBinEnd": 3696.7428,
+      "liquidationValue": 329345.36154,
+      "positionsCount": 13,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 213,
+      "priceBinStart": 3696.7428,
+      "priceBinEnd": 3714.0984,
+      "liquidationValue": 22336635.5055,
+      "positionsCount": 12,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 214,
+      "priceBinStart": 3714.0984,
+      "priceBinEnd": 3731.454,
+      "liquidationValue": 72409387.27356,
+      "positionsCount": 19,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 215,
+      "priceBinStart": 3731.454,
+      "priceBinEnd": 3748.8096,
+      "liquidationValue": 3997951.84134,
+      "positionsCount": 16,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 216,
+      "priceBinStart": 3748.8096,
+      "priceBinEnd": 3766.1652,
+      "liquidationValue": 2268435.92904,
+      "positionsCount": 14,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 217,
+      "priceBinStart": 3766.1652,
+      "priceBinEnd": 3783.5208,
+      "liquidationValue": 420486.27012,
+      "positionsCount": 21,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 218,
+      "priceBinStart": 3783.5208,
+      "priceBinEnd": 3800.8764,
+      "liquidationValue": 5734826.52804,
+      "positionsCount": 21,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 219,
+      "priceBinStart": 3800.8764,
+      "priceBinEnd": 3818.232,
+      "liquidationValue": 4215827.68002,
+      "positionsCount": 14,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 220,
+      "priceBinStart": 3818.232,
+      "priceBinEnd": 3835.5876,
+      "liquidationValue": 125226453.95226,
+      "positionsCount": 18,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 221,
+      "priceBinStart": 3835.5876,
+      "priceBinEnd": 3852.9432,
+      "liquidationValue": 6056391.3741,
+      "positionsCount": 17,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 222,
+      "priceBinStart": 3852.9432,
+      "priceBinEnd": 3870.2988,
+      "liquidationValue": 286138.59534,
+      "positionsCount": 23,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 223,
+      "priceBinStart": 3870.2988,
+      "priceBinEnd": 3887.6544,
+      "liquidationValue": 88560486.6498,
+      "positionsCount": 11,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 224,
+      "priceBinStart": 3887.6544,
+      "priceBinEnd": 3905.01,
+      "liquidationValue": 101604.0213,
+      "positionsCount": 20,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 225,
+      "priceBinStart": 3905.01,
+      "priceBinEnd": 3922.3656,
+      "liquidationValue": 1152290.3508,
+      "positionsCount": 22,
+      "mostImpactedSegment": 15
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 226,
+      "priceBinStart": 3922.3656,
+      "priceBinEnd": 3939.7212,
+      "liquidationValue": 47447456.35554,
+      "positionsCount": 15,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 227,
+      "priceBinStart": 3939.7212,
+      "priceBinEnd": 3957.0768,
+      "liquidationValue": 829308.42,
+      "positionsCount": 16,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 228,
+      "priceBinStart": 3957.0768,
+      "priceBinEnd": 3974.4324,
+      "liquidationValue": 1276966.61748,
+      "positionsCount": 14,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 229,
+      "priceBinStart": 3974.4324,
+      "priceBinEnd": 3991.788,
+      "liquidationValue": 220884.43194,
+      "positionsCount": 11,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 230,
+      "priceBinStart": 3991.788,
+      "priceBinEnd": 4009.1436,
+      "liquidationValue": 76604852.78514,
+      "positionsCount": 15,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 231,
+      "priceBinStart": 4009.1436,
+      "priceBinEnd": 4026.4992,
+      "liquidationValue": 55591.14384,
+      "positionsCount": 13,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 232,
+      "priceBinStart": 4026.4992,
+      "priceBinEnd": 4043.8548,
+      "liquidationValue": 39335.59962,
+      "positionsCount": 9,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 233,
+      "priceBinStart": 4043.8548,
+      "priceBinEnd": 4061.2104,
+      "liquidationValue": 1810157.2614,
+      "positionsCount": 15,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 234,
+      "priceBinStart": 4061.2104,
+      "priceBinEnd": 4078.566,
+      "liquidationValue": 311548.9293,
+      "positionsCount": 15,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 235,
+      "priceBinStart": 4078.566,
+      "priceBinEnd": 4095.9216,
+      "liquidationValue": 78915103.85052,
+      "positionsCount": 17,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 236,
+      "priceBinStart": 4095.9216,
+      "priceBinEnd": 4113.2772,
+      "liquidationValue": 66175.74576,
+      "positionsCount": 10,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 237,
+      "priceBinStart": 4113.2772,
+      "priceBinEnd": 4130.6328,
+      "liquidationValue": 85260.54204,
+      "positionsCount": 15,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 238,
+      "priceBinStart": 4130.6328,
+      "priceBinEnd": 4147.9884,
+      "liquidationValue": 1832062.05342,
+      "positionsCount": 14,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 239,
+      "priceBinStart": 4147.9884,
+      "priceBinEnd": 4165.344,
+      "liquidationValue": 3444584.44464,
+      "positionsCount": 20,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 240,
+      "priceBinStart": 4165.344,
+      "priceBinEnd": 4182.6996,
+      "liquidationValue": 16217219.00556,
+      "positionsCount": 20,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 241,
+      "priceBinStart": 4182.6996,
+      "priceBinEnd": 4200.0552,
+      "liquidationValue": 166688.67834,
+      "positionsCount": 14,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 242,
+      "priceBinStart": 4200.0552,
+      "priceBinEnd": 4217.4108,
+      "liquidationValue": 445273.53804,
+      "positionsCount": 12,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 243,
+      "priceBinStart": 4217.4108,
+      "priceBinEnd": 4234.7664,
+      "liquidationValue": 1176133.47408,
+      "positionsCount": 13,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 244,
+      "priceBinStart": 4234.7664,
+      "priceBinEnd": 4252.122,
+      "liquidationValue": 8509479.31674,
+      "positionsCount": 9,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 245,
+      "priceBinStart": 4252.122,
+      "priceBinEnd": 4269.4776,
+      "liquidationValue": 4764771.13428,
+      "positionsCount": 17,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 246,
+      "priceBinStart": 4269.4776,
+      "priceBinEnd": 4286.8332,
+      "liquidationValue": 4927305.17124,
+      "positionsCount": 16,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 247,
+      "priceBinStart": 4286.8332,
+      "priceBinEnd": 4304.1888,
+      "liquidationValue": 2140209.86364,
+      "positionsCount": 22,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 248,
+      "priceBinStart": 4304.1888,
+      "priceBinEnd": 4321.5444,
+      "liquidationValue": 1896414.01488,
+      "positionsCount": 16,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 249,
+      "priceBinStart": 4321.5444,
+      "priceBinEnd": 4338.9,
+      "liquidationValue": 12079.20834,
+      "positionsCount": 14,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 250,
+      "priceBinStart": 4338.9,
+      "priceBinEnd": 4356.2556,
+      "liquidationValue": 2261636.29422,
+      "positionsCount": 25,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 251,
+      "priceBinStart": 4356.2556,
+      "priceBinEnd": 4373.6112,
+      "liquidationValue": 4709725.82406,
+      "positionsCount": 26,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 252,
+      "priceBinStart": 4373.6112,
+      "priceBinEnd": 4390.9668,
+      "liquidationValue": 98728.19838,
+      "positionsCount": 17,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 253,
+      "priceBinStart": 4390.9668,
+      "priceBinEnd": 4408.3224,
+      "liquidationValue": 7264910.68704,
+      "positionsCount": 19,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 254,
+      "priceBinStart": 4408.3224,
+      "priceBinEnd": 4425.678,
+      "liquidationValue": 3816.49644,
+      "positionsCount": 14,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 255,
+      "priceBinStart": 4425.678,
+      "priceBinEnd": 4443.0336,
+      "liquidationValue": 285813.4671,
+      "positionsCount": 9,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 256,
+      "priceBinStart": 4443.0336,
+      "priceBinEnd": 4460.3892,
+      "liquidationValue": 1857176.4744,
+      "positionsCount": 14,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 257,
+      "priceBinStart": 4460.3892,
+      "priceBinEnd": 4477.7448,
+      "liquidationValue": 1285151.8077,
+      "positionsCount": 9,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 258,
+      "priceBinStart": 4477.7448,
+      "priceBinEnd": 4495.1004,
+      "liquidationValue": 102594.44754,
+      "positionsCount": 11,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 259,
+      "priceBinStart": 4495.1004,
+      "priceBinEnd": 4512.456,
+      "liquidationValue": 5525965.47726,
+      "positionsCount": 10,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 260,
+      "priceBinStart": 4512.456,
+      "priceBinEnd": 4529.8116,
+      "liquidationValue": 73490.26338,
+      "positionsCount": 6,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 261,
+      "priceBinStart": 4529.8116,
+      "priceBinEnd": 4547.1672,
+      "liquidationValue": 122067.72,
+      "positionsCount": 9,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 262,
+      "priceBinStart": 4547.1672,
+      "priceBinEnd": 4564.5228,
+      "liquidationValue": 238244.94936,
+      "positionsCount": 14,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 263,
+      "priceBinStart": 4564.5228,
+      "priceBinEnd": 4581.8784,
+      "liquidationValue": 50045.16186,
+      "positionsCount": 11,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 264,
+      "priceBinStart": 4581.8784,
+      "priceBinEnd": 4599.234,
+      "liquidationValue": 251675.29116,
+      "positionsCount": 18,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 265,
+      "priceBinStart": 4599.234,
+      "priceBinEnd": 4616.5896,
+      "liquidationValue": 547059.50388,
+      "positionsCount": 10,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 266,
+      "priceBinStart": 4616.5896,
+      "priceBinEnd": 4633.9452,
+      "liquidationValue": 183796.96104,
+      "positionsCount": 16,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 267,
+      "priceBinStart": 4633.9452,
+      "priceBinEnd": 4651.3008,
+      "liquidationValue": 20391.96222,
+      "positionsCount": 7,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 268,
+      "priceBinStart": 4651.3008,
+      "priceBinEnd": 4668.6564,
+      "liquidationValue": 51757.58106,
+      "positionsCount": 11,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 269,
+      "priceBinStart": 4668.6564,
+      "priceBinEnd": 4686.012,
+      "liquidationValue": 1121806.39644,
+      "positionsCount": 15,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 270,
+      "priceBinStart": 4686.012,
+      "priceBinEnd": 4703.3676,
+      "liquidationValue": 99092.08746,
+      "positionsCount": 12,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 271,
+      "priceBinStart": 4703.3676,
+      "priceBinEnd": 4720.7232,
+      "liquidationValue": 89215.88328,
+      "positionsCount": 6,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 272,
+      "priceBinStart": 4720.7232,
+      "priceBinEnd": 4738.0788,
+      "liquidationValue": 80123.86296,
+      "positionsCount": 9,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 273,
+      "priceBinStart": 4738.0788,
+      "priceBinEnd": 4755.4344,
+      "liquidationValue": 940602.94056,
+      "positionsCount": 8,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 274,
+      "priceBinStart": 4755.4344,
+      "priceBinEnd": 4772.79,
+      "liquidationValue": 222606.39672,
+      "positionsCount": 10,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 275,
+      "priceBinStart": 4772.79,
+      "priceBinEnd": 4790.1456,
+      "liquidationValue": 39775712.75964,
+      "positionsCount": 10,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 276,
+      "priceBinStart": 4790.1456,
+      "priceBinEnd": 4807.5012,
+      "liquidationValue": 10322368.06032,
+      "positionsCount": 9,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 277,
+      "priceBinStart": 4807.5012,
+      "priceBinEnd": 4824.8568,
+      "liquidationValue": 206264.94228,
+      "positionsCount": 9,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 278,
+      "priceBinStart": 4824.8568,
+      "priceBinEnd": 4842.2124,
+      "liquidationValue": 2457772.50834,
+      "positionsCount": 10,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 279,
+      "priceBinStart": 4842.2124,
+      "priceBinEnd": 4859.568,
+      "liquidationValue": 11566.35036,
+      "positionsCount": 8,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 280,
+      "priceBinStart": 4859.568,
+      "priceBinEnd": 4876.9236,
+      "liquidationValue": 1175474.82906,
+      "positionsCount": 12,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 281,
+      "priceBinStart": 4876.9236,
+      "priceBinEnd": 4894.2792,
+      "liquidationValue": 5397735.36222,
+      "positionsCount": 7,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 282,
+      "priceBinStart": 4894.2792,
+      "priceBinEnd": 4911.6348,
+      "liquidationValue": 287172.41058,
+      "positionsCount": 11,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 283,
+      "priceBinStart": 4911.6348,
+      "priceBinEnd": 4928.9904,
+      "liquidationValue": 35383.15098,
+      "positionsCount": 14,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 284,
+      "priceBinStart": 4928.9904,
+      "priceBinEnd": 4946.346,
+      "liquidationValue": 383571.48744,
+      "positionsCount": 7,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 285,
+      "priceBinStart": 4946.346,
+      "priceBinEnd": 4963.7016,
+      "liquidationValue": 5373993.47994,
+      "positionsCount": 11,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 286,
+      "priceBinStart": 4963.7016,
+      "priceBinEnd": 4981.0572,
+      "liquidationValue": 7216227.072,
+      "positionsCount": 11,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 287,
+      "priceBinStart": 4981.0572,
+      "priceBinEnd": 4998.4128,
+      "liquidationValue": 43922.10618,
+      "positionsCount": 6,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 288,
+      "priceBinStart": 4998.4128,
+      "priceBinEnd": 5015.7684,
+      "liquidationValue": 442996.77258,
+      "positionsCount": 8,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 289,
+      "priceBinStart": 5015.7684,
+      "priceBinEnd": 5033.124,
+      "liquidationValue": 2611655.93574,
+      "positionsCount": 8,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 290,
+      "priceBinStart": 5033.124,
+      "priceBinEnd": 5050.4796,
+      "liquidationValue": 6302986.10262,
+      "positionsCount": 7,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 291,
+      "priceBinStart": 5050.4796,
+      "priceBinEnd": 5067.8352,
+      "liquidationValue": 260577.26766,
+      "positionsCount": 5,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 292,
+      "priceBinStart": 5067.8352,
+      "priceBinEnd": 5085.1908,
+      "liquidationValue": 381927.04434,
+      "positionsCount": 11,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 293,
+      "priceBinStart": 5085.1908,
+      "priceBinEnd": 5102.5464,
+      "liquidationValue": 690874.65846,
+      "positionsCount": 7,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 294,
+      "priceBinStart": 5102.5464,
+      "priceBinEnd": 5119.902,
+      "liquidationValue": 62221.56156,
+      "positionsCount": 6,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 295,
+      "priceBinStart": 5119.902,
+      "priceBinEnd": 5137.2576,
+      "liquidationValue": 186028.8912,
+      "positionsCount": 7,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 296,
+      "priceBinStart": 5137.2576,
+      "priceBinEnd": 5154.6132,
+      "liquidationValue": 271032.85962,
+      "positionsCount": 8,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 297,
+      "priceBinStart": 5154.6132,
+      "priceBinEnd": 5171.9688,
+      "liquidationValue": 17855522.85132,
+      "positionsCount": 7,
+      "mostImpactedSegment": 7
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 298,
+      "priceBinStart": 5171.9688,
+      "priceBinEnd": 5189.3244,
+      "liquidationValue": 11047.70718,
+      "positionsCount": 8,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 299,
+      "priceBinStart": 5189.3244,
+      "priceBinEnd": 5206.68,
+      "liquidationValue": 395401.0644,
+      "positionsCount": 11,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 300,
+      "priceBinStart": 5206.68,
+      "priceBinEnd": 5224.0356,
+      "liquidationValue": 65335.44546,
+      "positionsCount": 12,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 301,
+      "priceBinStart": 5224.0356,
+      "priceBinEnd": 5241.3912,
+      "liquidationValue": 841240.97352,
+      "positionsCount": 9,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 302,
+      "priceBinStart": 5241.3912,
+      "priceBinEnd": 5258.7468,
+      "liquidationValue": 4331576.51532,
+      "positionsCount": 11,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 303,
+      "priceBinStart": 5258.7468,
+      "priceBinEnd": 5276.1024,
+      "liquidationValue": 101113.14708,
+      "positionsCount": 4,
+      "mostImpactedSegment": 3
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 304,
+      "priceBinStart": 5276.1024,
+      "priceBinEnd": 5293.458,
+      "liquidationValue": 210253.54842,
+      "positionsCount": 11,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 305,
+      "priceBinStart": 5293.458,
+      "priceBinEnd": 5310.8136,
+      "liquidationValue": 4651336.08972,
+      "positionsCount": 11,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 306,
+      "priceBinStart": 5310.8136,
+      "priceBinEnd": 5328.1692,
+      "liquidationValue": 239769.34956,
+      "positionsCount": 9,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 307,
+      "priceBinStart": 5328.1692,
+      "priceBinEnd": 5345.5248,
+      "liquidationValue": 537990.91362,
+      "positionsCount": 6,
+      "mostImpactedSegment": 5
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 308,
+      "priceBinStart": 5345.5248,
+      "priceBinEnd": 5362.8804,
+      "liquidationValue": 486.53532,
+      "positionsCount": 3,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 309,
+      "priceBinStart": 5362.8804,
+      "priceBinEnd": 5380.236,
+      "liquidationValue": 31993.89156,
+      "positionsCount": 4,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 310,
+      "priceBinStart": 5380.236,
+      "priceBinEnd": 5397.5916,
+      "liquidationValue": 5195.39886,
+      "positionsCount": 3,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 311,
+      "priceBinStart": 5397.5916,
+      "priceBinEnd": 5414.9472,
+      "liquidationValue": 9979.47,
+      "positionsCount": 6,
+      "mostImpactedSegment": 1
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 312,
+      "priceBinStart": 5414.9472,
+      "priceBinEnd": 5432.3028,
+      "liquidationValue": 601524.8478,
+      "positionsCount": 11,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 313,
+      "priceBinStart": 5432.3028,
+      "priceBinEnd": 5449.6584,
+      "liquidationValue": 2719143.21618,
+      "positionsCount": 7,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 314,
+      "priceBinStart": 5449.6584,
+      "priceBinEnd": 5467.014,
+      "liquidationValue": 250155.22986,
+      "positionsCount": 11,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 315,
+      "priceBinStart": 5467.014,
+      "priceBinEnd": 5484.3696,
+      "liquidationValue": 369757.00836,
+      "positionsCount": 8,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 316,
+      "priceBinStart": 5484.3696,
+      "priceBinEnd": 5501.7252,
+      "liquidationValue": 83888.2926,
+      "positionsCount": 5,
+      "mostImpactedSegment": 10
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 317,
+      "priceBinStart": 5501.7252,
+      "priceBinEnd": 5519.0808,
+      "liquidationValue": 503812.8198,
+      "positionsCount": 7,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 318,
+      "priceBinStart": 5519.0808,
+      "priceBinEnd": 5536.4364,
+      "liquidationValue": 574315.31664,
+      "positionsCount": 9,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 319,
+      "priceBinStart": 5536.4364,
+      "priceBinEnd": 5553.792,
+      "liquidationValue": 209660.27616,
+      "positionsCount": 14,
+      "mostImpactedSegment": 12
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 320,
+      "priceBinStart": 5553.792,
+      "priceBinEnd": 5571.1476,
+      "liquidationValue": 878700.43278,
+      "positionsCount": 10,
+      "mostImpactedSegment": 4
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 321,
+      "priceBinStart": 5571.1476,
+      "priceBinEnd": 5588.5032,
+      "liquidationValue": 691.3314,
+      "positionsCount": 6,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 322,
+      "priceBinStart": 5588.5032,
+      "priceBinEnd": 5605.8588,
+      "liquidationValue": 14257.04688,
+      "positionsCount": 6,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 323,
+      "priceBinStart": 5605.8588,
+      "priceBinEnd": 5623.2144,
+      "liquidationValue": 22551.28812,
+      "positionsCount": 7,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 324,
+      "priceBinStart": 5623.2144,
+      "priceBinEnd": 5640.57,
+      "liquidationValue": 46121.34996,
+      "positionsCount": 8,
+      "mostImpactedSegment": 2
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 325,
+      "priceBinStart": 5640.57,
+      "priceBinEnd": 5657.9256,
+      "liquidationValue": 466625.84346,
+      "positionsCount": 14,
+      "mostImpactedSegment": 13
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 326,
+      "priceBinStart": 5657.9256,
+      "priceBinEnd": 5675.2812,
+      "liquidationValue": 162869.86782,
+      "positionsCount": 4,
+      "mostImpactedSegment": 9
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 327,
+      "priceBinStart": 5675.2812,
+      "priceBinEnd": 5692.6368,
+      "liquidationValue": 752030.29692,
+      "positionsCount": 10,
+      "mostImpactedSegment": 14
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 328,
+      "priceBinStart": 5692.6368,
+      "priceBinEnd": 5709.9924,
+      "liquidationValue": 1141833.31254,
+      "positionsCount": 11,
+      "mostImpactedSegment": 6
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 329,
+      "priceBinStart": 5709.9924,
+      "priceBinEnd": 5727.348,
+      "liquidationValue": 31011.85386,
+      "positionsCount": 13,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 330,
+      "priceBinStart": 5727.348,
+      "priceBinEnd": 5744.7036,
+      "liquidationValue": 254309.29272,
+      "positionsCount": 9,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 331,
+      "priceBinStart": 5744.7036,
+      "priceBinEnd": 5762.0592,
+      "liquidationValue": 44286311.42118,
+      "positionsCount": 20,
+      "mostImpactedSegment": 8
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 332,
+      "priceBinStart": 5762.0592,
+      "priceBinEnd": 5779.4148,
+      "liquidationValue": 6499.6722,
+      "positionsCount": 15,
+      "mostImpactedSegment": 11
+    },
+    {
+      "coin": "ETH",
+      "priceBinIndex": 333,
+      "priceBinStart": 5779.4148,
+      "priceBinEnd": 5796.7704,
+      "liquidationValue": 133.0596,
+      "positionsCount": 1,
+      "mostImpactedSegment": 1
+    }
+  ]
+}

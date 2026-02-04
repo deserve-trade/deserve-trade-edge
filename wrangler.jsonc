@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "deserve-trade-edge",
+  "compatibility_date": "2025-04-04",
+  "main": "./workers/app.ts",
+  "route": {
+    "pattern": "deserve.trade",
+    // "zone_name": "sknx.io",
+    "custom_domain": true
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    }
+  },
+  "triggers": {
+    "crons": [
+      "*/4 * * * *"
+    ]
+  }
+}
