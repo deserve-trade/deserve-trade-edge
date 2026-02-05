@@ -4,13 +4,12 @@ import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { LuClock } from "react-icons/lu";
-import { FaArrowTrendUp, FaDiscord, FaEnvelope, FaGithub, FaTwitter } from "react-icons/fa6";
+import { FaArrowTrendUp, FaGithub, FaTwitter } from "react-icons/fa6";
 import { VscError } from "react-icons/vsc";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { faq } from "~/lib/data/faq";
 import { cloudflareContext } from "~/lib/context";
-import { keyRequired } from "~/lib/middleware/key-required";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const image = `${loaderData.domain}/snippet.png`;
@@ -679,31 +678,31 @@ export default function Home() {
 
           <nav className="flex flex-col gap-3 text-sm" aria-label="Documents">
             <span className="text-white/40 uppercase tracking-[0.2em]">Documents</span>
-            <a href="#" className="hover:text-white">
-              Whitepaper
-            </a>
-            <a href="#" className="hover:text-white">
-              Tokenomics
-            </a>
-            <a href="#" className="hover:text-white">
-              Risk disclosure
-            </a>
+            <span className="text-white/60">Whitepaper (soon)</span>
+            <span className="text-white/60">Tokenomics (soon)</span>
+            <span className="text-white/60">Risk disclosure (soon)</span>
           </nav>
 
           <div className="flex flex-col gap-3 text-sm">
             <span className="text-white/40 uppercase tracking-[0.2em]">Community</span>
             <div className="flex flex-row gap-4 items-center">
-              <a href="https://github.com/shadcn" className="text-primary" aria-label="GitHub">
+              <a
+                href="https://github.com/deserve-trade/deserve-trade-edge"
+                className="text-primary"
+                aria-label="GitHub"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FaGithub />
               </a>
-              <a href="https://twitter.com/shadcn" className="text-primary" aria-label="Twitter">
+              <a
+                href="https://x.com/deserve_trade"
+                className="text-primary"
+                aria-label="X"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FaTwitter />
-              </a>
-              <a href="https://discord.gg/shadcn" className="text-primary" aria-label="Discord">
-                <FaDiscord />
-              </a>
-              <a href="mailto:hello@deserve.trade" className="text-primary" aria-label="Email">
-                <FaEnvelope />
               </a>
             </div>
           </div>

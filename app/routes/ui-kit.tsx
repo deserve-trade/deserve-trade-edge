@@ -14,7 +14,7 @@ export default function UIKitPage() {
     <div className="grid grid-cols-2 gap-6">
       <Card>
         <h3 className="mb-4 opacity-70">Typography</h3>
-        <GlitchTitle text="deserve" />
+        <GlitchTitle>deserve</GlitchTitle>
       </Card>
 
       <Card>
