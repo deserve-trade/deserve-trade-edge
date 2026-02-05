@@ -15,7 +15,7 @@ export async function keyRequired({ request, context }: { request: Request; cont
   const urlParams = new URL(request.url).searchParams;
   const key = urlParams.get('key');
   console.log(key)
-  if (key !== 'xxx1488666XXX$') {
+  if (key !== 'yourverysecretkey') {
     return redirect('/');
   }
   // return context
