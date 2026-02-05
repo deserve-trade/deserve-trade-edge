@@ -3,7 +3,6 @@ import {
   Links,
   Meta,
   Outlet,
-  redirect,
   Scripts,
   ScrollRestoration,
 } from "react-router";
@@ -13,7 +12,6 @@ import "./app.css";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { keyRequired } from "./lib/middleware/key-required";
 
 const queryClient = new QueryClient({
   defaultOptions: {
