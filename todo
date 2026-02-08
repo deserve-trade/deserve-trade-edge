@@ -41,3 +41,17 @@
 10. таким образом мы создаем правильную устойчивую экономику для холда токенов и сильных рук.
 11. после сида пула мы кладем собранные средства в наш общий пул и начисляем их на депозит агента.
 12. выкупленные на первые 10 баксов токены, мы используем для выравнивания цены токена относительно текущего еквити депозита агента.
+
+
+• EXCHANGE: Hyperliquid mainnet
+• SYMBOLS: (например BTC-PERP, ETH-PERP)
+• TIMEFRAME: (например 15m)
+• ENTRY RULES: …
+• EXIT RULES (TP/SL/timeout): …
+• POSITION SIZING: … (например % equity / фикс $)
+• MAX LEVERAGE: …
+• MAX OPEN POSITIONS: …
+• DAILY MAX LOSS: …
+• BEHAVIOR ON ERROR: pause + notify / keep running
+• REPORTING: каждые N минут + по каждой сделке
+• STOP MODE:
