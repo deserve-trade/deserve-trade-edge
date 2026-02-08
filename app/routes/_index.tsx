@@ -3,9 +3,9 @@ import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
-import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { LuClock } from "react-icons/lu";
-import { FaArrowTrendUp, FaGithub, FaTwitter } from "react-icons/fa6";
+import { FaArrowTrendUp, FaCopy, FaGithub, FaTwitter } from "react-icons/fa6";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { faq } from "~/lib/data/faq";
@@ -13,9 +13,9 @@ import { cloudflareContext } from "~/lib/context";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const image = `${loaderData.domain}/snippet.png`;
-  const title = "Deserve — Agentic Prop Capital Launchpad";
+  const title = "Deserve — Agentic Capital Launchpad";
   const description =
-    "Launch agentic prop challenges, tokenize performance, and trade in public. Describe AI agents in plain text; investors back the best.";
+    "Launch agentic trading bots, tokenize performance, and trade in public. Describe AI agents in plain text; investors back the best.";
 
   const titleElements = [
     { title: title },
@@ -117,6 +117,25 @@ function BrandMark({ className }: { className?: string }) {
   );
 }
 
+function PumpIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M15 11l-3-3-2 2-2-1" />
+      <path d="M13 16v-4h4" />
+    </svg>
+  );
+}
+
 export default function Home() {
   const challengeSection = useRef<HTMLElement>(null);
   const flowSection = useRef<HTMLDivElement>(null);
@@ -124,6 +143,8 @@ export default function Home() {
   const [displayText, setDisplayText] = useState("");
   const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">("typing");
   const [flowVisible, setFlowVisible] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleChallengeScroll = () => {
     if (challengeSection.current) {
@@ -133,6 +154,25 @@ export default function Home() {
         inline: "nearest",
       });
     }
+  };
+
+  const handleCopyAddress = async () => {
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      setCopyStatus("error");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(dsrvContractAddress);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("error");
+    }
+
+    if (copyTimeoutRef.current) {
+      clearTimeout(copyTimeoutRef.current);
+    }
+    copyTimeoutRef.current = setTimeout(() => setCopyStatus("idle"), 2400);
   };
 
   useEffect(() => {
@@ -183,45 +223,42 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const copyButtonLabel =
+    copyStatus === "copied" ? "Copied" : copyStatus === "error" ? "Try again" : "Copy address";
+  const copyHint =
+    copyStatus === "copied"
+      ? "Copied to clipboard"
+      : copyStatus === "error"
+        ? "Clipboard access denied"
+        : "Click to copy address";
+
 
   const steps = [
     {
       title: "Launch agent",
       subtitle: "Mint token",
       text: "Describe the strategy in free text, set the venue and rules, then mint the agent token.",
-      icon: (
-        <svg viewBox="0 0 48 48" aria-hidden>
-          <circle cx="24" cy="24" r="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" />
-          <path d="M24 14v20" stroke="#2bff88" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M18 20h12" stroke="#00eaff" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M34 12l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4z" fill="#ff2ec4" />
-        </svg>
-      ),
+      video: '/videos/prompt-to-agent.mp4'
     },
     {
       title: "Validate strategy",
       subtitle: "Raise funds",
       text: "Agents trade in test mode while the market prices them on the bonding curve.",
-      icon: (
-        <svg viewBox="0 0 48 48" aria-hidden>
-          <rect x="10" y="10" width="28" height="28" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" />
-          <path d="M16 28l6-6 5 4 7-8" stroke="#00eaff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M20 34l4 4 10-12" stroke="#2bff88" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
+      video: '/videos/bonding-curve.mp4'
     },
     {
       title: "Get funded",
       subtitle: "Seed capital",
       text: "Once the curve is completed, liquidity migrates to the DEX and the raised funds are transferred to the agent.",
-      icon: (
-        <svg viewBox="0 0 48 48" aria-hidden>
-          <ellipse cx="24" cy="14" rx="12" ry="6" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" />
-          <path d="M12 14v10c0 3.3 5.4 6 12 6s12-2.7 12-6V14" stroke="rgba(255,255,255,0.4)" fill="none" />
-          <path d="M12 24v10c0 3.3 5.4 6 12 6s12-2.7 12-6V24" stroke="rgba(255,255,255,0.4)" fill="none" />
-          <path d="M24 10v10" stroke="#ff2ec4" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-      ),
+      video: '/videos/get-funded.mp4'
     },
   ];
 
@@ -229,121 +266,157 @@ export default function Home() {
     {
       title: "Prompt-to-Agent",
       tone: "text-accent",
-      text: "Free-form strategy prompts plus strict risk rules. The spec is the product.",
+      text: "No coding required. Describe your strategy, deploy your agent. Your edge stays private and protected from copycats.",
     },
     {
-      title: "Bonding Curve Market",
+      title: "Unlimited Upside",
       tone: "text-primary",
-      text: "Speculators price agents in real time by buying tokens on the curve.",
+      text: "Scale capital through token sales on a bonding curve. Early backers pay less, everyone profits more as your agent performs.",
     },
     {
-      title: "DSRV Exit Rail",
+      title: "Fully Automated",
       tone: "text-secondary",
-      text: "Successful pools seed to DSRV so exits route through our token and stay in-system.",
+      text: "Set-and-forget execution. Agents trade your exact strategy 24/7 with immutable logic—no drift, no deviation, no downtime.",
     },
     {
-      title: "Capital Discipline",
+      title: "Decentralized",
       tone: "text-muted",
-      text: "Agents die when resources run dry. Seeded agents run with hard stops and risk limits.",
+      text: "Everything on-chain. Stats are public, strategy can't change, agent can't be stopped. Only code controls the funds.",
     },
   ];
 
   const tokenFacts = [
     "DSRV is not a governance token and does not represent company equity.",
-    "Seeded pools settle in DSRV; exits are in DSRV or via DSRV/USDT.",
-    "Routing exits through DSRV supports demand and keeps liquidity inside the system.",
-    "Double swaps to USDT/SOL can dip DSRV, enabling protocol buybacks from future profits.",
-    "Creator buybacks lock agent tokens; USDT becomes the test deposit for the agent.",
-    "Tokens bought with the first $10 are used to align token price with agent equity.",
+    "DSRV is used as collateral and the settlement unit of the Deserve trading pool.",
+    "It enables smooth capital flow between agents and investors.",
+    "Fees in prop tokens and DSRV are used to rebalance pools.",
+    "If the treasury lacks DSRV to seed a pool, the protocol buys the missing amount.",
+    "DSRV is planned to launch on Pump.Fun with a capped supply.",
   ];
+
+  const tokenomics = [
+    { label: "Bonding Curve", value: 69.3, display: "69.3%", color: "#ff2ec4" },
+    { label: "Liquidity", value: 20.7, display: "20.7%", color: "#00eaff" },
+    { label: "Dev Wallet", value: 10, display: "10%", color: "#9b5dff" },
+  ];
+  const dsrvContractAddress = "0xd5Cd1Ce28c213321c4DB35980b0FD8d2bB1c0E21";
+  const tokenomicsGradient = `conic-gradient(${tokenomics[0].color} 0% ${tokenomics[0].value}%, ${tokenomics[1].color} ${tokenomics[0].value}% ${tokenomics[0].value + tokenomics[1].value}%, ${tokenomics[2].color} ${tokenomics[0].value + tokenomics[1].value}% 100%)`;
 
   const roadmap = [
     {
-      period: "Month 1",
-      items: ["Agent builder", "Bonding curve", "Rent tiers"],
+      period: "In Progress",
+      title: 'MVP',
+      items: ["Agent builder", "Bonding curve", "Capital Seeding"],
     },
     {
-      period: "Month 2",
-      items: ["Test-mode trading", "Live stats feed", "Rule validation"],
+      period: "Upcoming",
+      title: 'Holder Value',
+      items: ["Advanced analytics", "Portfolio tooling", "Trading terminal"],
     },
     {
-      period: "Month 3",
-      items: ["DSRV seeding", "Master pool", "Hard-stop risk engine"],
+      period: "Upcoming",
+      title: 'Trading Skills',
+      items: ["Advanced trading skills", "Multiple dexes", "Agentic trading teams"],
     },
     {
-      period: "Month 4",
-      items: ["Agent marketplace", "Investor dashboards", "Portfolio tooling"],
+      period: "Upcoming",
+      title: 'Scale',
+      items: ["Crosschain trading", "CEXes integration"],
     },
   ];
 
   const agentGems = [
     {
-      name: "Nova Sato",
+      agent: "Hyperliquid Arbitrage",
+      creator: "John Doe",
       cap: "$240,000",
-      avatar: "https://i.pravatar.cc/120?img=12",
+      avatar: "",
+      symbol: "HLA",
+      focus: "Basis + funding capture",
       days: "14d",
       pnl: "+18.6%",
       risk: "Low risk",
       riskClass: "text-emerald-300",
     },
     {
-      name: "Rico Vale",
+      agent: "Funding Drift",
+      creator: "Mira Patel",
       cap: "$110,000",
-      avatar: "https://i.pravatar.cc/120?img=32",
+      avatar: "",
+      symbol: "FND",
+      focus: "Funding mean reversion",
       days: "9d",
       pnl: "+9.4%",
       risk: "Medium risk",
       riskClass: "text-yellow-300",
     },
     {
-      name: "Lia Kwon",
+      agent: "Volatility Stack",
+      creator: "Wei Lin",
       cap: "$520,000",
-      avatar: "https://i.pravatar.cc/120?img=5",
+      avatar: "",
+      symbol: "VST",
+      focus: "Gamma scalps on ETH",
       days: "21d",
       pnl: "+24.2%",
       risk: "Medium risk",
       riskClass: "text-yellow-300",
     },
     {
-      name: "Omar Hayes",
+      agent: "Orderbook Sniper",
+      creator: "Noah Brooks",
       cap: "$75,000",
-      avatar: "https://i.pravatar.cc/120?img=18",
+      avatar: "",
+      symbol: "OBS",
+      focus: "Latency + imbalance entries",
       days: "6d",
       pnl: "+6.7%",
       risk: "High risk",
       riskClass: "text-red-400",
     },
     {
-      name: "Maya Chen",
+      agent: "Solana Trendline",
+      creator: "Maya Chen",
       cap: "$310,000",
-      avatar: "https://i.pravatar.cc/120?img=45",
+      avatar: "",
+      symbol: "SOL",
+      focus: "Breakout + retest engine",
       days: "12d",
       pnl: "+14.8%",
       risk: "Low risk",
       riskClass: "text-emerald-300",
     },
     {
-      name: "Diego Silva",
+      agent: "Carry Harvest",
+      creator: "Diego Silva",
       cap: "$190,000",
-      avatar: "https://i.pravatar.cc/120?img=21",
+      avatar: "",
+      symbol: "CRY",
+      focus: "Perp carry rotations",
       days: "11d",
       pnl: "+11.9%",
       risk: "Medium risk",
       riskClass: "text-yellow-300",
     },
     {
-      name: "Priya Rao",
+      agent: "Cross-Exchange Pulse",
+      creator: "Priya Rao",
       cap: "$430,000",
-      avatar: "https://i.pravatar.cc/120?img=25",
+      avatar: "",
+      symbol: "XEP",
+      focus: "Latency arb between venues",
       days: "17d",
       pnl: "+19.3%",
       risk: "Low risk",
       riskClass: "text-emerald-300",
     },
     {
-      name: "Eli Walker",
+      agent: "Liquidity Magnet",
+      creator: "Eli Walker",
       cap: "$60,000",
-      avatar: "https://i.pravatar.cc/120?img=8",
+      avatar: "",
+      symbol: "LMG",
+      focus: "Maker rebates + spreads",
       days: "5d",
       pnl: "+7.5%",
       risk: "High risk",
@@ -367,7 +440,7 @@ export default function Home() {
                 <BrandMark className="brand-mark" />
                 <span className="logo-wordmark">deserve</span>
               </div>
-              <span className="tag-pill">Agentic Prop Capital Launchpad</span>
+              <span className="tag-pill">Agentic Capital Launchpad</span>
             </div>
             <div className="flex flex-col gap-4">
               <h1 className="section-title text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
@@ -467,7 +540,12 @@ export default function Home() {
               className="flow-step"
               style={{ "--flow-delay": `${index * 220}ms` } as CSSProperties}
             >
-              {/* <div className="flow-step__icon">{step.icon}</div> */}
+              <div className="flow-step__media">
+                <video src={step.video} autoPlay loop muted></video>
+                {/* <img src={step.image} className="w-full" alt="" /> */}
+                {/* <div className="flow-step__visual">{step.visual}</div>
+                <div className="flow-step__badge">{step.icon}</div> */}
+              </div>
               <div className="flow-step__content">
                 <span className="flow-step__label">Step 0{index + 1}</span>
                 <h3 className="flow-step__title">{step.title}</h3>
@@ -484,13 +562,12 @@ export default function Home() {
         className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
       >
         <div className="flex flex-col gap-4">
-          <span className="tag-pill">Why Deserve</span>
-          <h2 className="section-title text-3xl sm:text-4xl max-w-2xl">
-            A prop-capital market where the best agents scale faster
+          {/* <span className="tag-pill">Why Deserve</span> */}
+          <h2 className="section-title text-3xl sm:text-4xl max-w-4xl">
+            The internet capital market for AI traders
           </h2>
-          <p className="text-white/70 max-w-2xl">
-            The protocol connects agents and investors in one market. Allocation is market-driven and stats are
-            always public.
+          <p className="text-white/70 max-w-4xl">
+            Turn any edge into an immutable agent trading 24/7. Attract global investors through provable stats. Scale permissionlessly—the market allocates capital to what actually works.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -522,17 +599,29 @@ export default function Home() {
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {agentGems.map((agent) => (
             <Card
-              key={agent.name}
+              key={agent.agent}
               className="glass-panel rounded-3xl p-6 flex flex-col gap-4 transition duration-300 hover:-translate-y-2"
             >
               <div className="flex flex-row gap-4 items-center">
-                <Avatar>
-                  <AvatarImage src={agent.avatar} alt={`${agent.name} avatar`} />
+                <Avatar className="h-12 w-12">
+                  {agent.avatar ? (
+                    <AvatarImage src={agent.avatar} alt={`${agent.agent} agent avatar`} />
+                  ) : null}
+                  <AvatarFallback className="bg-white/10 text-white/80 text-xs font-semibold tracking-[0.2em]">
+                    {agent.symbol}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-semibold">{agent.name}</div>
-                  <div className="text-xs text-white/50">Capital: {agent.cap}</div>
+                  <div className="text-xs uppercase text-white/40">Agent</div>
+                  <div className="font-semibold">{agent.agent}</div>
+                  <div className="text-xs text-white/50">by {agent.creator}</div>
                 </div>
+              </div>
+              <div className="text-xs text-white/60">
+                <span className="text-white/40">Focus:</span> {agent.focus}
+              </div>
+              <div className="text-xs text-white/60">
+                <span className="text-white/40">Seeded capital:</span> {agent.cap}
               </div>
 
               <div className="flex flex-row gap-2 flex-wrap">
@@ -544,7 +633,7 @@ export default function Home() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Challenge duration</p>
+                    <p>Time since launch</p>
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip delayDuration={200}>
@@ -579,20 +668,15 @@ export default function Home() {
             <div className="token-copy">
               <span className="token-eyebrow">The Token We Deserve</span>
               <h2 className="section-title token-title">
-                <span className="text-gradient">$DSRV</span> settles seeded pools and routes exits for agent tokens.
+                <span className="text-gradient">$DSRV</span> supports liquidity and keeps the agent-token market flexible.
               </h2>
               <p className="token-lede">
-                It is not equity and carries no governance rights. It is the settlement rail for seeded pools and
-                the default exit path for agent tokens.
+                It is not equity and carries no governance rights, but it keeps capital moving.
               </p>
-              <div className="token-actions mt-4 ">
-                <Button size="lg" className="rounded-full token-buy cursor-pointer">
-                  Buy $DSRV
-                </Button>
-              </div>
 
             </div>
             <div className="token-panel">
+
               <ul className="token-list">
                 {tokenFacts.map((fact) => (
                   <li key={fact}>
@@ -603,6 +687,65 @@ export default function Home() {
               </ul>
             </div>
           </div>
+          <div className="token-panel-grid mt-8">
+            <div className="token-card token-card--stack">
+              <div className="token-symbol-card">
+                <div className="flex flex-row items-center gap-4">
+                  <div className="token-coin">
+                    <BrandMark className="token-coin__graphic" />
+                  </div>
+                  <div>
+                    <div className="token-symbol">$DSRV</div>
+                    <div className="token-pump-hint">
+                      <PumpIcon className="pump-icon" />
+                      <span>deployed on pump.fun</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="token-actions ">
+                  <Button size="lg" className="rounded-full token-buy cursor-pointer">
+                    Buy $DSRV
+                  </Button>
+                </div>
+              </div>
+              <div className="token-contract-card">
+                <div className="token-contract-card__label">Contract address</div>
+                <div className="token-contract-card__address">{dsrvContractAddress}</div>
+                <Button
+                  variant="outline"
+                  className="token-contract-card__button"
+                  onClick={handleCopyAddress}
+                >
+                  <FaCopy size={16} />
+                  <span>{copyButtonLabel}</span>
+                </Button>
+                <div className="token-contract-card__hint">{copyHint}</div>
+              </div>
+            </div>
+            <div className="token-card token-card--chart flex flex-col justify-center items-center">
+              <div className="token-chart">
+                <div className="token-chart__pie" style={{ background: tokenomicsGradient }} />
+                <div className="token-chart__legend">
+                  {tokenomics.map((segment) => (
+                    <div key={segment.label} className="token-chart__legend-item">
+                      <span
+                        className="token-chart__legend-dot"
+                        style={{ background: segment.color }}
+                      />
+                      <div>
+                        <div className="token-chart__legend-label">{segment.label}</div>
+                        <div className="token-chart__legend-value">{segment.display}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+              <div className="token-lock-pill">Dev tokens locked for 30 days</div>
+
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -611,29 +754,66 @@ export default function Home() {
         className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
       >
         <div className="flex flex-col gap-4">
-          <span className="tag-pill">Roadmap</span>
           <h2 className="section-title text-3xl sm:text-4xl">Launch roadmap</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {roadmap.map((item, index) => (
-            <Card
-              key={item.period}
-              className="glass-panel rounded-3xl p-6 flex flex-col gap-4 animate-reveal"
-              style={{ animationDelay: `${index * 120}ms` }}
-            >
-              <div className="flex items-center gap-4">
-                <span className="tag-pill">{item.period}</span>
-                <span className="text-sm text-white/60">Key releases</span>
+        <div className="roadmap-stack">
+          <svg className="roadmap-stack__track" viewBox="0 0 6 1000" preserveAspectRatio="none" aria-hidden>
+            <defs>
+              <linearGradient id="roadmapGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#ff2ec4" stopOpacity="0.7" />
+                <stop offset="50%" stopColor="#00eaff" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#2bff88" stopOpacity="0.7" />
+              </linearGradient>
+            </defs>
+            <path
+              className="roadmap-stack__path"
+              d="M3 0 V1000"
+              stroke="url(#roadmapGradient)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              className="roadmap-stack__glow"
+              d="M3 0 V1000"
+              stroke="url(#roadmapGradient)"
+              strokeWidth="6"
+              strokeLinecap="round"
+            />
+          </svg>
+          <div className="roadmap-stack__list">
+            {roadmap.map((item, index) => (
+              <div key={item.period} className="roadmap-stack__item">
+                <div className="roadmap-stack__node">
+                  <span
+                    className={`roadmap-stack__dot ${item.period === "In Progress" ? "roadmap-stack__dot--active" : "roadmap-stack__dot--upcoming"
+                      }`}
+                  />
+                </div>
+                <Card
+                  className={`roadmap-stack__card glass-panel rounded-3xl p-6 flex flex-col gap-4 ${item.period === "In Progress" ? "roadmap-stack__card--active" : "roadmap-stack__card--upcoming"
+                    }`}
+                  style={{ animationDelay: `${index * 140}ms` }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`tag-pill roadmap-status ${item.period === "In Progress" ? "roadmap-status--active" : "roadmap-status--upcoming"
+                        }`}
+                    >
+                      {item.period}
+                    </span>
+                  </div>
+                  <div className="roadmap-stack__title">{item.title}</div>
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    {item.items.map((point) => (
+                      <span key={point} className="roadmap-release-chip rounded-full border px-4 py-2">
+                        {point}
+                      </span>
+                    ))}
+                  </div>
+                </Card>
               </div>
-              <div className="flex flex-wrap gap-2 text-sm">
-                {item.items.map((point) => (
-                  <span key={point} className="rounded-full border border-white/10 px-3 py-1 text-white/70">
-                    {point}
-                  </span>
-                ))}
-              </div>
-            </Card>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

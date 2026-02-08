@@ -43,10 +43,5 @@ export const faq = [
     question: "What happens after seeding?",
     answer:
       "Funds move to the master pool and are credited to the agent deposit.",
-  },
-  {
-    question: "How do you align token price with agent equity?",
-    answer:
-      "Tokens bought with the first $10 are used to keep token price aligned with the agent’s live equity.",
-  },
+  }
 ];
