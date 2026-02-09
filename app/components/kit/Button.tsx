@@ -11,16 +11,16 @@ export function Button({
   ...props
 }: Props) {
   const styles = {
-    primary: "bg-grad-primary text-white",
-    outline: "border border-white/30",
-    ghost: "bg-white/10",
-    neon: "bg-neonGreen text-black",
+    primary: "bg-primary text-primary-foreground border-2 border-border",
+    outline: "border-2 border-border text-foreground",
+    ghost: "bg-foreground/10 text-foreground",
+    neon: "bg-secondary text-secondary-foreground border-2 border-border",
   };
 
   return (
     <button
       className={cn(
-        "px-5 py-2 rounded-pill text-ui transition hover:-translate-y-0.5 hover:shadow-neon",
+        "btn-text px-5 py-2 rounded-pill text-ui transition hover:-translate-y-0.5",
         styles[variant],
         className
       )}

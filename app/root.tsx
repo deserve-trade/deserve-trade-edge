@@ -31,7 +31,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&family=Unbounded:wght@300..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Inter:wght@400;600;700;900&display=swap",
   },
 ];
 
@@ -41,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ff2ec4" />
+        <meta name="theme-color" content="#ff6188" />
         <meta name="robots" content="index, follow" />
         <meta name="author" content="LacomLeague" />
         <meta name="application-name" content="deserve" />

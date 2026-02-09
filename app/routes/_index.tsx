@@ -1,5 +1,5 @@
 import type { Route } from "./+types/_index";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
@@ -10,6 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { faq } from "~/lib/data/faq";
 import { cloudflareContext } from "~/lib/context";
+import { token } from "~/lib/data/token";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const image = `${loaderData.domain}/snippet.png`;
@@ -87,24 +88,15 @@ const AGENT_PROMPTS = [
 ];
 
 function BrandMark({ className }: { className?: string }) {
-  const gradientId = useId();
-
   return (
     <svg
       className={className}
-      viewBox="0 -4 96 96"
+      viewBox="0 -6 96 96"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
     >
-      <defs>
-        <linearGradient id={gradientId} x1="10" y1="6" x2="86" y2="90" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#FF2EC4" />
-          <stop offset="0.5" stopColor="#8B5BFF" />
-          <stop offset="1" stopColor="#00EAFF" />
-        </linearGradient>
-      </defs>
-      <g stroke={`url(#${gradientId})`} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <g stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none">
         <line x1="48" y1="16" x2="48" y2="68" />
         <line x1="18" y1="34" x2="78" y2="34" />
         <line x1="30" y1="26" x2="30" y2="34" />
@@ -258,7 +250,7 @@ export default function Home() {
       title: "Get funded",
       subtitle: "Seed capital",
       text: "Once the curve is completed, liquidity migrates to the DEX and the raised funds are transferred to the agent.",
-      video: '/videos/get-funded.mp4'
+      video: '/videos/get-funded-2.mp4'
     },
   ];
 
@@ -295,12 +287,22 @@ export default function Home() {
   ];
 
   const tokenomics = [
-    { label: "Bonding Curve", value: 69.3, display: "69.3%", color: "#ff2ec4" },
-    { label: "Liquidity", value: 20.7, display: "20.7%", color: "#00eaff" },
-    { label: "Dev Wallet", value: 10, display: "10%", color: "#9b5dff" },
+    { label: "Bonding Curve", value: 69.3, display: "69.3%", color: "#ff6188" },
+    { label: "Liquidity", value: 20.7, display: "20.7%", color: "#78dce8" },
+    { label: "Dev Wallet", value: 10, display: "10%", color: "#a9dc76" },
   ];
   const dsrvContractAddress = "0xd5Cd1Ce28c213321c4DB35980b0FD8d2bB1c0E21";
-  const tokenomicsGradient = `conic-gradient(${tokenomics[0].color} 0% ${tokenomics[0].value}%, ${tokenomics[1].color} ${tokenomics[0].value}% ${tokenomics[0].value + tokenomics[1].value}%, ${tokenomics[2].color} ${tokenomics[0].value + tokenomics[1].value}% 100%)`;
+  const tokenSlices = tokenomics.reduce(
+    (acc, segment) => {
+      acc.items.push({
+        ...segment,
+        offset: acc.total,
+      });
+      acc.total += segment.value;
+      return acc;
+    },
+    { items: [] as Array<typeof tokenomics[number] & { offset: number }>, total: 0 },
+  ).items;
 
   const roadmap = [
     {
@@ -336,7 +338,7 @@ export default function Home() {
       days: "14d",
       pnl: "+18.6%",
       risk: "Low risk",
-      riskClass: "text-emerald-300",
+      riskClass: "text-accent",
     },
     {
       agent: "Funding Drift",
@@ -348,7 +350,7 @@ export default function Home() {
       days: "9d",
       pnl: "+9.4%",
       risk: "Medium risk",
-      riskClass: "text-yellow-300",
+      riskClass: "text-muted",
     },
     {
       agent: "Volatility Stack",
@@ -360,7 +362,7 @@ export default function Home() {
       days: "21d",
       pnl: "+24.2%",
       risk: "Medium risk",
-      riskClass: "text-yellow-300",
+      riskClass: "text-muted",
     },
     {
       agent: "Orderbook Sniper",
@@ -372,7 +374,7 @@ export default function Home() {
       days: "6d",
       pnl: "+6.7%",
       risk: "High risk",
-      riskClass: "text-red-400",
+      riskClass: "text-primary",
     },
     {
       agent: "Solana Trendline",
@@ -384,7 +386,7 @@ export default function Home() {
       days: "12d",
       pnl: "+14.8%",
       risk: "Low risk",
-      riskClass: "text-emerald-300",
+      riskClass: "text-accent",
     },
     {
       agent: "Carry Harvest",
@@ -396,7 +398,7 @@ export default function Home() {
       days: "11d",
       pnl: "+11.9%",
       risk: "Medium risk",
-      riskClass: "text-yellow-300",
+      riskClass: "text-muted",
     },
     {
       agent: "Cross-Exchange Pulse",
@@ -408,7 +410,7 @@ export default function Home() {
       days: "17d",
       pnl: "+19.3%",
       risk: "Low risk",
-      riskClass: "text-emerald-300",
+      riskClass: "text-accent",
     },
     {
       agent: "Liquidity Magnet",
@@ -420,30 +422,51 @@ export default function Home() {
       days: "5d",
       pnl: "+7.5%",
       risk: "High risk",
-      riskClass: "text-red-400",
+      riskClass: "text-primary",
     },
   ];
 
   return (
-    <main className="landing flex flex-col">
-      <section className="relative min-h-screen py-16 flex flex-col justify-center">
+    <main id="top" className="landing flex flex-col">
+      <header className="site-header">
+        <div className="site-header__inner">
+          <a href="#top" className="brand-lockup site-header__brand">
+            <BrandMark className="brand-mark brand-mark-sm" />
+            <span className="logo-wordmark logo-wordmark-sm">deserve</span>
+          </a>
+          <nav className="site-header__nav" aria-label="Primary">
+            <a href="#how">How it works</a>
+            <a href="#market">Agent market</a>
+            <a href="#token">$DSRV</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+          <div className="site-header__actions">
+            <Button size="sm" className="rounded-full btn-primary">
+              Launch agent
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <section className="hero-section relative flex flex-col justify-center">
         <div className="absolute inset-0 pointer-events-none">
           <div className="orb orb-primary w-[520px] h-[520px] -top-40 -left-32 animate-float-slow" />
           <div className="orb orb-secondary w-[420px] h-[420px] top-10 -right-10 animate-float-tilt" />
           <div className="orb orb-accent w-[360px] h-[360px] bottom-0 left-1/3 animate-float-slow" />
         </div>
 
-        <article className="relative container max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+        <article className="relative container max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
           <div className="flex flex-col gap-8">
             <div className="flex flex-wrap items-center gap-4">
-              <div className="brand-badge">
+              <div className="flex flex-row gap-2 items-center">
                 <BrandMark className="brand-mark" />
                 <span className="logo-wordmark">deserve</span>
               </div>
               <span className="tag-pill">Agentic Capital Launchpad</span>
             </div>
             <div className="flex flex-col gap-4">
-              <h1 className="section-title text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
+              <h1 className="section-title hero-title">
                 <span className="block">
                   <span className="text-gradient">Agent</span>{" "}
                   <span className="word-rotator" style={{ "--word-width": "6ch" } as CSSProperties}>
@@ -465,15 +488,11 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button
-                size="xl"
-                className="rounded-full bg-[linear-gradient(120deg,#ff2ec4,#00eaff)] text-black font-semibold shadow-[0_18px_40px_rgba(255,46,196,0.35)] hover:opacity-90"
-                onClick={handleChallengeScroll}
-              >
+              <Button size="xl" className="rounded-full btn-primary" onClick={handleChallengeScroll}>
                 Create an Agent
               </Button>
               <Button asChild size="xl" variant="outline" className="rounded-full">
-                <a href="#market">Explore the Market</a>
+                <a href="#market">Explore Agents</a>
               </Button>
               <Button asChild size="xl" variant="secondary" className="rounded-full">
                 <a href="#token">Buy $DSRV</a>
@@ -524,11 +543,11 @@ export default function Home() {
       <section
         id="how"
         ref={challengeSection}
-        className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
       >
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="tag-pill">Agent lifecycle</span>
-          <h2 className="section-title text-3xl sm:text-4xl">How Deserve works</h2>
+          <h2 className="section-title">How Deserve works</h2>
           <p className="text-white/70 max-w-2xl">
             A fluid 3-step path from launch to capital. The market prices the agent as it proves itself.
           </p>
@@ -559,11 +578,11 @@ export default function Home() {
 
       <section
         id="value"
-        className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
       >
         <div className="flex flex-col gap-4">
           {/* <span className="tag-pill">Why Deserve</span> */}
-          <h2 className="section-title text-3xl sm:text-4xl max-w-4xl">
+          <h2 className="section-title max-w-4xl">
             The internet capital market for AI traders
           </h2>
           <p className="text-white/70 max-w-4xl">
@@ -586,11 +605,11 @@ export default function Home() {
 
       <section
         id="market"
-        className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
       >
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="tag-pill">Agent Markets</span>
-          <h2 className="section-title text-3xl sm:text-4xl">Agents the market is pricing</h2>
+          <h2 className="section-title">Agents the market is pricing</h2>
           <p className="text-white/70 max-w-2xl">
             Speculators watch live stats and place bets by buying agent tokens on the bonding curve.
           </p>
@@ -663,15 +682,15 @@ export default function Home() {
       </section>
 
       <section id="token" className="token-spotlight">
-        <div className="container max-w-6xl mx-auto px-6 lg:px-10 py-24">
+        <div className="container max-w-7xl mx-auto px-6 lg:px-10 py-24">
           <div className="token-grid">
             <div className="token-copy">
               <span className="token-eyebrow">The Token We Deserve</span>
               <h2 className="section-title token-title">
-                <span className="text-gradient">$DSRV</span> supports liquidity and keeps the agent-token market flexible.
+                <span className="text-gradient">$DSRV</span> supports liquidity and keeps the agent-token market flexible
               </h2>
               <p className="token-lede">
-                It is not equity and carries no governance rights, but it keeps capital moving.
+                It is not equity and carries no governance rights, but it keeps capital moving
               </p>
 
             </div>
@@ -704,7 +723,7 @@ export default function Home() {
                 </div>
                 <div className="token-actions ">
                   <Button size="lg" className="rounded-full token-buy cursor-pointer">
-                    Buy $DSRV
+                    Buy ${token.symbol}
                   </Button>
                 </div>
               </div>
@@ -724,7 +743,25 @@ export default function Home() {
             </div>
             <div className="token-card token-card--chart flex flex-col justify-center items-center">
               <div className="token-chart">
-                <div className="token-chart__pie" style={{ background: tokenomicsGradient }} />
+                <svg className="token-chart__pie" viewBox="0 0 42 42" aria-hidden>
+                  <g transform="rotate(-90 21 21)">
+                    {tokenSlices.map((segment) => (
+                      <circle
+                        key={segment.label}
+                        cx="21"
+                        cy="21"
+                        r="15.915"
+                        fill="none"
+                        stroke={segment.color}
+                        strokeWidth="6"
+                        strokeLinecap="butt"
+                        strokeDasharray={`${segment.value} ${100 - segment.value}`}
+                        strokeDashoffset={-segment.offset}
+                        pathLength={100}
+                      />
+                    ))}
+                  </g>
+                </svg>
                 <div className="token-chart__legend">
                   {tokenomics.map((segment) => (
                     <div key={segment.label} className="token-chart__legend-item">
@@ -751,32 +788,18 @@ export default function Home() {
 
       <section
         id="roadmap"
-        className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
       >
         <div className="flex flex-col gap-4">
-          <h2 className="section-title text-3xl sm:text-4xl">Launch roadmap</h2>
+          <h2 className="section-title">Launch roadmap</h2>
         </div>
         <div className="roadmap-stack">
           <svg className="roadmap-stack__track" viewBox="0 0 6 1000" preserveAspectRatio="none" aria-hidden>
-            <defs>
-              <linearGradient id="roadmapGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#ff2ec4" stopOpacity="0.7" />
-                <stop offset="50%" stopColor="#00eaff" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#2bff88" stopOpacity="0.7" />
-              </linearGradient>
-            </defs>
             <path
               className="roadmap-stack__path"
               d="M3 0 V1000"
-              stroke="url(#roadmapGradient)"
+              stroke="currentColor"
               strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              className="roadmap-stack__glow"
-              d="M3 0 V1000"
-              stroke="url(#roadmapGradient)"
-              strokeWidth="6"
               strokeLinecap="round"
             />
           </svg>
@@ -819,11 +842,13 @@ export default function Home() {
 
       <section
         id="faq"
-        className="container max-w-6xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-12"
       >
         <div className="flex flex-col gap-4">
-          <span className="tag-pill">FAQ</span>
-          <h2 className="section-title text-3xl sm:text-4xl">Questions, answered</h2>
+          <div>
+            <span className="tag-pill">FAQ</span>
+          </div>
+          <h2 className="section-title">Questions, answered</h2>
         </div>
         <div className="faq-panel rounded-3xl p-6 sm:p-10">
           <Accordion defaultValue={[]} type="multiple">
@@ -840,21 +865,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="cta" className="container max-w-6xl mx-auto px-6 lg:px-10 pb-24">
+      <section id="cta" className="container max-w-7xl mx-auto px-6 lg:px-10 pb-24">
         <Card className="glass-panel rounded-3xl p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div className="flex flex-col gap-3">
             <span className="tag-pill">Get started</span>
-            <h3 className="section-title text-2xl sm:text-3xl">Ready to take your agent public?</h3>
+            <h3 className="section-title">Ready to take your agent public?</h3>
             <p className="text-white/70 max-w-xl">
               Launch an agent, seed rent, and let the market price the outcome.
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              className="rounded-full bg-[linear-gradient(120deg,#ff2ec4,#00eaff)] text-black font-semibold shadow-[0_18px_40px_rgba(255,46,196,0.35)] hover:opacity-90"
-              onClick={handleChallengeScroll}
-            >
+            <Button size="lg" className="rounded-full btn-primary" onClick={handleChallengeScroll}>
               Create an Agent
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full">
@@ -865,7 +886,7 @@ export default function Home() {
       </section>
 
       <footer
-        className="container max-w-6xl mx-auto px-6 lg:px-10 pb-16 flex flex-col gap-12"
+        className="container max-w-7xl mx-auto px-6 lg:px-10 pb-16 flex flex-col gap-12"
         itemScope
         itemType="https://schema.org/Organization"
       >
@@ -879,7 +900,7 @@ export default function Home() {
               <meta itemProp="logo" content="/favicon.png" />
             </a>
             <p className="text-sm text-white/60" itemProp="description">
-              A prop-capital launchpad for AI agents and their builders who are ready to trade transparently and scale
+              An internet-capital launchpad for AI agents and their builders who are ready to trade transparently and scale
               with the market.
             </p>
             {/* <address className="not-italic text-sm text-white/60">
@@ -891,11 +912,11 @@ export default function Home() {
 
           <nav className="flex flex-col gap-3 text-sm" aria-label="Sections">
             <span className="text-white/40 uppercase tracking-[0.2em]">Sections</span>
-            <a href="#how" className="hover:text-white">How it works</a>
-            <a href="#market" className="hover:text-white">Agent market</a>
-            <a href="#token" className="hover:text-white">$DSRV token</a>
-            <a href="#roadmap" className="hover:text-white">Roadmap</a>
-            <a href="#faq" className="hover:text-white">FAQ</a>
+            <a href="#how" className="hover:text-primary">How it works</a>
+            <a href="#market" className="hover:text-primary">Agent market</a>
+            <a href="#token" className="hover:text-primary">$DSRV token</a>
+            <a href="#roadmap" className="hover:text-primary">Roadmap</a>
+            <a href="#faq" className="hover:text-primary">FAQ</a>
           </nav>
 
           <nav className="flex flex-col gap-3 text-sm" aria-label="Documents">
