@@ -450,6 +450,7 @@ export default function Home() {
       </header>
 
       <section className="hero-section relative flex flex-col justify-center">
+        {/* <video src="/videos/home-bg-hd.mp4" loop autoPlay muted className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-2"></video> */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="orb orb-primary w-[520px] h-[520px] -top-40 -left-32 animate-float-slow" />
           <div className="orb orb-secondary w-[420px] h-[420px] top-10 -right-10 animate-float-tilt" />
@@ -707,40 +708,6 @@ export default function Home() {
             </div>
           </div>
           <div className="token-panel-grid mt-8">
-            <div className="token-card token-card--stack">
-              <div className="token-symbol-card">
-                <div className="flex flex-row items-center gap-4">
-                  <div className="token-coin">
-                    <BrandMark className="token-coin__graphic" />
-                  </div>
-                  <div>
-                    <div className="token-symbol">$DSRV</div>
-                    <div className="token-pump-hint">
-                      <PumpIcon className="pump-icon" />
-                      <span>deployed on pump.fun</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="token-actions ">
-                  <Button size="lg" className="rounded-full token-buy cursor-pointer">
-                    Buy ${token.symbol}
-                  </Button>
-                </div>
-              </div>
-              <div className="token-contract-card">
-                <div className="token-contract-card__label">Contract address</div>
-                <div className="token-contract-card__address">{dsrvContractAddress}</div>
-                <Button
-                  variant="outline"
-                  className="token-contract-card__button"
-                  onClick={handleCopyAddress}
-                >
-                  <FaCopy size={16} />
-                  <span>{copyButtonLabel}</span>
-                </Button>
-                <div className="token-contract-card__hint">{copyHint}</div>
-              </div>
-            </div>
             <div className="token-card token-card--chart flex flex-col justify-center items-center">
               <div className="token-chart">
                 <svg className="token-chart__pie" viewBox="0 0 42 42" aria-hidden>
@@ -781,6 +748,41 @@ export default function Home() {
               <div className="token-lock-pill">Dev tokens locked for 30 days</div>
 
             </div>
+            <div className="token-card token-card--stack">
+              <div className="token-symbol-card">
+                <div className="flex flex-row items-center gap-4">
+                  <div className="token-coin">
+                    <BrandMark className="token-coin__graphic" />
+                  </div>
+                  <div>
+                    <div className="font-display font-black text-5xl text-gradient">$DSRV</div>
+                    <div className="token-pump-hint">
+                      {/* <PumpIcon className="pump-icon" /> */}
+                      <span>deployed on pump.fun</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="token-actions ">
+                  <Button size="lg" className="rounded-full token-buy cursor-pointer">
+                    Buy ${token.symbol}
+                  </Button>
+                </div>
+              </div>
+              <div className="token-contract-card">
+                <div className="token-contract-card__label">Contract address</div>
+                <div className="token-contract-card__address">{dsrvContractAddress}</div>
+                <Button
+                  variant="outline"
+                  className="token-contract-card__button"
+                  onClick={handleCopyAddress}
+                >
+                  <FaCopy size={16} />
+                  <span>{copyButtonLabel}</span>
+                </Button>
+                <div className="token-contract-card__hint">{copyHint}</div>
+              </div>
+            </div>
+
 
           </div>
         </div>
