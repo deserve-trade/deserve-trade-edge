@@ -291,7 +291,7 @@ export default function Home() {
     { label: "Liquidity", value: 20.7, display: "20.7%", color: "#78dce8" },
     { label: "Dev Wallet", value: 10, display: "10%", color: "#a9dc76" },
   ];
-  const dsrvContractAddress = "0xd5Cd1Ce28c213321c4DB35980b0FD8d2bB1c0E21";
+  const dsrvContractAddress = token.ca;
   const tokenSlices = tokenomics.reduce(
     (acc, segment) => {
       acc.items.push({
