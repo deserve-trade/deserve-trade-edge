@@ -12,7 +12,7 @@
 html,
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--bg-grad);
   scroll-behavior: smooth;
 
   @media (prefers-color-scheme: dark) {
@@ -94,8 +94,10 @@ body:before {
   --ring: #ff6188;
   --surface: #26232a;
   --surface-2: #2f2c34;
-  --grad-primary: none;
-  --grad-accent: none;
+  --grad-primary: linear-gradient(135deg, #ff6188 0%, #ff7aa2 100%);
+  --grad-accent: linear-gradient(135deg, #78dce8 0%, #8be3cf 100%);
+  --bg-grad: linear-gradient(180deg, #1b1a1e 0%, #1f1e23 100%);
+  --panel-grad: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0));
   --box-shadow-glass: none;
   --blur-glass: blur(0px);
   --grad-solar: none;
@@ -142,7 +144,7 @@ body:before {
   left: 0;
   right: 0;
   z-index: 50;
-  background: var(--background);
+  background: var(--bg-grad);
   border-bottom: 2px solid var(--border);
   box-shadow: 6px 6px 0 #1f1d20;
 }
@@ -210,11 +212,14 @@ body:before {
 }
 
 .text-gradient {
-  color: var(--primary);
+  background: linear-gradient(135deg, rgba(120, 220, 232, 0.9), rgba(169, 220, 118, 0.9));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .text-glow {
-  text-shadow: none;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 .btn-text {
@@ -225,14 +230,14 @@ body:before {
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: var(--grad-primary);
   color: var(--primary-foreground);
   border: none;
   box-shadow: 6px 6px 0 #1f1d20;
 }
 
 .btn-primary:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.06);
 }
 
 .word-rotator {
@@ -270,7 +275,7 @@ body:before {
 }
 
 .glass-panel {
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 6px 6px 0 #1f1d20;
   backdrop-filter: none;
@@ -281,7 +286,7 @@ body:before {
   position: relative;
   border-radius: 28px;
   padding: 24px 26px 28px;
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 8px 8px 0 #1f1d20;
   backdrop-filter: none;
@@ -377,7 +382,7 @@ body:before {
 }
 
 .faq-panel {
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 6px 6px 0 #1f1d20;
   backdrop-filter: none;
@@ -500,7 +505,7 @@ body:before {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 6px 6px 0 #1f1d20;
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
@@ -549,7 +554,7 @@ body:before {
   z-index: 1;
   /* padding: 22px; */
   border-radius: 28px;
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 8px 8px 0 #1f1d20;
   overflow: hidden;
@@ -792,7 +797,7 @@ body:before {
 }
 
 .token-buy {
-  background: var(--primary);
+  background: var(--grad-primary);
   color: var(--primary-foreground);
   border: none;
   box-shadow: 6px 6px 0 #1f1d20;
@@ -805,7 +810,7 @@ body:before {
 .token-panel {
   border-radius: 28px;
   padding: 28px;
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   border: 2px solid var(--border);
   box-shadow: 6px 6px 0 #1f1d20;
   backdrop-filter: none;
@@ -852,7 +857,7 @@ body:before {
   border-radius: 26px;
   padding: 24px;
   border: 2px solid var(--border);
-  background: var(--surface);
+  background: var(--panel-grad), var(--surface);
   box-shadow: 6px 6px 0 #1f1d20;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -925,7 +930,7 @@ body:before {
   height: 72px;
   border-radius: 50%;
   border: 2px solid var(--border);
-  background: var(--surface-2);
+  background: var(--panel-grad), var(--surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
