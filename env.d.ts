@@ -6,6 +6,9 @@
 declare global {
   interface Env {
     DOMAIN: string;
+    API_URL: string;
+    PHANTOM_APP_ID: string;
+    PHANTOM_REDIRECT_URL: string;
 
     // Supabase (server-side only)
     SUPABASE_URL: string;

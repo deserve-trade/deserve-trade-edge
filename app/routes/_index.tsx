@@ -129,7 +129,6 @@ function PumpIcon({ className }: { className?: string }) {
 }
 
 export default function Home() {
-  const challengeSection = useRef<HTMLElement>(null);
   const flowSection = useRef<HTMLDivElement>(null);
   const [promptIndex, setPromptIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -137,16 +136,6 @@ export default function Home() {
   const [flowVisible, setFlowVisible] = useState(false);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleChallengeScroll = () => {
-    if (challengeSection.current) {
-      challengeSection.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
-  };
 
   const handleCopyAddress = async () => {
     if (typeof navigator === "undefined" || !navigator.clipboard) {
@@ -442,8 +431,8 @@ export default function Home() {
             <a href="#faq">FAQ</a>
           </nav>
           <div className="site-header__actions">
-            <Button size="sm" className="rounded-full btn-primary">
-              Launch agent
+            <Button asChild size="sm" className="rounded-full btn-primary">
+              <a href="/wizard">Launch agent</a>
             </Button>
           </div>
         </div>
@@ -489,8 +478,8 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button size="xl" className="rounded-full btn-primary" onClick={handleChallengeScroll}>
-                Create an Agent
+              <Button asChild size="xl" className="rounded-full btn-primary">
+                <a href="/wizard">Create an Agent</a>
               </Button>
               <Button asChild size="xl" variant="outline" className="rounded-full">
                 <a href="#market">Explore Agents</a>
@@ -543,7 +532,6 @@ export default function Home() {
 
       <section
         id="how"
-        ref={challengeSection}
         className="container max-w-7xl mx-auto px-6 lg:px-10 py-24 flex flex-col gap-16"
       >
         <div className="flex flex-col items-center gap-4 text-center">
@@ -877,8 +865,8 @@ export default function Home() {
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-full btn-primary" onClick={handleChallengeScroll}>
-              Create an Agent
+            <Button asChild size="lg" className="rounded-full btn-primary">
+              <a href="/wizard">Create an Agent</a>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full">
               <a href="#market">Explore the Market</a>

@@ -3,6 +3,7 @@
   "name": "deserve-trade-edge",
   "compatibility_date": "2025-04-04",
   "main": "./workers/app.ts",
+  "compatibility_flags": ["nodejs_compat" ],
   "route": {
     "pattern": "deserve.trade",
     // "zone_name": "sknx.io",

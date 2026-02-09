@@ -21,7 +21,6 @@ const queryClient = new QueryClient({
   },
 })
 
-
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
