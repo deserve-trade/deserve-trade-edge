@@ -1,4 +1,4 @@
-import { AddressType, darkTheme, PhantomProvider, useModal, usePhantom } from "@phantom/react-sdk";
+import { AddressType, darkTheme, PhantomProvider, useDisconnect, useModal, usePhantom } from "@phantom/react-sdk";
 import { useEffect, useState } from "react";
 import { useLoaderData, useSearchParams } from "react-router";
 import type { Route } from "./+types/connect";
@@ -55,26 +55,8 @@ export default function Connect() {
           <div className="text-sm uppercase tracking-[0.25em] text-white/50">
             Secure sign-in
           </div>
-          <PhantomProvider
-            config={{
-              providers: ["google", "apple", "injected"],
-              appId: phantomAppId,
-              addressTypes: [
-                AddressType.ethereum,
-                AddressType.solana,
-                AddressType.bitcoinSegwit,
-                AddressType.sui,
-              ],
-              authOptions: {
-                redirectUrl,
-              },
-            }}
-            theme={darkTheme}
-            appIcon="/favicon.png"
-            appName="deserve.trade"
-          >
-            <WalletComponent />
-          </PhantomProvider>
+          <WalletComponent />
+
         </Card>
       </div>
     </main>
@@ -84,6 +66,8 @@ export default function Connect() {
 function WalletComponent() {
   const { open, isOpened } = useModal();
   const { isConnected } = usePhantom();
+
+  const { disconnect } = useDisconnect()
 
   const handleOpen = () => {
     try {
@@ -95,11 +79,26 @@ function WalletComponent() {
 
   if (isConnected) {
     return (
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="text-lg font-semibold">Connected</div>
         <p className="text-sm text-white/60">
           You’re linked. Complete sign-in in the modal.
         </p>
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={handleOpen} disabled={isOpened}>
+            Open sign-in
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              disconnect();
+              handleOpen();
+            }}
+            disabled={isOpened}
+          >
+            Switch account
+          </Button>
+        </div>
       </div>
     );
   }

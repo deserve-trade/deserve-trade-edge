@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -12,6 +13,8 @@ import "./app.css";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AddressType, darkTheme, PhantomProvider } from "@phantom/react-sdk";
+import { cloudflareContext } from "./lib/context";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,7 +37,19 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export function loader({ context }: Route.LoaderArgs) {
+  const env = context.get(cloudflareContext).env;
+  return {
+    apiUrl: env.API_URL,
+    phantomAppId: env.PHANTOM_APP_ID,
+    phantomRedirectUrl: env.PHANTOM_REDIRECT_URL || `${env.DOMAIN}/auth/callback`,
+  };
+}
+
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { apiUrl, phantomAppId, phantomRedirectUrl } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -53,9 +68,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
+          <PhantomProvider
+            config={{
+              providers: ["google", "apple", "injected", "deeplink"],
+              appId: phantomAppId,
+              addressTypes: [AddressType.solana],
+              authOptions: {
+                redirectUrl: phantomRedirectUrl,
+              },
+            }}
+            theme={darkTheme}
+            appIcon="/favicon.png"
+            appName="deserve.trade"
+          >
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </PhantomProvider>
         </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
