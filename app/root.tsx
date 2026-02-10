@@ -48,7 +48,6 @@ export function loader({ context }: Route.LoaderArgs) {
 
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { apiUrl, phantomAppId, phantomRedirectUrl } = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -67,25 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <QueryClientProvider client={queryClient}>
-          <PhantomProvider
-            config={{
-              providers: ["google", "apple", "injected", "deeplink"],
-              appId: phantomAppId,
-              addressTypes: [AddressType.solana],
-              authOptions: {
-                redirectUrl: phantomRedirectUrl,
-              },
-            }}
-            theme={darkTheme}
-            appIcon="/favicon.png"
-            appName="deserve.trade"
-          >
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
-          </PhantomProvider>
-        </QueryClientProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -94,7 +75,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { apiUrl, phantomAppId, phantomRedirectUrl } = useLoaderData<typeof loader>();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PhantomProvider
+        config={{
+          providers: ["google", "apple", "injected", "deeplink"],
+          appId: phantomAppId,
+          addressTypes: [AddressType.solana],
+          authOptions: {
+            redirectUrl: phantomRedirectUrl,
+          },
+        }}
+        theme={darkTheme}
+        appIcon="/favicon.png"
+        appName="deserve.trade"
+      >
+        <TooltipProvider>
+          < Outlet />
+        </TooltipProvider>
+      </PhantomProvider>
+    </QueryClientProvider>
+
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -152,14 +152,21 @@ function CallbackBody({
           }),
         });
 
+        const verifyPayload = await verifyResponse.json().catch(() => ({}));
+
         if (!verifyResponse.ok) {
-          const { error: verifyError } = await verifyResponse.json().catch(() => ({
-            error: "Authentication failed.",
-          }));
           setStatus("error");
-          setError(verifyError ?? "Authentication failed.");
+          const errorMessage =
+            typeof verifyPayload?.error === "string"
+              ? verifyPayload.error
+              : "Authentication failed.";
+          setError(errorMessage);
           setAttempted(false);
           return;
+        }
+
+        if (typeof window !== "undefined" && verifyPayload?.token) {
+          localStorage.setItem("dt_session_token", String(verifyPayload.token));
         }
 
         setStatus("done");
