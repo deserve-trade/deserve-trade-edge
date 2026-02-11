@@ -1,4 +1,4 @@
-import type { Route } from "./+types/profile";
+import type { Route } from "./+types/_app.profile";
 import { useLoaderData, useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -6,31 +6,18 @@ import { authRequired } from "~/lib/middleware/auth-required";
 import { cloudflareContext } from "~/lib/context";
 import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
-import { usePhantom } from "@phantom/react-sdk";
 
 export const middleware: Route.MiddlewareFunction[] = [authRequired];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ context }: Route.LoaderArgs) {
   const apiUrl = context.get(cloudflareContext).env.API_URL?.replace(/\/$/, "");
-  const cookie = request.headers.get("cookie") ?? "";
-  let walletAddress: string | null = null;
-
-  if (apiUrl) {
-    const response = await fetch(`${apiUrl}/auth/session`, {
-      headers: { cookie },
-    });
-    if (response.ok) {
-      const data = (await response.json()) as { user?: { walletAddress?: string } };
-      walletAddress = data.user?.walletAddress ?? null;
-    }
-  }
-
-  return { apiUrl, walletAddress };
+  return { apiUrl };
 }
 
 type AgentRow = {
   id: string;
   status: string;
+  network?: string | null;
   session_id?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
@@ -39,10 +26,8 @@ type AgentRow = {
 };
 
 export default function Profile() {
-  const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
+  const { apiUrl } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
-  const { disconnect } = usePhantom();
-  const [loggingOut, setLoggingOut] = useState(false);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -54,32 +39,6 @@ export default function Profile() {
     if (!sessionToken) return {};
     return { Authorization: `Bearer ${sessionToken}` };
   }, [sessionToken]);
-
-  const walletLabel = useMemo(() => {
-    if (!walletAddress) return "Account";
-    return `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`;
-  }, [walletAddress]);
-
-  const handleLogout = async () => {
-    if (!apiUrl) {
-      navigate("/connect");
-      return;
-    }
-    try {
-      setLoggingOut(true);
-      disconnect();
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("dt_session_token");
-        setSessionToken(null);
-      }
-      await fetch(`${apiUrl}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } finally {
-      navigate("/connect");
-    }
-  };
 
   const agentsQuery = useQuery({
     queryKey: ["agents", apiUrl],
@@ -126,38 +85,25 @@ export default function Profile() {
 
   const statusClass = (status: string) => {
     if (status === "Live Trading") return "bg-emerald-500/20 text-emerald-200";
+    if (status === "Preparing Trading Account")
+      return "bg-blue-500/20 text-blue-200";
     if (status === "Strategy Building") return "bg-blue-500/20 text-blue-200";
     if (status === "Awaiting Deposit") return "bg-amber-500/20 text-amber-200";
     if (status === "Cancelled") return "bg-red-500/20 text-red-200";
     return "bg-white/10 text-white/70";
   };
 
+  const networkClass = (network?: string | null) => {
+    if (network === "mainnet") return "bg-rose-500/20 text-rose-200";
+    return "bg-cyan-500/20 text-cyan-200";
+  };
+
   return (
     <main className="min-h-screen pt-28 pb-16 px-6">
       <div className="max-w-5xl mx-auto space-y-8">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <span className="tag-pill">Profile</span>
-          </div>
-          <details className="relative">
-            <summary className="list-none cursor-pointer select-none rounded-full border-2 border-border bg-[var(--surface)] px-4 py-2 text-sm uppercase tracking-[0.2em] text-white/80 hover:text-white">
-              {walletLabel}
-            </summary>
-            <div className="absolute right-0 mt-2 w-40 rounded-xl border-2 border-border bg-[var(--surface)] shadow-[6px_6px_0_#1f1d20] p-2">
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="w-full rounded-lg px-3 py-2 text-left text-sm text-white/80 hover:bg-white/10 disabled:opacity-60"
-              >
-                {loggingOut ? "Signing out..." : "Log out"}
-              </button>
-            </div>
-          </details>
-        </div>
-
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-3">
+            <span className="tag-pill">Profile</span>
             <h1 className="text-4xl md:text-5xl font-display">Your agents</h1>
             <p className="text-lg text-white/70">
               Track every agent state. Onboarding timeouts and strategy timeouts
@@ -234,6 +180,13 @@ export default function Profile() {
                     >
                       {agent.status}
                     </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs uppercase tracking-[0.2em] ${networkClass(
+                        agent.network
+                      )}`}
+                    >
+                      {agent.network === "mainnet" ? "Mainnet" : "Testnet"}
+                    </span>
                     {agent.status === "Strategy Building" && (
                       <Button
                         size="sm"
@@ -245,6 +198,15 @@ export default function Profile() {
                         }
                       >
                         Resume
+                      </Button>
+                    )}
+                    {(agent.status === "Live Trading" || agent.status === "Stopped") && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => navigate(`/agents/${encodeURIComponent(agent.id)}`)}
+                      >
+                        Public
                       </Button>
                     )}
                     {agent.status !== "Live Trading" && (

@@ -1,11 +1,10 @@
-import type { Route } from "./+types/wizard";
-import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
+import type { Route } from "./+types/_app.wizard";
+import { useLoaderData, useNavigate, useSearchParams } from "react-router";
 import { authRequired } from "~/lib/middleware/auth-required";
 import { Card } from "~/components/kit/Card";
 import { cloudflareContext } from "~/lib/context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { usePhantom } from "@phantom/react-sdk";
 import { Button } from "~/components/ui/button";
 
 export const middleware: Route.MiddlewareFunction[] = [authRequired];
@@ -34,8 +33,6 @@ export default function Wizard() {
   const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [loggingOut, setLoggingOut] = useState(false);
-  const { disconnect } = usePhantom();
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [agentId, setAgentId] = useState<string | null>(null);
   const [redirectInput, setRedirectInput] = useState("");
@@ -48,17 +45,23 @@ export default function Wizard() {
   const [chatError, setChatError] = useState<string | null>(null);
   const [chatSeeded, setChatSeeded] = useState(false);
   const [chatReady, setChatReady] = useState(false);
+  const [withdrawAddress, setWithdrawAddress] = useState("");
+  const [withdrawMessage, setWithdrawMessage] = useState<string | null>(null);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [nowTs, setNowTs] = useState(() => Date.now());
   const seedTriggeredRef = useRef(false);
   const historyHydratedRef = useRef(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const redirectedToPublicRef = useRef(false);
 
   const systemPrompt =
     "You are a trading-strategy assistant for Deserve.Trade. " +
     "Your only tasks are to create and execute trading strategies on the Hyperliquid exchange. " +
     "If a request is outside this scope, decline and explain that only Hyperliquid strategies are supported for now. " +
-    "Always respond in a clear, structured way and ask for missing details needed to implement or execute the strategy.";
+    "Always respond in a clear, structured way and ask for missing details needed to implement or execute the strategy. " +
+    "When you believe the trading strategy is fully specified, send exactly: " +
+    "\"Strategy Ready! Should i start to trade? | DONE\". " +
+    "Never include the uppercase word DONE in any other message.";
 
   const normalizeError = (value: unknown, fallback: string) => {
     if (typeof value === "string") return value;
@@ -69,15 +72,16 @@ export default function Wizard() {
     return fallback;
   };
 
-  const walletLabel = useMemo(() => {
-    if (!walletAddress) return "Account";
-    return `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`;
-  }, [walletAddress]);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     setSessionToken(localStorage.getItem("dt_session_token"));
   }, []);
+
+  useEffect(() => {
+    if (walletAddress && !withdrawAddress) {
+      setWithdrawAddress(walletAddress);
+    }
+  }, [walletAddress, withdrawAddress]);
 
   useEffect(() => {
     if (sessionId && agentId) return;
@@ -99,27 +103,6 @@ export default function Wizard() {
     if (!sessionToken) return {};
     return { Authorization: `Bearer ${sessionToken}` };
   }, [sessionToken]);
-
-  const handleLogout = async () => {
-    if (!apiUrl) {
-      navigate("/connect");
-      return;
-    }
-    try {
-      setLoggingOut(true);
-      disconnect();
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("dt_session_token");
-        setSessionToken(null);
-      }
-      await fetch(`${apiUrl}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } finally {
-      navigate("/connect");
-    }
-  };
 
   const startMutation = useMutation({
     mutationFn: async () => {
@@ -231,22 +214,47 @@ export default function Wizard() {
     statusQuery.data?.needsUserInput ?? startMutation.data?.needsUserInput
   );
   const logs = statusQuery.data?.logs ?? [];
-  const chatEnabledStatuses = useMemo(
-    () =>
-      new Set([
-        "Strategy Building",
-        "Agent Warmup",
-        "Awaiting Gateway",
-        "Awaiting Deposit",
-        "Live Trading",
-      ]),
-    []
+  const chatEnabled = Boolean(
+    agentId && statusQuery.isSuccess && status === "Strategy Building"
   );
-  const statusReady =
-    statusQuery.isSuccess && chatEnabledStatuses.has(String(status));
-  const chatEnabled = Boolean(agentId && statusReady);
   const waitingForGreeting = chatEnabled && !chatReady;
+  const isOnboardingStatus = useMemo(
+    () =>
+      new Set(["Starting", "Onboarding", "Awaiting Redirect Url"]).has(
+        String(status)
+      ),
+    [status]
+  );
+  const showOnboardingCard = !sessionId || isOnboardingStatus;
   const statusUpdatedAt = statusQuery.data?.statusUpdatedAt ?? null;
+  const hasUserMessages = useMemo(
+    () => chatHistory.some((message) => message.role === "user"),
+    [chatHistory]
+  );
+  const lastAssistantMessage = useMemo(() => {
+    for (let i = chatHistory.length - 1; i >= 0; i -= 1) {
+      const message = chatHistory[i];
+      if (message.role === "assistant" && message.content?.trim()) {
+        return message.content;
+      }
+    }
+    return "";
+  }, [chatHistory]);
+  const canConfirm = useMemo(
+    () => /\bDONE\b/.test(lastAssistantMessage),
+    [lastAssistantMessage]
+  );
+
+  useEffect(() => {
+    if (!agentId) return;
+    if (status !== "Live Trading") {
+      redirectedToPublicRef.current = false;
+      return;
+    }
+    if (redirectedToPublicRef.current) return;
+    redirectedToPublicRef.current = true;
+    navigate(`/agents/${encodeURIComponent(agentId)}`, { replace: true });
+  }, [agentId, navigate, status]);
 
   const formatDuration = (ms: number) => {
     const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -265,22 +273,24 @@ export default function Wizard() {
     return Math.max(0, deadline - nowTs);
   }, [nowTs, status, statusUpdatedAt]);
 
-  const onboardingRemainingMs = useMemo(() => {
-    if (!statusUpdatedAt) return null;
-    const onboardingStatuses = new Set([
-      "Starting",
-      "Onboarding",
-      "Awaiting Redirect Url",
-    ]);
-    if (!onboardingStatuses.has(status)) return null;
-    const deadline = new Date(statusUpdatedAt).getTime() + 5 * 60 * 1000;
+  const depositRemainingMs = useMemo(() => {
+    if (status !== "Awaiting Deposit" || !statusUpdatedAt) return null;
+    const deadline = new Date(statusUpdatedAt).getTime() + 60 * 60 * 1000;
     return Math.max(0, deadline - nowTs);
   }, [nowTs, status, statusUpdatedAt]);
+
+  const onboardingRemainingMs = useMemo(() => {
+    if (!statusUpdatedAt) return null;
+    if (!isOnboardingStatus) return null;
+    const deadline = new Date(statusUpdatedAt).getTime() + 5 * 60 * 1000;
+    return Math.max(0, deadline - nowTs);
+  }, [isOnboardingStatus, nowTs, statusUpdatedAt]);
 
   useEffect(() => {
     if (!statusUpdatedAt) return;
     const timerStatuses = new Set([
       "Strategy Building",
+      "Awaiting Deposit",
       "Starting",
       "Onboarding",
       "Awaiting Redirect Url",
@@ -310,6 +320,51 @@ export default function Wizard() {
     retry: false,
   });
 
+  const publicAgentQuery = useQuery({
+    queryKey: ["agent-public", apiUrl, agentId],
+    enabled: Boolean(apiUrl && agentId),
+    queryFn: async () => {
+      const response = await fetch(`${apiUrl}/agents/${agentId}/public`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(normalizeError(data.error, "Failed to load agent."));
+      }
+      return data as {
+        agent: {
+          id: string;
+          status: string;
+          createdAt?: string | null;
+          statusUpdatedAt?: string | null;
+          depositAddress?: string | null;
+        };
+      };
+    },
+    retry: false,
+  });
+
+  const publicLogsQuery = useQuery({
+    queryKey: ["agent-public-logs", apiUrl, agentId],
+    enabled: Boolean(
+      apiUrl && agentId && status !== "Strategy Building" && !isOnboardingStatus
+    ),
+    queryFn: async () => {
+      const response = await fetch(`${apiUrl}/agents/${agentId}/public-logs`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(normalizeError(data.error, "Failed to load logs."));
+      }
+      return data as {
+        logs: Array<{ message: string; kind?: string; created_at?: string }>;
+      };
+    },
+    refetchInterval: 5000,
+    retry: false,
+  });
+
   useEffect(() => {
     if (!historyQuery.isSuccess || historyHydratedRef.current) return;
     const messages = historyQuery.data?.messages ?? [];
@@ -335,14 +390,40 @@ export default function Wizard() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [chatMessages, waitingForGreeting]);
 
-  const extractReply = (data: unknown) =>
-    (data as { choices?: Array<{ message?: { content?: string }; delta?: { content?: string }; text?: string }> })
-      ?.choices?.[0]?.message?.content ??
-    (data as { choices?: Array<{ message?: { content?: string }; delta?: { content?: string }; text?: string }> })
-      ?.choices?.[0]?.delta?.content ??
-    (data as { choices?: Array<{ message?: { content?: string }; delta?: { content?: string }; text?: string }> })
-      ?.choices?.[0]?.text ??
-    "";
+  const extractTextContent = (value: unknown): string => {
+    if (typeof value === "string") return value.trim();
+    if (!value) return "";
+    if (Array.isArray(value)) {
+      return value
+        .map((part) => extractTextContent(part))
+        .filter(Boolean)
+        .join("\n")
+        .trim();
+    }
+    if (typeof value === "object") {
+      const record = value as Record<string, unknown>;
+      if (typeof record.text === "string") return record.text.trim();
+      if (typeof record.content === "string") return record.content.trim();
+      if (Array.isArray(record.content)) return extractTextContent(record.content);
+      if (record.message) return extractTextContent(record.message);
+      if (record.delta) return extractTextContent(record.delta);
+    }
+    return "";
+  };
+
+  const extractReply = (data: unknown) => {
+    const choice = (data as { choices?: Array<Record<string, unknown>> })?.choices?.[0];
+    if (!choice) return "";
+    const fromMessage = extractTextContent(
+      (choice.message as Record<string, unknown> | undefined)?.content
+    );
+    if (fromMessage) return fromMessage;
+    const fromDelta = extractTextContent(
+      (choice.delta as Record<string, unknown> | undefined)?.content
+    );
+    if (fromDelta) return fromDelta;
+    return extractTextContent(choice.text);
+  };
 
   const seedMutation = useMutation({
     mutationFn: async () => {
@@ -371,22 +452,24 @@ export default function Wizard() {
     },
     onSuccess: ({ data, seedUser }) => {
       const reply = extractReply(data);
-      if (reply) setChatReady(true);
+      setChatReady(true);
       setChatHistory((prev) =>
         prev.length > 0
           ? prev
           : [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: seedUser },
-              ...(reply ? [{ role: "assistant", content: String(reply) }] : []),
-            ]
+            { role: "system", content: systemPrompt },
+            { role: "user", content: seedUser },
+            ...(reply ? [{ role: "assistant", content: String(reply) }] : []),
+          ]
       );
       if (reply) {
         setChatMessages((prev) =>
           prev.length > 0
             ? prev
-            : [{ role: "assistant", content: String(reply) }]
+            : [{ role: "assistant" as const, content: String(reply) }]
         );
+      } else {
+        setChatError("Agent returned an empty response. Please send a message.");
       }
       setChatSeeded(true);
     },
@@ -431,12 +514,14 @@ export default function Wizard() {
       if (reply) {
         setChatHistory((prev) => [
           ...prev,
-          { role: "assistant", content: String(reply) },
+          { role: "assistant" as const, content: String(reply) },
         ]);
         setChatMessages((prev) => [
           ...prev,
-          { role: "assistant", content: String(reply) },
+          { role: "assistant" as const, content: String(reply) },
         ]);
+      } else {
+        setChatError("Agent returned an empty response.");
       }
     },
     onError: (err) => {
@@ -446,11 +531,77 @@ export default function Wizard() {
     },
   });
 
+  const isAgentThinking =
+    waitingForGreeting || seedMutation.isPending || sendMutation.isPending;
+
   useEffect(() => {
     if (sendMutation.isPending) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [sendMutation.isPending]);
+
+  const confirmMutation = useMutation({
+    mutationFn: async () => {
+      if (!apiUrl || !agentId) throw new Error("Missing agent.");
+      const response = await fetch(`${apiUrl}/agents/${agentId}/confirm`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json", ...authHeader },
+        body: JSON.stringify({}),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(normalizeError(data.error, "Failed to confirm strategy."));
+      }
+      return data;
+    },
+    onError: (err) => {
+      const message =
+        err instanceof Error ? err.message : "Failed to confirm strategy.";
+      setChatError(message);
+    },
+  });
+
+  const withdrawMutation = useMutation({
+    mutationFn: async () => {
+      if (!apiUrl || !agentId) throw new Error("Missing agent.");
+      const destination = withdrawAddress.trim();
+      if (!destination) throw new Error("Destination address is required.");
+      const response = await fetch(`${apiUrl}/agents/${agentId}/withdraw`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json", ...authHeader },
+        body: JSON.stringify({ destination }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(normalizeError(data.error, "Failed to withdraw."));
+      }
+      return data as { amount?: number };
+    },
+    onSuccess: (data) => {
+      setWithdrawMessage(
+        data?.amount
+          ? `Withdrawal submitted (${data.amount.toFixed(2)} USDC).`
+          : "Withdrawal submitted."
+      );
+      setWithdrawAddress("");
+      publicLogsQuery.refetch();
+    },
+    onError: (err) => {
+      const message =
+        err instanceof Error ? err.message : "Failed to withdraw.";
+      setWithdrawMessage(message);
+    },
+  });
+
+  useEffect(() => {
+    if (status === "Strategy Building") return;
+    setChatMessages([]);
+    setChatHistory([]);
+    setChatReady(false);
+    setWithdrawMessage(null);
+  }, [status]);
 
   const sendChat = () => {
     if (!apiUrl || !agentId || !chatReady) return;
@@ -473,44 +624,20 @@ export default function Wizard() {
   return (
     <main className="min-h-screen pt-28 pb-16 px-6">
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <span className="tag-pill">Agent Wizard</span>
-          </div>
-          <details className="relative">
-            <summary className="list-none cursor-pointer select-none rounded-full border-2 border-border bg-[var(--surface)] px-4 py-2 text-sm uppercase tracking-[0.2em] text-white/80 hover:text-white">
-              {walletLabel}
-            </summary>
-            <div className="absolute right-0 mt-2 w-40 rounded-xl border-2 border-border bg-[var(--surface)] shadow-[6px_6px_0_#1f1d20] p-2">
-              <Link
-                to="/profile"
-                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-white/80 hover:bg-white/10"
-              >
-                Profile
-              </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="w-full rounded-lg px-3 py-2 text-left text-sm text-white/80 hover:bg-white/10 disabled:opacity-60"
-              >
-                {loggingOut ? "Signing out..." : "Log out"}
-              </button>
-            </div>
-          </details>
-        </div>
-
         <header className="space-y-3">
+          <span className="tag-pill">Agent Wizard</span>
           <h1 className="text-4xl md:text-5xl font-display">
             Build your trading strategy
           </h1>
-          <p className="text-lg text-white/70">
-            This is the protected wizard page. The chat-driven strategy builder
-            comes next.
-          </p>
+          <div>
+            <p className="text-lg text-white/70">
+              Currently, only the Hyperliquid testnet is available and only the OpenAI Codex language model is available for the agent.
+            </p>
+          </div>
+
         </header>
 
-        {!chatEnabled && (
+        {showOnboardingCard && (
           <Card className="space-y-4">
             <div className="text-sm uppercase tracking-[0.25em] text-white/50">
               Agent Onboarding
@@ -625,7 +752,7 @@ export default function Wizard() {
                     <div className="whitespace-pre-wrap">{msg.content}</div>
                   </div>
                 ))}
-                {sendMutation.isPending && (
+                {isAgentThinking && !waitingForGreeting && (
                   <div className="space-y-1 text-white/50">
                     <div className="text-xs uppercase tracking-[0.2em] text-white/40">
                       assistant
@@ -641,26 +768,150 @@ export default function Wizard() {
                 <div ref={chatEndRef} />
               </div>
               <div className="flex flex-col gap-3 md:flex-row">
-                <input
+                <textarea
                   value={chatInput}
-                  onChange={(event) => setChatInput(event.target.value)}
-                  className="w-full rounded-lg border-2 border-border bg-transparent px-3 py-2 text-sm text-white/80 focus:outline-none"
+                  onChange={(event) => {
+                    const next = event.target.value;
+                    setChatInput(next);
+                    event.target.style.height = "auto";
+                    event.target.style.height = `${event.target.scrollHeight}px`;
+                  }}
+                  rows={3}
+                  className="w-full resize-none rounded-lg border-2 border-border bg-transparent px-3 py-2 text-sm text-white/80 focus:outline-none"
                   placeholder={
                     waitingForGreeting
                       ? "Waiting for the agent..."
                       : "Describe your strategy..."
                   }
-                  disabled={sendMutation.isPending || waitingForGreeting}
+                  disabled={
+                    isAgentThinking || confirmMutation.isPending
+                  }
                 />
                 <Button
                   onClick={sendChat}
-                  disabled={sendMutation.isPending || waitingForGreeting}
+                  disabled={
+                    isAgentThinking || confirmMutation.isPending
+                  }
                 >
-                  {sendMutation.isPending ? "Sending..." : "Send"}
+                  {isAgentThinking ? "Thinking..." : "Send"}
                 </Button>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                {canConfirm ? (
+                  <Button
+                    variant="secondary"
+                    disabled={confirmMutation.isPending || !chatReady}
+                    onClick={() => confirmMutation.mutate()}
+                  >
+                    {confirmMutation.isPending
+                      ? "Confirming..."
+                      : "Confirm strategy"}
+                  </Button>
+                ) : (
+                  <span className="text-xs text-white/50">
+                    The agent will offer confirmation once the strategy is complete.
+                  </span>
+                )}
               </div>
               {chatError && <div className="text-sm text-red-400">{chatError}</div>}
             </div>
+          </Card>
+        )}
+
+        {!isOnboardingStatus && status !== "Strategy Building" && agentId && (
+          <Card className="space-y-4">
+            <div className="text-sm uppercase tracking-[0.25em] text-white/50">
+              Agent Updates
+            </div>
+            <div className="space-y-2 text-sm text-white/80">
+              <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-white/60">
+                <span>Status</span>
+                <span className="text-white/80">{status}</span>
+              </div>
+              {status === "Awaiting Deposit" && depositRemainingMs !== null && (
+                <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                  Time left before auto-cancel:{" "}
+                  <span className="text-white/80">
+                    {formatDuration(depositRemainingMs)}
+                  </span>
+                </div>
+              )}
+              {publicAgentQuery.data?.agent?.depositAddress && (
+                <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-3 text-sm text-white/80">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                    Deposit Address
+                  </div>
+                  <div className="break-all">
+                    {publicAgentQuery.data.agent.depositAddress}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                  Public log
+                </div>
+                {status === "Live Trading" &&
+                  publicLogsQuery.isFetching &&
+                  !publicLogsQuery.isLoading && (
+                    <div className="inline-flex items-center gap-2 text-xs text-white/50">
+                      <span className="animate-pulse">Agent is thinking</span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                    </div>
+                  )}
+              </div>
+              <div className="max-h-64 overflow-y-auto rounded-xl border-2 border-border bg-[var(--surface)] p-4 text-sm text-white/80 space-y-3">
+                {publicLogsQuery.isLoading && (
+                  <div className="text-white/50">Loading updates...</div>
+                )}
+                {publicLogsQuery.isError && (
+                  <div className="text-red-400">
+                    {publicLogsQuery.error instanceof Error
+                      ? publicLogsQuery.error.message
+                      : "Failed to load logs."}
+                  </div>
+                )}
+                {!publicLogsQuery.isLoading &&
+                  publicLogsQuery.data?.logs?.length === 0 && (
+                    <div className="text-white/50">No public updates yet.</div>
+                  )}
+                {publicLogsQuery.data?.logs?.map((log, index) => (
+                  <div key={`${log.created_at ?? "log"}-${index}`} className="space-y-1">
+                    <div className="text-xs uppercase tracking-[0.2em] text-white/40">
+                      {log.kind ?? "log"}
+                    </div>
+                    <div className="whitespace-pre-wrap">{log.message}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {status === "Stopped" && (
+              <div className="space-y-3 rounded-xl border-2 border-border bg-[var(--surface)] p-4">
+                <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                  Withdraw balance
+                </div>
+                <input
+                  value={withdrawAddress}
+                  onChange={(event) => setWithdrawAddress(event.target.value)}
+                  className="w-full rounded-lg border-2 border-border bg-transparent px-3 py-2 text-sm text-white/80 focus:outline-none"
+                  placeholder="Destination address (0x...)"
+                  disabled={withdrawMutation.isPending}
+                />
+                <Button
+                  variant="secondary"
+                  onClick={() => withdrawMutation.mutate()}
+                  disabled={withdrawMutation.isPending}
+                >
+                  {withdrawMutation.isPending ? "Withdrawing..." : "Withdraw"}
+                </Button>
+                {withdrawMessage && (
+                  <div className="text-xs text-white/60">{withdrawMessage}</div>
+                )}
+              </div>
+            )}
           </Card>
         )}
       </div>
