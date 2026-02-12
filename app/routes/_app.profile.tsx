@@ -16,6 +16,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 type AgentRow = {
   id: string;
+  name?: string | null;
   status: string;
   network?: string | null;
   session_id?: string | null;
@@ -160,7 +161,10 @@ export default function Profile() {
                     <div className="text-xs uppercase tracking-[0.2em] text-white/50">
                       Agent
                     </div>
-                    <div className="text-sm text-white/80 break-all">{agent.id}</div>
+                    <div className="text-sm text-white break-all">
+                      {agent.name?.trim() || "Unnamed agent"}
+                    </div>
+                    <div className="text-xs text-white/55 break-all">{agent.id}</div>
                     {updatedAt && (
                       <div className="text-xs text-white/50">
                         Updated {new Date(updatedAt).toLocaleString()}

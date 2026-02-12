@@ -26,6 +26,28 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   return { apiUrl, walletAddress };
 }
 
+function BrandMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 -6 96 96"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <g stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <line x1="48" y1="16" x2="48" y2="68" />
+        <line x1="18" y1="34" x2="78" y2="34" />
+        <line x1="30" y1="26" x2="30" y2="34" />
+        <line x1="66" y1="26" x2="66" y2="34" />
+        <line x1="48" y1="26" x2="48" y2="34" />
+        <path d="M16 54 Q24 62 32 54" />
+        <path d="M64 54 Q72 62 80 54" />
+      </g>
+    </svg>
+  );
+}
+
 export default function AppLayout() {
   const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
   const location = useLocation();
@@ -63,13 +85,11 @@ export default function AppLayout() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#0b0b0f]/90 backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <Link
-            to="/"
-            className="text-sm font-semibold uppercase tracking-[0.24em] text-white/80 hover:text-white"
-          >
-            Deserve.Trade
+      <header className="fixed inset-x-0 top-0 z-40 border-b-2 border-border bg-background shadow-[6px_6px_0_#1f1d20]">
+        <div className="mx-auto flex h-[var(--header-height)] w-full max-w-6xl items-center justify-between px-6">
+          <Link to="/" className="brand-lockup">
+            <BrandMark className="brand-mark brand-mark-sm" />
+            <span className="logo-wordmark logo-wordmark-sm">deserve</span>
           </Link>
 
           <div className="flex items-center gap-3">
@@ -77,12 +97,12 @@ export default function AppLayout() {
               <>
                 <Link
                   to="/wizard"
-                  className="rounded-full border-2 border-border bg-[var(--primary)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-black transition hover:translate-y-px"
+                  className="btn-primary btn-text rounded-full px-4 py-2 text-xs transition hover:translate-y-px"
                 >
                   Launch Agent
                 </Link>
                 <details className="relative">
-                  <summary className="list-none cursor-pointer select-none rounded-full border-2 border-border bg-[var(--surface)] px-4 py-2 text-sm uppercase tracking-[0.2em] text-white/80 hover:text-white">
+                  <summary className="list-none cursor-pointer select-none rounded-full bg-[var(--surface)] px-4 py-2 text-sm uppercase tracking-[0.2em] text-white/80 shadow-[6px_6px_0_#1f1d20] hover:text-white">
                     {walletLabel}
                   </summary>
                   <div className="absolute right-0 mt-2 w-44 rounded-xl border-2 border-border bg-[var(--surface)] p-2 shadow-[6px_6px_0_#1f1d20]">
@@ -106,7 +126,7 @@ export default function AppLayout() {
             ) : (
               <Link
                 to={loginHref}
-                className="rounded-full border-2 border-border bg-[var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 hover:text-white"
+                className="btn-primary btn-text rounded-full px-4 py-2 text-xs transition hover:translate-y-px"
               >
                 Login
               </Link>

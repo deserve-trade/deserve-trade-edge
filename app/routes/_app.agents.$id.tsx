@@ -1,7 +1,7 @@
 import type { Route } from "./+types/_app.agents.$id";
 import { useLoaderData } from "react-router";
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { cloudflareContext } from "~/lib/context";
 import { Card } from "~/components/kit/Card";
 
@@ -20,6 +20,14 @@ function formatUsd(value?: number | null) {
   return `$${Number(value).toFixed(2)}`;
 }
 
+function formatPercent(value?: number | null) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    return "n/a";
+  }
+  const sign = Number(value) > 0 ? "+" : "";
+  return `${sign}${Number(value).toFixed(2)}%`;
+}
+
 function formatDuration(fromIso?: string | null) {
   if (!fromIso) return null;
   const start = new Date(fromIso).getTime();
@@ -35,8 +43,22 @@ function formatDuration(fromIso?: string | null) {
   return `${mins}m`;
 }
 
+function extractErrorMessage(data: unknown, fallback: string) {
+  if (data && typeof data === "object" && "error" in data) {
+    const error = (data as { error?: unknown }).error;
+    if (typeof error === "string" && error.trim().length > 0) {
+      return error;
+    }
+  }
+  return fallback;
+}
+
 export default function AgentPublicPage() {
   const { apiUrl, agentId } = useLoaderData<typeof loader>();
+  const logsViewportRef = useRef<HTMLDivElement | null>(null);
+  const restoreScrollRef = useRef<{ height: number; top: number } | null>(null);
+  const initializedScrollRef = useRef(false);
+  const lastTailRef = useRef("");
 
   const agentQuery = useQuery({
     queryKey: ["agent-public", apiUrl, agentId],
@@ -45,17 +67,22 @@ export default function AgentPublicPage() {
       const response = await fetch(`${apiUrl}/agents/${agentId}/public`, {
         method: "GET",
       });
-      const data = await response.json();
+      const data: unknown = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Failed to load agent.");
+        throw new Error(extractErrorMessage(data, "Failed to load agent."));
       }
       return data as {
         agent: {
           id: string;
+          name?: string | null;
           status: string;
           network?: string | null;
           authorWalletAddress?: string | null;
           initialDepositUsd?: number | null;
+          currentBalanceUsd?: number | null;
+          pnlUsd?: number | null;
+          pnlPercent?: number | null;
+          currentBalanceUpdatedAt?: string | null;
           liveStartedAt?: string | null;
           createdAt?: string | null;
           statusUpdatedAt?: string | null;
@@ -67,36 +94,53 @@ export default function AgentPublicPage() {
     refetchInterval: 5000,
   });
 
-  const logsQuery = useQuery({
+  const logsQuery = useInfiniteQuery({
     queryKey: ["agent-public-logs", apiUrl, agentId],
     enabled: Boolean(
       apiUrl &&
-        agentId &&
-        (agentQuery.data?.agent?.status === "Live Trading" ||
-          agentQuery.data?.agent?.status === "Stopped")
+      agentId &&
+      (agentQuery.data?.agent?.status === "Live Trading" ||
+        agentQuery.data?.agent?.status === "Stopped")
     ),
-    queryFn: async () => {
-      const response = await fetch(`${apiUrl}/agents/${agentId}/public-logs`, {
+    queryFn: async ({ pageParam }) => {
+      const before = typeof pageParam === "string" ? pageParam : null;
+      const params = new URLSearchParams();
+      params.set("limit", "20");
+      if (before) params.set("before", before);
+      const response = await fetch(`${apiUrl}/agents/${agentId}/public-logs?${params.toString()}`, {
         method: "GET",
       });
-      const data = await response.json();
+      const data: unknown = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Failed to load logs.");
+        throw new Error(extractErrorMessage(data, "Failed to load logs."));
       }
       return data as {
-        logs: Array<{ message: string; kind?: string; created_at?: string }>;
+        logs: Array<{ id?: string; message: string; kind?: string; created_at?: string }>;
+        page?: {
+          hasMore?: boolean;
+          nextBefore?: string | null;
+        };
       };
     },
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) =>
+      lastPage.page?.hasMore ? lastPage.page?.nextBefore ?? undefined : undefined,
     refetchInterval: 5000,
     retry: false,
   });
 
+  const logs = useMemo(() => {
+    const pages = logsQuery.data?.pages ?? [];
+    return [...pages]
+      .reverse()
+      .flatMap((page) => page.logs ?? []);
+  }, [logsQuery.data?.pages]);
+
   const agent = agentQuery.data?.agent;
   const status = agent?.status ?? "Loading";
   const isPublicVisible = status === "Live Trading" || status === "Stopped";
-  const isAgentThinking =
-    status === "Live Trading" && logsQuery.isFetching && !logsQuery.isLoading;
-  const isLogsLoading = agentQuery.isLoading || logsQuery.isLoading;
+  const isAgentThinking = status === "Live Trading" && logsQuery.isFetching && !logsQuery.isPending;
+  const isLogsLoading = agentQuery.isLoading || logsQuery.isPending;
   const statusClass =
     status === "Live Trading"
       ? "bg-emerald-500/20 text-emerald-200"
@@ -109,14 +153,77 @@ export default function AgentPublicPage() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   }, [agent?.authorWalletAddress]);
   const tradingDuration = formatDuration(agent?.liveStartedAt ?? null);
+  const pnlUsd = agent?.pnlUsd ?? null;
+  const pnlPercent = agent?.pnlPercent ?? null;
+  const pnlToneClass =
+    Number.isFinite(pnlUsd) && Number(pnlUsd) > 0
+      ? "text-emerald-300"
+      : Number.isFinite(pnlUsd) && Number(pnlUsd) < 0
+        ? "text-rose-300"
+        : "text-white";
+  const pnlUsdLabel =
+    Number.isFinite(pnlUsd) && Number(pnlUsd) > 0
+      ? `+${formatUsd(pnlUsd)}`
+      : formatUsd(pnlUsd);
+
+  const fetchOlderLogs = useCallback(async () => {
+    if (!logsQuery.hasNextPage || logsQuery.isFetchingNextPage) return;
+    const viewport = logsViewportRef.current;
+    if (viewport) {
+      restoreScrollRef.current = {
+        height: viewport.scrollHeight,
+        top: viewport.scrollTop,
+      };
+    }
+    await logsQuery.fetchNextPage();
+  }, [logsQuery]);
+
+  const handleLogsScroll = useCallback(() => {
+    const viewport = logsViewportRef.current;
+    if (!viewport) return;
+    if (viewport.scrollTop <= 64) {
+      void fetchOlderLogs();
+    }
+  }, [fetchOlderLogs]);
+
+  useEffect(() => {
+    const viewport = logsViewportRef.current;
+    const restore = restoreScrollRef.current;
+    if (!viewport || !restore || logsQuery.isFetchingNextPage) return;
+    const heightDiff = viewport.scrollHeight - restore.height;
+    viewport.scrollTop = restore.top + Math.max(0, heightDiff);
+    restoreScrollRef.current = null;
+  }, [logs.length, logsQuery.isFetchingNextPage]);
+
+  const tailKey = useMemo(() => {
+    const last = logs[logs.length - 1];
+    if (!last) return "";
+    return `${last.id ?? "log"}:${last.created_at ?? ""}:${last.kind ?? ""}`;
+  }, [logs]);
+
+  useEffect(() => {
+    const viewport = logsViewportRef.current;
+    if (!viewport || !isPublicVisible) return;
+    if (!initializedScrollRef.current) {
+      viewport.scrollTop = viewport.scrollHeight;
+      initializedScrollRef.current = true;
+      lastTailRef.current = tailKey;
+      return;
+    }
+    if (tailKey && tailKey !== lastTailRef.current) {
+      viewport.scrollTop = viewport.scrollHeight;
+      lastTailRef.current = tailKey;
+    }
+  }, [tailKey, isPublicVisible]);
 
   return (
     <main className="min-h-screen pt-28 pb-16 px-6">
       <div className="max-w-5xl mx-auto space-y-8">
         <header className="space-y-3">
           <span className="tag-pill">Agent</span>
-          <h1 className="text-4xl md:text-5xl font-display">Public Agent Feed</h1>
-          <p className="text-sm text-white/60 break-all">{agentId}</p>
+          <h1 className="text-4xl md:text-5xl font-display">
+            {agent?.name?.trim() || "Public Agent Feed"}
+          </h1>
         </header>
 
         <Card className="space-y-4">
@@ -125,9 +232,8 @@ export default function AgentPublicPage() {
               {status}
             </span>
             <span
-              className={`inline-flex min-w-[122px] items-center justify-center gap-2 rounded-full px-3 py-1 text-xs uppercase tracking-[0.2em] bg-white/10 text-white/80 transition-opacity duration-200 ${
-                isAgentThinking ? "opacity-100" : "opacity-0"
-              }`}
+              className={`inline-flex min-w-[122px] items-center justify-center gap-2 rounded-full px-3 py-1 text-xs uppercase tracking-[0.2em] bg-white/10 text-white/80 transition-opacity duration-200 ${isAgentThinking ? "opacity-100" : "opacity-0"
+                }`}
               aria-hidden={!isAgentThinking}
             >
               <span className="animate-pulse">Thinking</span>
@@ -143,14 +249,29 @@ export default function AgentPublicPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
               <div className="text-xs uppercase tracking-[0.2em] text-white/50">
-                Initial Deposit
+                Balance
               </div>
-              <div className="text-lg text-white mt-1">
-                {formatUsd(agent?.initialDepositUsd ?? null)}
+              <div className="text-2xl font-semibold text-white mt-1">
+                {formatUsd(agent?.currentBalanceUsd ?? null)}
               </div>
+              <div className="text-[11px] text-white/55 mt-2">
+                Initial: {formatUsd(agent?.initialDepositUsd ?? null)}
+              </div>
+              <div className="text-[11px] text-white/45 mt-1">
+                {agent?.currentBalanceUpdatedAt
+                  ? `Updated ${new Date(agent.currentBalanceUpdatedAt).toLocaleTimeString()}`
+                  : "No snapshot yet"}
+              </div>
+            </div>
+            <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
+              <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                PnL
+              </div>
+              <div className={`text-2xl font-semibold mt-1 ${pnlToneClass}`}>{pnlUsdLabel}</div>
+              <div className={`text-base font-medium mt-1 ${pnlToneClass}`}>{formatPercent(pnlPercent)}</div>
             </div>
             <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
               <div className="text-xs uppercase tracking-[0.2em] text-white/50">
@@ -182,51 +303,59 @@ export default function AgentPublicPage() {
 
         {isPublicVisible ? (
           <Card className="space-y-4">
-          <div className="text-sm uppercase tracking-[0.25em] text-white/50">
-            Public Log
-          </div>
-          <div className="max-h-[560px] overflow-y-auto rounded-xl border-2 border-border bg-[var(--surface)] p-4 text-sm text-white/80 space-y-3">
-            <div className="min-h-6 text-white/50">
-              <span
-                className={`inline-flex items-center gap-2 transition-opacity duration-200 ${
-                  isLogsLoading || isAgentThinking ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <span className={isAgentThinking ? "animate-pulse" : ""}>
-                  {isLogsLoading ? "Loading updates..." : "Agent is thinking"}
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-              </span>
+            <div className="text-sm uppercase tracking-[0.25em] text-white/50">
+              Public Log
             </div>
-            {agentQuery.isError ? (
-              <div className="text-red-400">
-                {agentQuery.error instanceof Error
-                  ? agentQuery.error.message
-                  : "Failed to load agent."}
-              </div>
-            ) : null}
-            {logsQuery.isError ? (
-              <div className="text-red-400">
-                {logsQuery.error instanceof Error
-                  ? logsQuery.error.message
-                  : "Failed to load logs."}
-              </div>
-            ) : null}
-            {!isLogsLoading && logsQuery.data?.logs?.length === 0 ? (
-              <div className="text-white/50">No public updates yet.</div>
-            ) : null}
-            {logsQuery.data?.logs?.map((log, index) => (
-              <div key={`${log.created_at ?? "log"}-${index}`} className="space-y-1">
-                <div className="text-xs uppercase tracking-[0.2em] text-white/40">
-                  {log.kind ?? "log"}
-                  {log.created_at ? ` • ${new Date(log.created_at).toLocaleString()}` : ""}
+            <div
+              ref={logsViewportRef}
+              onScroll={handleLogsScroll}
+              className="max-h-[560px] overflow-y-auto rounded-xl border-2 border-border bg-[var(--surface)] p-4 text-sm text-white/80 space-y-3"
+            >
+              {logsQuery.hasNextPage && (
+                <div className="text-xs text-white/40">
+                  {logsQuery.isFetchingNextPage ? "Loading older logs..." : "Scroll up to load older logs"}
                 </div>
-                <div className="whitespace-pre-wrap">{log.message}</div>
+              )}
+              <div className="min-h-6 text-white/50">
+                <span
+                  className={`inline-flex items-center gap-2 transition-opacity duration-200 ${isLogsLoading || isAgentThinking ? "opacity-100" : "opacity-0"
+                    }`}
+                >
+                  <span className={isAgentThinking ? "animate-pulse" : ""}>
+                    {isLogsLoading ? "Loading updates..." : "Agent is thinking"}
+                  </span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                </span>
               </div>
-            ))}
-          </div>
+              {agentQuery.isError ? (
+                <div className="text-red-400">
+                  {agentQuery.error instanceof Error
+                    ? agentQuery.error.message
+                    : "Failed to load agent."}
+                </div>
+              ) : null}
+              {logsQuery.isError ? (
+                <div className="text-red-400">
+                  {logsQuery.error instanceof Error
+                    ? logsQuery.error.message
+                    : "Failed to load logs."}
+                </div>
+              ) : null}
+              {!isLogsLoading && logs.length === 0 ? (
+                <div className="text-white/50">No public updates yet.</div>
+              ) : null}
+              {logs.map((log, index) => (
+                <div key={`${log.id ?? "log"}-${log.created_at ?? "ts"}-${index}`} className="space-y-1">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/40">
+                    {log.kind ?? "log"}
+                    {log.created_at ? ` • ${new Date(log.created_at).toLocaleString()}` : ""}
+                  </div>
+                  <div className="whitespace-pre-wrap">{log.message}</div>
+                </div>
+              ))}
+            </div>
           </Card>
         ) : (
           <Card className="space-y-2">

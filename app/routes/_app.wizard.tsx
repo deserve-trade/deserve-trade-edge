@@ -59,8 +59,10 @@ export default function Wizard() {
     "Your only tasks are to create and execute trading strategies on the Hyperliquid exchange. " +
     "If a request is outside this scope, decline and explain that only Hyperliquid strategies are supported for now. " +
     "Always respond in a clear, structured way and ask for missing details needed to implement or execute the strategy. " +
-    "When you believe the trading strategy is fully specified, send exactly: " +
-    "\"Strategy Ready! Should i start to trade? | DONE\". " +
+    "When you believe the trading strategy is fully specified, send exactly in this format: " +
+    "\"Strategy Ready! Should i start to trade? | NAME: <short english name> | DONE\". " +
+    "The NAME must be a short conceptual English label for the strategy (no sensitive internals), for example: " +
+    "\"ETH-BTC 1 minute scalper\". " +
     "Never include the uppercase word DONE in any other message.";
 
   const normalizeError = (value: unknown, fallback: string) => {
@@ -241,7 +243,11 @@ export default function Wizard() {
     return "";
   }, [chatHistory]);
   const canConfirm = useMemo(
-    () => /\bDONE\b/.test(lastAssistantMessage),
+    () =>
+      /\bDONE\b/.test(lastAssistantMessage) &&
+      /(?:^|\|)\s*(?:NAME|AGENT_NAME)\s*:\s*[^|\n\r]{2,120}/i.test(
+        lastAssistantMessage
+      ),
     [lastAssistantMessage]
   );
 
@@ -334,6 +340,7 @@ export default function Wizard() {
       return data as {
         agent: {
           id: string;
+          name?: string | null;
           status: string;
           createdAt?: string | null;
           statusUpdatedAt?: string | null;
@@ -607,9 +614,10 @@ export default function Wizard() {
     if (!apiUrl || !agentId || !chatReady) return;
     const content = chatInput.trim();
     if (!content) return;
-    const baseHistory = chatHistory.some((msg) => msg.role === "system")
-      ? chatHistory
-      : [{ role: "system" as const, content: systemPrompt }, ...chatHistory];
+    const baseHistory = [
+      { role: "system" as const, content: systemPrompt },
+      ...chatHistory.filter((message) => message.role !== "system"),
+    ];
     const nextHistory = [...baseHistory, { role: "user" as const, content }];
     setChatHistory(nextHistory);
     setChatMessages((prev) => [...prev, { role: "user", content }]);
@@ -824,6 +832,14 @@ export default function Wizard() {
               Agent Updates
             </div>
             <div className="space-y-2 text-sm text-white/80">
+              {publicAgentQuery.data?.agent?.name && (
+                <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-white/60">
+                  <span>Name</span>
+                  <span className="text-white/90 normal-case tracking-normal">
+                    {publicAgentQuery.data.agent.name}
+                  </span>
+                </div>
+              )}
               <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-white/60">
                 <span>Status</span>
                 <span className="text-white/80">{status}</span>
@@ -836,7 +852,8 @@ export default function Wizard() {
                   </span>
                 </div>
               )}
-              {publicAgentQuery.data?.agent?.depositAddress && (
+              {status === "Awaiting Deposit" &&
+                publicAgentQuery.data?.agent?.depositAddress && (
                 <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-3 text-sm text-white/80">
                   <div className="text-xs uppercase tracking-[0.2em] text-white/50">
                     Deposit Address

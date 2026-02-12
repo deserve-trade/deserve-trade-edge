@@ -1,11 +1,11 @@
 import type { Route } from "./+types/_index";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import { Link, useLoaderData } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { LuClock } from "react-icons/lu";
-import { FaArrowTrendUp, FaCopy, FaGithub, FaTwitter } from "react-icons/fa6";
+import { FaCopy, FaGithub, FaTwitter } from "react-icons/fa6";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { faq } from "~/lib/data/faq";
@@ -77,7 +77,11 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export function loader({ context }: Route.LoaderArgs) {
-  return { domain: context.get(cloudflareContext).env.DOMAIN };
+  const env = context.get(cloudflareContext).env;
+  return {
+    domain: env.DOMAIN,
+    apiUrl: env.API_URL?.replace(/\/$/, "") || "",
+  };
 }
 
 const AGENT_PROMPTS = [
@@ -316,104 +320,107 @@ export default function Home() {
     },
   ];
 
-  const agentGems = [
-    {
-      agent: "Hyperliquid Arbitrage",
-      creator: "John Doe",
-      cap: "$240,000",
-      avatar: "",
-      symbol: "HLA",
-      focus: "Basis + funding capture",
-      days: "14d",
-      pnl: "+18.6%",
-      risk: "Low risk",
-      riskClass: "text-accent",
+  const { apiUrl } = useLoaderData<typeof loader>();
+
+  const formatUsd = (value: number | null | undefined) => {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "—";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+
+  const formatPnl = (value: number | null | undefined) => {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "—";
+    const abs = Math.abs(value);
+    const prefix = value > 0 ? "+" : value < 0 ? "-" : "";
+    return `${prefix}${new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+    }).format(abs)}`;
+  };
+
+  const formatPercent = (value: number | null | undefined) => {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "—";
+    const prefix = value > 0 ? "+" : value < 0 ? "" : "";
+    return `${prefix}${value.toFixed(2)}%`;
+  };
+
+  const shortWallet = (wallet: string | null | undefined) => {
+    if (!wallet) return "Unknown";
+    if (wallet.length < 10) return wallet;
+    return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
+  };
+
+  const formatRunTime = (liveStartedAt: string | null | undefined, createdAt: string | null | undefined) => {
+    const from = liveStartedAt || createdAt;
+    if (!from) return "—";
+    const startMs = Date.parse(from);
+    if (!Number.isFinite(startMs)) return "—";
+    const elapsedMs = Math.max(0, Date.now() - startMs);
+    const minutes = Math.floor(elapsedMs / 60000);
+    const days = Math.floor(minutes / (24 * 60));
+    const hours = Math.floor((minutes % (24 * 60)) / 60);
+    if (days > 0) return `${days}d ${hours}h`;
+    if (hours > 0) return `${hours}h`;
+    return `${Math.max(1, minutes)}m`;
+  };
+
+  const statusChipClass = (status: string | null | undefined) => {
+    const normalized = String(status || "").toLowerCase();
+    if (normalized === "live trading") {
+      return "border-emerald-300/40 bg-emerald-500/15 text-emerald-200";
+    }
+    if (normalized === "stopped") {
+      return "border-amber-300/40 bg-amber-500/15 text-amber-200";
+    }
+    return "border-white/20 bg-white/10 text-white/70";
+  };
+
+  const marketAgentsQuery = useQuery({
+    queryKey: ["public-market-agents", apiUrl],
+    queryFn: async () => {
+      if (!apiUrl) {
+        return {
+          agents: [] as Array<{
+            id: string;
+            name?: string | null;
+            status: "Live Trading" | "Stopped" | string;
+            authorWalletAddress?: string | null;
+            currentBalanceUsd?: number | null;
+            pnlUsd?: number | null;
+            pnlPercent?: number | null;
+            liveStartedAt?: string | null;
+            createdAt?: string | null;
+          }>
+        };
+      }
+      const response = await fetch(`${apiUrl}/agents/public/market?limit=20`, {
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to load market agents.");
+      }
+      return data as {
+        agents: Array<{
+          id: string;
+          name?: string | null;
+          status: "Live Trading" | "Stopped" | string;
+          authorWalletAddress?: string | null;
+          currentBalanceUsd?: number | null;
+          pnlUsd?: number | null;
+          pnlPercent?: number | null;
+          liveStartedAt?: string | null;
+          createdAt?: string | null;
+        }>;
+      };
     },
-    {
-      agent: "Funding Drift",
-      creator: "Mira Patel",
-      cap: "$110,000",
-      avatar: "",
-      symbol: "FND",
-      focus: "Funding mean reversion",
-      days: "9d",
-      pnl: "+9.4%",
-      risk: "Medium risk",
-      riskClass: "text-muted",
-    },
-    {
-      agent: "Volatility Stack",
-      creator: "Wei Lin",
-      cap: "$520,000",
-      avatar: "",
-      symbol: "VST",
-      focus: "Gamma scalps on ETH",
-      days: "21d",
-      pnl: "+24.2%",
-      risk: "Medium risk",
-      riskClass: "text-muted",
-    },
-    {
-      agent: "Orderbook Sniper",
-      creator: "Noah Brooks",
-      cap: "$75,000",
-      avatar: "",
-      symbol: "OBS",
-      focus: "Latency + imbalance entries",
-      days: "6d",
-      pnl: "+6.7%",
-      risk: "High risk",
-      riskClass: "text-primary",
-    },
-    {
-      agent: "Solana Trendline",
-      creator: "Maya Chen",
-      cap: "$310,000",
-      avatar: "",
-      symbol: "SOL",
-      focus: "Breakout + retest engine",
-      days: "12d",
-      pnl: "+14.8%",
-      risk: "Low risk",
-      riskClass: "text-accent",
-    },
-    {
-      agent: "Carry Harvest",
-      creator: "Diego Silva",
-      cap: "$190,000",
-      avatar: "",
-      symbol: "CRY",
-      focus: "Perp carry rotations",
-      days: "11d",
-      pnl: "+11.9%",
-      risk: "Medium risk",
-      riskClass: "text-muted",
-    },
-    {
-      agent: "Cross-Exchange Pulse",
-      creator: "Priya Rao",
-      cap: "$430,000",
-      avatar: "",
-      symbol: "XEP",
-      focus: "Latency arb between venues",
-      days: "17d",
-      pnl: "+19.3%",
-      risk: "Low risk",
-      riskClass: "text-accent",
-    },
-    {
-      agent: "Liquidity Magnet",
-      creator: "Eli Walker",
-      cap: "$60,000",
-      avatar: "",
-      symbol: "LMG",
-      focus: "Maker rebates + spreads",
-      days: "5d",
-      pnl: "+7.5%",
-      risk: "High risk",
-      riskClass: "text-primary",
-    },
-  ];
+    staleTime: 20_000,
+    refetchInterval: 20_000,
+  });
 
   return (
     <main id="top" className="landing flex flex-col">
@@ -598,74 +605,100 @@ export default function Home() {
       >
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="tag-pill">Agent Markets</span>
-          <h2 className="section-title">Agents the market is pricing</h2>
+          <h2 className="section-title">Trending agents</h2>
           <p className="text-white/70 max-w-2xl">
             Speculators watch live stats and place bets by buying agent tokens on the bonding curve.
           </p>
-          <div className="demo-pill">Demo data — product not launched yet</div>
         </div>
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
-          {agentGems.map((agent) => (
-            <Card
-              key={agent.agent}
-              className="glass-panel rounded-3xl p-6 flex flex-col gap-4 transition duration-300 hover:-translate-y-2"
-            >
-              <div className="flex flex-row gap-4 items-center">
-                <Avatar className="h-12 w-12">
-                  {agent.avatar ? (
-                    <AvatarImage src={agent.avatar} alt={`${agent.agent} agent avatar`} />
-                  ) : null}
-                  <AvatarFallback className="bg-white/10 text-white/80 text-xs font-semibold tracking-[0.2em]">
-                    {agent.symbol}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="text-xs uppercase text-white/40">Agent</div>
-                  <div className="font-semibold">{agent.agent}</div>
-                  <div className="text-xs text-white/50">by {agent.creator}</div>
-                </div>
-              </div>
-              <div className="text-xs text-white/60">
-                <span className="text-white/40">Focus:</span> {agent.focus}
-              </div>
-              <div className="text-xs text-white/60">
-                <span className="text-white/40">Seeded capital:</span> {agent.cap}
-              </div>
+          {marketAgentsQuery.isLoading &&
+            Array.from({ length: 4 }).map((_, index) => (
+              <Card
+                key={`market-loading-${index}`}
+                className="glass-panel rounded-3xl p-6 flex flex-col gap-4 animate-pulse"
+              >
+                <div className="h-4 w-2/3 rounded bg-white/10" />
+                <div className="h-3 w-1/3 rounded bg-white/10" />
+                <div className="h-8 w-1/2 rounded bg-white/10" />
+                <div className="h-8 w-1/2 rounded bg-white/10" />
+              </Card>
+            ))}
 
-              <div className="flex flex-row gap-2 flex-wrap">
-                <Tooltip delayDuration={200}>
-                  <TooltipTrigger>
-                    <div className="flex flex-row gap-1 items-center rounded-md border border-white/20 px-2 py-1 cursor-pointer text-xs">
-                      <LuClock />
-                      {agent.days}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Time since launch</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip delayDuration={200}>
-                  <TooltipTrigger>
-                    <div className="flex flex-row gap-1 items-center rounded-md border border-white/20 px-2 py-1 cursor-pointer text-xs">
-                      <FaArrowTrendUp /> <span className="text-accent">{agent.pnl}</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>All-time PnL</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip delayDuration={200}>
-                  <TooltipTrigger>
-                    <div className="flex flex-row gap-1 items-center rounded-md border border-white/20 px-2 py-1 cursor-pointer text-xs">
-                      <span className={agent.riskClass}>{agent.risk}</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Risk profile</p>
-                  </TooltipContent>
-                </Tooltip>
+          {marketAgentsQuery.isError && (
+            <div className="sm:col-span-2 xl:col-span-4 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm text-white/70">
+              {marketAgentsQuery.error instanceof Error
+                ? marketAgentsQuery.error.message
+                : "Failed to load market agents."}
+            </div>
+          )}
+
+          {!marketAgentsQuery.isLoading &&
+            !marketAgentsQuery.isError &&
+            (marketAgentsQuery.data?.agents?.length ?? 0) === 0 && (
+              <div className="sm:col-span-2 xl:col-span-4 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm text-white/70">
+                No live or stopped agents yet.
               </div>
-            </Card>
+            )}
+
+          {marketAgentsQuery.data?.agents?.map((agent) => (
+            <Link
+              key={agent.id}
+              to={`/agents/${encodeURIComponent(agent.id)}`}
+              className="block"
+            >
+              <Card className="glass-panel rounded-3xl p-6 flex flex-col gap-4 transition duration-300 hover:-translate-y-2">
+                <div className="min-w-0">
+                  <div className="text-xs uppercase text-white/40">Agent</div>
+                  <div className="mt-1 text-[15px] font-semibold text-white break-words">
+                    {agent.name?.trim() || "Unnamed agent"}
+                  </div>
+                  <div className="mt-2 flex items-center justify-between gap-2">
+                    <div className="text-xs text-white/50 truncate">
+                      by {shortWallet(agent.authorWalletAddress)}
+                    </div>
+                    <span
+                      className={`shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none ${statusChipClass(
+                        agent.status
+                      )}`}
+                    >
+                      {agent.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="rounded-xl border border-white/15 bg-white/5 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.12em] text-white/50">Balance</div>
+                    <div className="text-base font-semibold text-white">
+                      {formatUsd(agent.currentBalanceUsd)}
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-white/15 bg-white/5 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.12em] text-white/50">PnL</div>
+                    <div
+                      className={`text-base font-semibold ${typeof agent.pnlUsd === "number"
+                          ? agent.pnlUsd > 0
+                            ? "text-accent"
+                            : agent.pnlUsd < 0
+                              ? "text-primary"
+                              : "text-white"
+                          : "text-white"
+                        }`}
+                    >
+                      {formatPnl(agent.pnlUsd)}
+                    </div>
+                    <div className="text-[11px] text-white/60">{formatPercent(agent.pnlPercent)}</div>
+                  </div>
+                </div>
+
+                <div className="text-xs text-white/60">
+                  Runtime:{" "}
+                  <span className="text-white/80">
+                    {formatRunTime(agent.liveStartedAt, agent.createdAt)}
+                  </span>
+                </div>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>
