@@ -28,6 +28,25 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 type ChatMessage = { role: "user" | "assistant" | "system"; content: string };
+type CreationEligibility = {
+  enabled: boolean;
+  eligible: boolean;
+  mint: string | null;
+  requiredAmount: number;
+  currentAmount: number | null;
+  reason: string | null;
+  code?: string | null;
+};
+
+const tokenAmountFormatter = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 6,
+});
+
+function formatTokenAmount(value: number | null | undefined) {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "-";
+  return tokenAmountFormatter.format(value);
+}
 
 export default function Wizard() {
   const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
@@ -106,6 +125,34 @@ export default function Wizard() {
     return { Authorization: `Bearer ${sessionToken}` };
   }, [sessionToken]);
 
+  const creationEligibilityQuery = useQuery({
+    queryKey: ["agent-creation-eligibility", apiUrl, sessionToken],
+    enabled: Boolean(apiUrl),
+    queryFn: async () => {
+      const response = await fetch(`${apiUrl}/agents/creation-eligibility`, {
+        method: "GET",
+        credentials: "include",
+        headers: authHeader,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          normalizeError(data.error, "Failed to verify DSRV eligibility.")
+        );
+      }
+      return data as { eligibility: CreationEligibility };
+    },
+    retry: false,
+    refetchInterval: 30000,
+  });
+
+  const creationEligibility = creationEligibilityQuery.data?.eligibility;
+  const tokenGateEnabled = Boolean(creationEligibility?.enabled);
+  const tokenGateEligible = !tokenGateEnabled || Boolean(creationEligibility?.eligible);
+  const tokenGateBlocked = tokenGateEnabled && !tokenGateEligible;
+  const tokenGateMintMissing =
+    creationEligibility?.code === "TOKEN_GATE_MINT_NOT_CONFIGURED";
+
   const startMutation = useMutation({
     mutationFn: async () => {
       if (!apiUrl) throw new Error("API not configured.");
@@ -117,7 +164,13 @@ export default function Wizard() {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(normalizeError(data.error, "Failed to start onboarding."));
+        const error = new Error(
+          normalizeError(data.error, "Failed to start onboarding.")
+        ) as Error & { code?: string };
+        if (typeof data.code === "string") {
+          error.code = data.code;
+        }
+        throw error;
       }
       return data as {
         sessionId: string;
@@ -141,6 +194,15 @@ export default function Wizard() {
       seedTriggeredRef.current = false;
     },
     onError: (err) => {
+      if (
+        typeof err === "object" &&
+        err &&
+        "code" in err &&
+        typeof (err as { code?: string }).code === "string" &&
+        (err as { code?: string }).code?.startsWith("TOKEN_GATE_")
+      ) {
+        creationEligibilityQuery.refetch();
+      }
       const message =
         err instanceof Error ? err.message : "Failed to start onboarding.";
       setError(message);
@@ -642,7 +704,6 @@ export default function Wizard() {
               Currently, only the Hyperliquid testnet is available and only the OpenAI Codex language model is available for the agent.
             </p>
           </div>
-
         </header>
 
         {showOnboardingCard && (
@@ -650,6 +711,57 @@ export default function Wizard() {
             <div className="text-sm uppercase tracking-[0.25em] text-white/50">
               Agent Onboarding
             </div>
+            {!sessionId && creationEligibilityQuery.isLoading && (
+              <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-3 text-sm text-white/70">
+                Checking DSRV requirement...
+              </div>
+            )}
+            {!sessionId && tokenGateBlocked && (
+              <div className="rounded-xl border-2 border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200 space-y-2">
+                {tokenGateMintMissing ? (
+                  <div className="font-semibold">
+                    Agent creation is paused and will be launched right after the DSRV token is minted.
+                  </div>
+                ) : (
+                  <>
+                    <div className="font-semibold">
+                      You need enough DSRV to create an agent.
+                    </div>
+                    <div>
+                      Required:{" "}
+                      <span className="font-semibold">
+                        {formatTokenAmount(creationEligibility?.requiredAmount)}
+                      </span>{" "}
+                      DSRV
+                    </div>
+                    <div>
+                      Current:{" "}
+                      <span className="font-semibold">
+                        {formatTokenAmount(creationEligibility?.currentAmount)}
+                      </span>{" "}
+                      DSRV
+                    </div>
+                    {creationEligibility?.mint && (
+                      <div className="text-xs text-red-200/80 break-all">
+                        Mint: {creationEligibility.mint}
+                      </div>
+                    )}
+                  </>
+                )}
+                {creationEligibility?.reason && !tokenGateMintMissing && (
+                  <div className="text-xs text-red-200/90">
+                    {creationEligibility.reason}
+                  </div>
+                )}
+              </div>
+            )}
+            {!sessionId && creationEligibilityQuery.isError && (
+              <div className="rounded-xl border-2 border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-100">
+                {creationEligibilityQuery.error instanceof Error
+                  ? creationEligibilityQuery.error.message
+                  : "Failed to verify DSRV eligibility."}
+              </div>
+            )}
             {onboardingRemainingMs !== null && (
               <div className="text-xs uppercase tracking-[0.2em] text-white/50">
                 Time left before auto-cancel:{" "}
@@ -664,7 +776,14 @@ export default function Wizard() {
                 Codex session and keep it attached to this wallet.
               </p>
               {!sessionId && (
-                <Button onClick={() => startMutation.mutate()} disabled={startMutation.isPending}>
+                <Button
+                  onClick={() => startMutation.mutate()}
+                  disabled={
+                    startMutation.isPending ||
+                    creationEligibilityQuery.isLoading ||
+                    tokenGateBlocked
+                  }
+                >
                   {startMutation.isPending ? "Starting..." : "Start onboarding"}
                 </Button>
               )}

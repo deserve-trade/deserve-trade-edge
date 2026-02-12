@@ -1,0 +1,4 @@
+DOMAIN="https://deserve.trade"
+API_URL="https://api.deserve.trade"
+PHANTOM_APP_ID="859e591b-4aa0-4b17-b9db-9ad360275f64"
+PHANTOM_REDIRECT_URL="http://localhost:5173/auth/callback"

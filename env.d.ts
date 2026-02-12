@@ -9,18 +9,10 @@ declare global {
     API_URL: string;
     PHANTOM_APP_ID: string;
     PHANTOM_REDIRECT_URL: string;
-
-    // Supabase (server-side only)
-    SUPABASE_URL: string;
-    SUPABASE_SERVICE_ROLE_KEY: string;
-
-    // APIs
-    COINGECKO_API_KEY: string;
-
     // Telegram notifications
     TELEGRAM_BOT_TOKEN: string;
     TELEGRAM_ADMIN_CHAT_IDS: string;
   }
 }
 
-export {};
+export { };

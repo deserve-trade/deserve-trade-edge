@@ -9,9 +9,26 @@ import { Button } from "~/components/ui/button";
 
 export const middleware: Route.MiddlewareFunction[] = [authRequired];
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const apiUrl = context.get(cloudflareContext).env.API_URL?.replace(/\/$/, "");
-  return { apiUrl };
+  const cookie = request.headers.get("cookie") ?? "";
+  let walletAddress: string | null = null;
+
+  if (apiUrl) {
+    try {
+      const response = await fetch(`${apiUrl}/auth/session`, {
+        headers: { cookie },
+      });
+      if (response.ok) {
+        const data = (await response.json()) as { user?: { walletAddress?: string } };
+        walletAddress = data.user?.walletAddress ?? null;
+      }
+    } catch {
+      walletAddress = null;
+    }
+  }
+
+  return { apiUrl, walletAddress };
 }
 
 type AgentRow = {
@@ -74,9 +91,10 @@ function formatRuntime(startedAt?: string | null, endedAt?: string | null) {
 }
 
 export default function Profile() {
-  const { apiUrl } = useLoaderData<typeof loader>();
+  const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [sessionToken, setSessionToken] = useState<string | null>(null);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -146,6 +164,22 @@ export default function Profile() {
     return "bg-cyan-500/20 text-cyan-200";
   };
 
+  const handleCopyWallet = async () => {
+    if (!walletAddress) return;
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      setCopyStatus("error");
+      window.setTimeout(() => setCopyStatus("idle"), 2000);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(walletAddress);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("error");
+    }
+    window.setTimeout(() => setCopyStatus("idle"), 2000);
+  };
+
   return (
     <main className="min-h-screen pt-28 pb-16 px-6">
       <div className="max-w-5xl mx-auto space-y-8">
@@ -157,6 +191,25 @@ export default function Profile() {
               Track every agent state. Onboarding timeouts and strategy timeouts
               are handled automatically.
             </p>
+            {walletAddress && (
+              <div className="inline-flex max-w-full items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs text-white/75">
+                <span className="uppercase tracking-[0.15em] text-white/50">Wallet</span>
+                <span className="truncate max-w-[260px] md:max-w-[420px] text-white/85">
+                  {walletAddress}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleCopyWallet}
+                  className="rounded-md border border-white/20 px-2 py-1 text-[11px] uppercase tracking-[0.12em] text-white/80 hover:text-white"
+                >
+                  {copyStatus === "copied"
+                    ? "Copied"
+                    : copyStatus === "error"
+                      ? "Try again"
+                      : "Copy"}
+                </button>
+              </div>
+            )}
           </div>
           <Button
             onClick={() => navigate("/wizard")}
