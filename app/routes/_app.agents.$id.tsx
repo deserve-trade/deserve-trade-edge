@@ -53,6 +53,13 @@ function extractErrorMessage(data: unknown, fallback: string) {
   return fallback;
 }
 
+function clampPercent(value?: number | null) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    return null;
+  }
+  return Math.max(0, Math.min(100, Number(value)));
+}
+
 export default function AgentPublicPage() {
   const { apiUrl, agentId } = useLoaderData<typeof loader>();
   const logsViewportRef = useRef<HTMLDivElement | null>(null);
@@ -83,6 +90,9 @@ export default function AgentPublicPage() {
           pnlUsd?: number | null;
           pnlPercent?: number | null;
           currentBalanceUpdatedAt?: string | null;
+          aiCreditsRemainingPercent?: number | null;
+          aiCreditsResetsIn?: string | null;
+          aiCreditsUpdatedAt?: string | null;
           liveStartedAt?: string | null;
           createdAt?: string | null;
           statusUpdatedAt?: string | null;
@@ -165,6 +175,19 @@ export default function AgentPublicPage() {
     Number.isFinite(pnlUsd) && Number(pnlUsd) > 0
       ? `+${formatUsd(pnlUsd)}`
       : formatUsd(pnlUsd);
+  const aiCreditsPercent = clampPercent(agent?.aiCreditsRemainingPercent ?? null);
+  const aiCreditsResetIn =
+    typeof agent?.aiCreditsResetsIn === "string" && agent.aiCreditsResetsIn.trim()
+      ? agent.aiCreditsResetsIn.trim()
+      : null;
+  const aiCreditsToneClass =
+    typeof aiCreditsPercent === "number"
+      ? aiCreditsPercent > 40
+        ? "text-emerald-300"
+        : aiCreditsPercent > 20
+          ? "text-amber-300"
+          : "text-rose-300"
+      : "text-white";
 
   const fetchOlderLogs = useCallback(async () => {
     if (!logsQuery.hasNextPage || logsQuery.isFetchingNextPage) return;
@@ -288,6 +311,42 @@ export default function AgentPublicPage() {
                 Trading Duration
               </div>
               <div className="text-lg text-white mt-1">{tradingDuration || "n/a"}</div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                AI Credits
+              </div>
+              <div className={`text-sm font-semibold ${aiCreditsToneClass}`}>
+                {typeof aiCreditsPercent === "number"
+                  ? `${aiCreditsPercent.toFixed(1)}%`
+                  : "n/a"}
+              </div>
+            </div>
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className={`h-full transition-all duration-500 ${typeof aiCreditsPercent === "number"
+                  ? aiCreditsPercent > 40
+                    ? "bg-emerald-400"
+                    : aiCreditsPercent > 20
+                      ? "bg-amber-400"
+                      : "bg-rose-400"
+                  : "bg-white/40"
+                  }`}
+                style={{ width: `${typeof aiCreditsPercent === "number" ? aiCreditsPercent : 0}%` }}
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/60">
+              <span>
+                {aiCreditsResetIn ? `Reset in ${aiCreditsResetIn}` : "Reset time n/a"}
+              </span>
+              <span>
+                {agent?.aiCreditsUpdatedAt
+                  ? `Updated ${new Date(agent.aiCreditsUpdatedAt).toLocaleTimeString()}`
+                  : "No credit snapshot yet"}
+              </span>
             </div>
           </div>
 
