@@ -414,7 +414,8 @@ export default function Wizard() {
   });
 
   const publicLogsQuery = useQuery({
-    queryKey: ["agent-public-logs", apiUrl, agentId],
+    // Keep wizard logs cache separate from the public page infinite query cache.
+    queryKey: ["wizard-agent-public-logs", apiUrl, agentId],
     enabled: Boolean(
       apiUrl && agentId && status !== "Strategy Building" && !isOnboardingStatus
     ),

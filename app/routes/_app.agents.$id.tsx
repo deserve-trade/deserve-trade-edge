@@ -1,5 +1,5 @@
 import type { Route } from "./+types/_app.agents.$id";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { cloudflareContext } from "~/lib/context";
@@ -7,9 +7,13 @@ import { Card } from "~/components/kit/Card";
 
 export function loader({ context, params }: Route.LoaderArgs) {
   const env = context.get(cloudflareContext).env;
+  const rawAgentId = String(params.id || "");
+  const uuidMatch = rawAgentId.match(
+    /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i
+  );
   return {
     apiUrl: env.API_URL?.replace(/\/$/, ""),
-    agentId: params.id,
+    agentId: uuidMatch ? uuidMatch[0] : rawAgentId,
   };
 }
 
@@ -26,6 +30,13 @@ function formatPercent(value?: number | null) {
   }
   const sign = Number(value) > 0 ? "+" : "";
   return `${sign}${Number(value).toFixed(2)}%`;
+}
+
+function formatTokenCount(value?: number | null) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    return "n/a";
+  }
+  return Math.max(0, Math.round(Number(value))).toLocaleString("en-US");
 }
 
 function formatDuration(fromIso?: string | null) {
@@ -62,10 +73,19 @@ function clampPercent(value?: number | null) {
 
 export default function AgentPublicPage() {
   const { apiUrl, agentId } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const logsViewportRef = useRef<HTMLDivElement | null>(null);
   const restoreScrollRef = useRef<{ height: number; top: number } | null>(null);
   const initializedScrollRef = useRef(false);
   const lastTailRef = useRef("");
+
+  useEffect(() => {
+    if (!agentId) return;
+    const canonicalPath = `/agents/${encodeURIComponent(agentId)}`;
+    if (location.pathname === canonicalPath) return;
+    navigate(`${canonicalPath}${location.search}${location.hash}`, { replace: true });
+  }, [agentId, location.hash, location.pathname, location.search, navigate]);
 
   const agentQuery = useQuery({
     queryKey: ["agent-public", apiUrl, agentId],
@@ -93,6 +113,10 @@ export default function AgentPublicPage() {
           aiCreditsRemainingPercent?: number | null;
           aiCreditsResetsIn?: string | null;
           aiCreditsUpdatedAt?: string | null;
+          aiContextUsedTokens?: number | null;
+          aiContextTotalTokens?: number | null;
+          aiContextUsedPercent?: number | null;
+          aiContextUpdatedAt?: string | null;
           liveStartedAt?: string | null;
           createdAt?: string | null;
           statusUpdatedAt?: string | null;
@@ -133,8 +157,10 @@ export default function AgentPublicPage() {
       };
     },
     initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) =>
-      lastPage.page?.hasMore ? lastPage.page?.nextBefore ?? undefined : undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || typeof lastPage !== "object") return undefined;
+      return lastPage.page?.hasMore ? lastPage.page?.nextBefore ?? undefined : undefined;
+    },
     refetchInterval: 5000,
     retry: false,
   });
@@ -187,6 +213,34 @@ export default function AgentPublicPage() {
         : aiCreditsPercent > 20
           ? "text-amber-300"
           : "text-rose-300"
+      : "text-white";
+  const aiContextUsedTokens =
+    typeof agent?.aiContextUsedTokens === "number" &&
+    Number.isFinite(agent.aiContextUsedTokens)
+      ? Number(agent.aiContextUsedTokens)
+      : null;
+  const aiContextTotalTokens =
+    typeof agent?.aiContextTotalTokens === "number" &&
+    Number.isFinite(agent.aiContextTotalTokens)
+      ? Number(agent.aiContextTotalTokens)
+      : null;
+  const aiContextPercent = clampPercent(
+    typeof agent?.aiContextUsedPercent === "number" &&
+      Number.isFinite(agent.aiContextUsedPercent)
+      ? Number(agent.aiContextUsedPercent)
+      : Number.isFinite(aiContextUsedTokens) &&
+          Number.isFinite(aiContextTotalTokens) &&
+          Number(aiContextTotalTokens) > 0
+        ? (Number(aiContextUsedTokens) / Number(aiContextTotalTokens)) * 100
+        : null
+  );
+  const aiContextToneClass =
+    typeof aiContextPercent === "number"
+      ? aiContextPercent > 85
+        ? "text-rose-300"
+        : aiContextPercent > 70
+          ? "text-amber-300"
+          : "text-emerald-300"
       : "text-white";
 
   const fetchOlderLogs = useCallback(async () => {
@@ -346,6 +400,43 @@ export default function AgentPublicPage() {
                 {agent?.aiCreditsUpdatedAt
                   ? `Updated ${new Date(agent.aiCreditsUpdatedAt).toLocaleTimeString()}`
                   : "No credit snapshot yet"}
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-white/50">
+                Context Window
+              </div>
+              <div className={`text-sm font-semibold ${aiContextToneClass}`}>
+                {typeof aiContextPercent === "number"
+                  ? `${aiContextPercent.toFixed(1)}%`
+                  : "n/a"}
+              </div>
+            </div>
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className={`h-full transition-all duration-500 ${
+                  typeof aiContextPercent === "number"
+                    ? aiContextPercent > 85
+                      ? "bg-rose-400"
+                      : aiContextPercent > 70
+                        ? "bg-amber-400"
+                        : "bg-emerald-400"
+                    : "bg-white/40"
+                }`}
+                style={{ width: `${typeof aiContextPercent === "number" ? aiContextPercent : 0}%` }}
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/60">
+              <span>
+                Used {formatTokenCount(aiContextUsedTokens)} / {formatTokenCount(aiContextTotalTokens)} tokens
+              </span>
+              <span>
+                {agent?.aiContextUpdatedAt
+                  ? `Updated ${new Date(agent.aiContextUpdatedAt).toLocaleTimeString()}`
+                  : "No context snapshot yet"}
               </span>
             </div>
           </div>
