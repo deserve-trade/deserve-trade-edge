@@ -779,7 +779,7 @@ export default function Home() {
                     <div className="font-display font-black text-5xl text-gradient">$DSRV</div>
                     <div className="token-pump-hint">
                       {/* <PumpIcon className="pump-icon" /> */}
-                      <span>deployed on pump.fun</span>
+                      <span>launch venue TBD</span>
                     </div>
                   </div>
                 </div>

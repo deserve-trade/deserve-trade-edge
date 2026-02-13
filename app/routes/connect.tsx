@@ -1,6 +1,6 @@
-import { AddressType, darkTheme, PhantomProvider, useDisconnect, useModal, usePhantom } from "@phantom/react-sdk";
-import { useEffect, useState } from "react";
-import { useLoaderData, useSearchParams } from "react-router";
+import { useDisconnect, useModal, usePhantom } from "@phantom/react-sdk";
+import { useEffect, useMemo, useState } from "react";
+import { useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/connect";
 import { Card } from "~/components/kit/Card";
 import { Button } from "~/components/ui/button";
@@ -9,18 +9,30 @@ import { cloudflareContext } from "~/lib/context";
 export function loader({ context }: Route.LoaderArgs) {
   const env = context.get(cloudflareContext).env;
   return {
-    phantomAppId: env.PHANTOM_APP_ID,
     phantomRedirectUrl: env.PHANTOM_REDIRECT_URL || `${env.DOMAIN}/auth/callback`,
   };
 }
 
 export default function Connect() {
-  const { phantomAppId, phantomRedirectUrl } = useLoaderData<typeof loader>();
+  const { phantomRedirectUrl } = useLoaderData<typeof loader>();
   const [searchParams] = useSearchParams();
   const nextPath = searchParams.get("next");
-  const redirectUrl = nextPath
-    ? `${phantomRedirectUrl}?next=${encodeURIComponent(nextPath)}`
-    : phantomRedirectUrl;
+  const isLogoutFlow = searchParams.get("logout") === "1";
+  const isManualFlow = searchParams.get("manual") === "1";
+  const callbackHref = useMemo(() => {
+    try {
+      const url = new URL(
+        phantomRedirectUrl,
+        typeof window !== "undefined" ? window.location.origin : "http://localhost"
+      );
+      if (nextPath) {
+        url.searchParams.set("next", nextPath);
+      }
+      return `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+      return nextPath ? `/auth/callback?next=${encodeURIComponent(nextPath)}` : "/auth/callback";
+    }
+  }, [nextPath, phantomRedirectUrl]);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -55,7 +67,10 @@ export default function Connect() {
           <div className="text-sm uppercase tracking-[0.25em] text-white/50">
             Secure sign-in
           </div>
-          <WalletComponent />
+          <WalletComponent
+            callbackHref={callbackHref}
+            autoRedirect={!isLogoutFlow && !isManualFlow}
+          />
 
         </Card>
       </div>
@@ -63,11 +78,18 @@ export default function Connect() {
   );
 }
 
-function WalletComponent() {
+function WalletComponent({
+  callbackHref,
+  autoRedirect,
+}: {
+  callbackHref: string;
+  autoRedirect: boolean;
+}) {
+  const navigate = useNavigate();
   const { open, isOpened } = useModal();
   const { isConnected } = usePhantom();
-
-  const { disconnect } = useDisconnect()
+  const { disconnect } = useDisconnect();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleOpen = () => {
     try {
@@ -77,16 +99,24 @@ function WalletComponent() {
     }
   };
 
+  useEffect(() => {
+    if (!autoRedirect || !isConnected || isRedirecting) return;
+    setIsRedirecting(true);
+    navigate(callbackHref, { replace: true });
+  }, [autoRedirect, callbackHref, isConnected, isRedirecting, navigate]);
+
   if (isConnected) {
     return (
       <div className="space-y-3">
         <div className="text-lg font-semibold">Connected</div>
         <p className="text-sm text-white/60">
-          You’re linked. Complete sign-in in the modal.
+          {autoRedirect
+            ? "Wallet linked. Redirecting to secure callback..."
+            : "Wallet linked. Press Continue to sign in again."}
         </p>
         <div className="flex flex-wrap gap-3">
-          <Button onClick={handleOpen} disabled={isOpened}>
-            Open sign-in
+          <Button onClick={() => navigate(callbackHref, { replace: true })}>
+            Continue
           </Button>
           <Button
             variant="secondary"

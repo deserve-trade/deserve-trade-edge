@@ -108,3 +108,32 @@
 - вход и выход по маркет ордеру. слип: 5%
 
 6. 
+
+export COLOSSEUM_API_KEY="42cd687a1759fd871f9533bcbc147609d739257687271804e3562cb772493b21"
+BASE="https://agents.colosseum.com/api"
+
+curl -s -X PUT "$BASE/my-project" \
+  -H "Authorization: Bearer $COLOSSEUM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @- <<'JSON'
+{
+  "name": "Deserve - Agentic Capital Launchpad",
+  "description": "Launch agentic trading bots, tokenize performance, and trade in public. Describe AI agents in plain text; investors back the best.",
+  "repoLink": "https://github.com/deserve-trade/deserve-trade-edge",
+  "liveAppLink": "https://deserve.trade",
+  "tags": ["trading", "new-markets", "consumer"],
+
+  "solanaIntegration": "Solana is used for wallet-based identity and access control. Users connect Phantom and authenticate by signing a message; the backend verifies the signature and issues a session. Agent creation is token-gated by SPL token holdings (DSRV): the backend checks on-chain balances and returns eligibility. On-chain programs for agent-token issuance, bonding-curve price discovery, and capital pools are planned next.",
+
+  "problemStatement": "Launching and scaling capital-managed strategies is high-friction and closed: it typically requires legal setup, custody, investor onboarding, and months of operations. Even prop firms and managed accounts are rigid—iteration is slow and capital allocation isn’t transparently market-driven. Traders struggle to scale, and investors can’t easily discover and back the best performers with real-time, public stats. Deserve makes strategy launch and capital formation community-driven and accessible.",
+
+  "technicalApproach": "Deserve is a Cloudflare Workers app (React Router 7 + Vite). Solana integration today focuses on identity + gating: users connect Phantom, request a server-issued auth message, sign it with their wallet, and the backend verifies the ed25519 signature to create a session. The app then calls an eligibility endpoint that checks DSRV SPL token holdings on Solana via RPC to gate agent creation. The current release ships the end-to-end wallet connect, auth, and gated agent creation flow; next iterations add Solana programs for agent tokens, bonding curve mechanics, liquidity migration, and capital seeding/settlement.",
+
+  "targetAudience": "Traders who have a real edge but can’t scale through traditional fund/prop pipelines, and crypto-native investors who want to back strategies based on public performance. Early adopters are Solana wallet users (Phantom) who are comfortable signing messages and participating in community-driven funding.",
+
+  "businessModel": "Challenge/agent creation fees plus a protocol take-rate on capital formation and future settlement flows. As on-chain capital pools ship, fees can be collected transparently on-chain. Premium tooling (analytics, portfolio tools, trading terminal) can add a SaaS layer for power users.",
+  "competitiveLandscape": "Traditional capital management is high-friction and closed: launching a strategy requires licenses, investor onboarding, custody, compliance, and months of operational setup. Even modern prop firms and managed accounts are rigid—rules are fixed, iteration is slow, and the public can’t transparently discover and fund the best performers in real time. Copy-trading and signal groups reduce distribution friction, but they don’t create a scalable, community-owned capital formation loop, and performance is easy to cherry-pick or hide. Deserve flips the model: you launch an AI capital manager in one click, define the rules, and make it community-driven from day one—funding comes from supporters who allocate capital based on public, verifiable stats. Instead of raising money through gatekeepers, the market funds what works, and the best agents earn the right to scale.",
+
+  "futureVision": "Ship Solana programs to mint/issue agent tokens, enforce immutable rules, and manage capital pools/escrow with transparent settlement. Add bonding-curve price discovery, liquidity migration to DEX venues, and verifiable performance reporting. Long-term: a market where strategies are launched from plain text, performance is public, and capital flows permissionlessly to the best agents."
+}
+JSON

@@ -1,6 +1,6 @@
 import { ConnectBox, darkTheme, PhantomProvider, useAccounts, usePhantom, useSolana } from "@phantom/react-sdk";
 import { AddressType } from "@phantom/browser-sdk";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/auth.callback";
 import { cloudflareContext } from "~/lib/context";
@@ -46,7 +46,11 @@ export default function PhantomCallback() {
       responseType={responseType}
       nextPath={nextPath}
       onComplete={() => navigate(nextPath)}
-      onReturn={() => navigate(`/connect?next=${encodeURIComponent(nextPath)}`)}
+      onReturn={() =>
+        navigate(`/connect?manual=1&next=${encodeURIComponent(nextPath)}`, {
+          replace: true,
+        })
+      }
     />
   );
 }
@@ -73,6 +77,7 @@ function CallbackBody({
   const [status, setStatus] = useState<AuthStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const [attempted, setAttempted] = useState(false);
+  const wasConnectedRef = useRef(false);
 
   const baseUrl = useMemo(() => apiUrl.replace(/\/$/, ""), [apiUrl]);
   const addressType = AddressType.solana;
@@ -81,6 +86,16 @@ function CallbackBody({
     const solAccount = list.find((account) => account.addressType === addressType);
     return solAccount?.address ?? list[0]?.address ?? null;
   }, [accounts, addressType]);
+
+  useEffect(() => {
+    if (isConnected) {
+      wasConnectedRef.current = true;
+      return;
+    }
+    if (!isLoading && attempted && status !== "done" && wasConnectedRef.current) {
+      onReturn();
+    }
+  }, [attempted, isConnected, isLoading, onReturn, status]);
 
   useEffect(() => {
     if (responseType && responseType !== "success") {
@@ -109,7 +124,6 @@ function CallbackBody({
           }));
           setStatus("error");
           setError(messageError ?? "Failed to get auth message.");
-          setAttempted(false);
           return;
         }
 
@@ -135,7 +149,6 @@ function CallbackBody({
         if (!signature) {
           setStatus("error");
           setError("Signature was not returned.");
-          setAttempted(false);
           return;
         }
 
@@ -161,12 +174,17 @@ function CallbackBody({
               ? verifyPayload.error
               : "Authentication failed.";
           setError(errorMessage);
-          setAttempted(false);
           return;
         }
 
         if (typeof window !== "undefined" && verifyPayload?.token) {
-          localStorage.setItem("dt_session_token", String(verifyPayload.token));
+          const token = String(verifyPayload.token);
+          localStorage.setItem("dt_session_token", token);
+          const secureAttr =
+            window.location.protocol === "https:" ? "; Secure" : "";
+          document.cookie = `dt_session=${encodeURIComponent(
+            token
+          )}; Path=/; Max-Age=604800; SameSite=Lax${secureAttr}`;
         }
 
         setStatus("done");
@@ -175,7 +193,6 @@ function CallbackBody({
         console.error(err);
         setStatus("error");
         setError("Authentication failed. Try again.");
-        setAttempted(false);
       }
     };
 
@@ -196,6 +213,8 @@ function CallbackBody({
       ? "Verifying session..."
       : status === "signing"
         ? "Confirming signature..."
+        : status === "error"
+          ? "Sign-in paused. Retry when ready."
         : isLoading
           ? "Connecting..."
           : "Completing sign-in...";
@@ -214,7 +233,14 @@ function CallbackBody({
           <div className="text-sm text-white/60">{statusMessage}</div>
           {error && <div className="text-sm text-red-400">{error}</div>}
           {status === "error" && (
-            <Button variant="secondary" onClick={() => setAttempted(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setError(null);
+                setStatus("idle");
+                setAttempted(false);
+              }}
+            >
               Retry
             </Button>
           )}

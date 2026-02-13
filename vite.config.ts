@@ -14,6 +14,40 @@ export default defineConfig({
     exclude: ["@phantom/react-sdk", "@phantom/browser-sdk", "@solana/web3.js"],
     include: ["buffer", "tweetnacl", "eventemitter3", "bn.js", "bs58", "jayson/lib/client/browser", "@solana/buffer-layout", "borsh"],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+
+          if (id.includes("@phantom/")) {
+            return "wallet-vendor";
+          }
+
+          if (id.includes("@solana/")) {
+            return "wallet-vendor";
+          }
+
+          if (
+            id.includes("tweetnacl") ||
+            id.includes("bn.js") ||
+            id.includes("bs58") ||
+            id.includes("buffer")
+          ) {
+            return "wallet-crypto-vendor";
+          }
+
+          if (id.includes("recharts")) {
+            return "charts-vendor";
+          }
+
+          if (id.includes("@tanstack/")) {
+            return "query-vendor";
+          }
+        },
+      },
+    },
+  },
   plugins: [
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),

@@ -1,7 +1,7 @@
 import type { Route } from "./+types/_app";
 import { Link, Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
 import { useMemo, useState } from "react";
-import { usePhantom } from "@phantom/react-sdk";
+import { useDisconnect } from "@phantom/react-sdk";
 import { cloudflareContext } from "~/lib/context";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
@@ -52,7 +52,7 @@ export default function AppLayout() {
   const { apiUrl, walletAddress } = useLoaderData<typeof loader>();
   const location = useLocation();
   const navigate = useNavigate();
-  const { disconnect } = usePhantom();
+  const { disconnect } = useDisconnect();
   const [loggingOut, setLoggingOut] = useState(false);
 
   const walletLabel = useMemo(() => {
@@ -62,24 +62,26 @@ export default function AppLayout() {
 
   const nextPath = `${location.pathname}${location.search}`;
   const loginHref = `/connect?next=${encodeURIComponent(nextPath)}`;
+  const loggedOutHref = `/connect?logout=1&next=${encodeURIComponent(nextPath)}`;
 
   const handleLogout = async () => {
-    if (!apiUrl) {
-      navigate(loginHref);
-      return;
-    }
     try {
       setLoggingOut(true);
-      disconnect();
+      await disconnect();
       if (typeof window !== "undefined") {
         localStorage.removeItem("dt_session_token");
+        const secureAttr =
+          window.location.protocol === "https:" ? "; Secure" : "";
+        document.cookie = `dt_session=; Path=/; Max-Age=0; SameSite=Lax${secureAttr}`;
       }
-      await fetch(`${apiUrl}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      if (apiUrl) {
+        await fetch(`${apiUrl}/auth/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
+      }
     } finally {
-      navigate(loginHref);
+      navigate(loggedOutHref);
     }
   };
 
