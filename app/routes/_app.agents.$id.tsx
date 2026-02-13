@@ -407,7 +407,7 @@ export default function AgentPublicPage() {
           <div className="rounded-xl border-2 border-border bg-[var(--surface)] p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs uppercase tracking-[0.2em] text-white/50">
-                Context Window
+                Prompt Window
               </div>
               <div className={`text-sm font-semibold ${aiContextToneClass}`}>
                 {typeof aiContextPercent === "number"
@@ -431,7 +431,7 @@ export default function AgentPublicPage() {
             </div>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/60">
               <span>
-                Used {formatTokenCount(aiContextUsedTokens)} / {formatTokenCount(aiContextTotalTokens)} tokens
+                Prompt {formatTokenCount(aiContextUsedTokens)} / {formatTokenCount(aiContextTotalTokens)} tokens
               </span>
               <span>
                 {agent?.aiContextUpdatedAt
