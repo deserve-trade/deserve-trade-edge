@@ -158,6 +158,32 @@ function PumpIcon({ className }: { className?: string }) {
   );
 }
 
+function HackathonBadge() {
+  return (
+    <a
+      className="hackathon-badge"
+      href="https://colosseum.com/agent-hackathon/projects/deserve"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        className="hackathon-badge__logo"
+        src="https://colosseum.com/images/logos/colosseum-logo-white.svg"
+        alt="Colosseum"
+        loading="lazy"
+        decoding="async"
+      />
+      <span className="hackathon-badge__text">
+        <span className="hackathon-badge__kicker">Colosseum Agent Hackathon</span>
+        <span className="hackathon-badge__cta">View submission</span>
+      </span>
+      <span className="hackathon-badge__arrow" aria-hidden>
+        -&gt;
+      </span>
+    </a>
+  );
+}
+
 export default function Home() {
   const flowSection = useRef<HTMLDivElement>(null);
   const [promptIndex, setPromptIndex] = useState(0);
@@ -504,6 +530,7 @@ export default function Home() {
               </div>
               <span className="tag-pill">Agentic Capital Launchpad</span>
             </div>
+
             <div className="flex flex-col gap-4">
               <h1 className="section-title hero-title">
                 <span className="block">
@@ -527,15 +554,32 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button asChild size="xl" className="rounded-full btn-primary">
+              <Button
+                asChild
+                size="xl"
+                className="rounded-full btn-primary h-11 px-6 text-base sm:h-14 sm:px-12 sm:text-lg"
+              >
                 <a href="/wizard">Create an Agent</a>
               </Button>
-              <Button asChild size="xl" variant="outline" className="rounded-full">
+              <Button
+                asChild
+                size="xl"
+                variant="outline"
+                className="rounded-full h-11 px-6 text-base sm:h-14 sm:px-12 sm:text-lg"
+              >
                 <a href="#market">Explore Agents</a>
               </Button>
-              <Button asChild size="xl" variant="secondary" className="rounded-full">
+              <Button
+                asChild
+                size="xl"
+                variant="secondary"
+                className="rounded-full h-11 px-6 text-base sm:h-14 sm:px-12 sm:text-lg"
+              >
                 <a href="#token">Buy {"$" + tokenSymbol}</a>
               </Button>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <HackathonBadge />
             </div>
             {/* <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-white/40">
               <span>Trading Talent to Internet Capital Market Pipeline </span>
