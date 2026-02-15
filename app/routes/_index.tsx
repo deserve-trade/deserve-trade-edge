@@ -10,7 +10,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { faq } from "~/lib/data/faq";
 import { cloudflareContext } from "~/lib/context";
-import { token } from "~/lib/data/token";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const image = `${loaderData.domain}/snippet.png`;
@@ -76,11 +75,38 @@ export function meta({ loaderData }: Route.MetaArgs) {
   ];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
+export async function loader({ context }: Route.LoaderArgs) {
   const env = context.get(cloudflareContext).env;
+  const apiUrl = env.API_URL?.replace(/\/$/, "") || "";
+  let tokenSymbol = "DSRV";
+  let tokenMint: string | null = null;
+
+  if (apiUrl) {
+    try {
+      const response = await fetch(`${apiUrl}/token`, {
+        headers: { accept: "application/json" },
+      });
+      if (response.ok) {
+        const data = (await response.json().catch(() => null)) as
+          | { symbol?: string; mint?: string | null }
+          | null;
+        if (data?.symbol && typeof data.symbol === "string") {
+          tokenSymbol = data.symbol.trim() || tokenSymbol;
+        }
+        if (data && "mint" in data) {
+          const mint = typeof data.mint === "string" ? data.mint.trim() : "";
+          tokenMint = mint.length > 0 ? mint : null;
+        }
+      }
+    } catch {
+      // Best-effort: landing should still render without settings.
+    }
+  }
   return {
     domain: env.DOMAIN,
-    apiUrl: env.API_URL?.replace(/\/$/, "") || "",
+    apiUrl,
+    tokenSymbol,
+    tokenMint,
   };
 }
 
@@ -140,15 +166,21 @@ export default function Home() {
   const [flowVisible, setFlowVisible] = useState(false);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { apiUrl, tokenSymbol, tokenMint } = useLoaderData<typeof loader>();
+  const dsrvContractAddress = tokenMint ?? "TBD";
 
   const handleCopyAddress = async () => {
+    if (!tokenMint) {
+      setCopyStatus("error");
+      return;
+    }
     if (typeof navigator === "undefined" || !navigator.clipboard) {
       setCopyStatus("error");
       return;
     }
 
     try {
-      await navigator.clipboard.writeText(dsrvContractAddress);
+      await navigator.clipboard.writeText(tokenMint);
       setCopyStatus("copied");
     } catch {
       setCopyStatus("error");
@@ -216,13 +248,19 @@ export default function Home() {
     };
   }, []);
 
-  const copyButtonLabel =
-    copyStatus === "copied" ? "Copied" : copyStatus === "error" ? "Try again" : "Copy address";
-  const copyHint =
-    copyStatus === "copied"
+  const copyButtonLabel = !tokenMint
+    ? "Mint pending"
+    : copyStatus === "copied"
+      ? "Copied"
+      : copyStatus === "error"
+        ? "Try again"
+        : "Copy address";
+  const copyHint = !tokenMint
+    ? "Token mint is not set yet."
+    : copyStatus === "copied"
       ? "Copied to clipboard"
       : copyStatus === "error"
-        ? "Clipboard access denied"
+        ? "Copy failed"
         : "Click to copy address";
 
 
@@ -274,7 +312,7 @@ export default function Home() {
     "DSRV is not a governance token and does not represent company equity.",
     "DSRV is used as collateral and the settlement unit of the Deserve trading pool.",
     "It enables smooth capital flow between agents and investors.",
-    "Fees in prop tokens and DSRV are used to rebalance pools.",
+    "Fees in agentic tokens and DSRV are used to rebalance pools.",
     "If the treasury lacks DSRV to seed a pool, the protocol buys the missing amount.",
     "DSRV is planned to launch on Pump.Fun with a capped supply.",
   ];
@@ -284,7 +322,6 @@ export default function Home() {
     { label: "Liquidity", value: 20.7, display: "20.7%", color: "#78dce8" },
     { label: "Dev Wallet", value: 10, display: "10%", color: "#a9dc76" },
   ];
-  const dsrvContractAddress = token.ca;
   const tokenSlices = tokenomics.reduce(
     (acc, segment) => {
       acc.items.push({
@@ -320,7 +357,12 @@ export default function Home() {
     },
   ];
 
-  const { apiUrl } = useLoaderData<typeof loader>();
+  const tokenFactsResolved = tokenFacts.map((fact) => fact.replace(/\bDSRV\b/g, tokenSymbol));
+  const faqResolved = faq.map((item) => ({
+    ...item,
+    question: item.question.replace(/\bDSRV\b/g, tokenSymbol),
+    answer: item.answer.replace(/\bDSRV\b/g, tokenSymbol),
+  }));
 
   const formatUsd = (value: number | null | undefined) => {
     if (typeof value !== "number" || !Number.isFinite(value)) return "—";
@@ -433,7 +475,7 @@ export default function Home() {
           <nav className="site-header__nav" aria-label="Primary">
             <a href="#how">How it works</a>
             <a href="#market">Agent market</a>
-            <a href="#token">$DSRV</a>
+            <a href="#token">{"$" + tokenSymbol}</a>
             <a href="#roadmap">Roadmap</a>
             <a href="#faq">FAQ</a>
           </nav>
@@ -492,7 +534,7 @@ export default function Home() {
                 <a href="#market">Explore Agents</a>
               </Button>
               <Button asChild size="xl" variant="secondary" className="rounded-full">
-                <a href="#token">Buy $DSRV</a>
+                <a href="#token">Buy {"$" + tokenSymbol}</a>
               </Button>
             </div>
             {/* <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-white/40">
@@ -530,7 +572,7 @@ export default function Home() {
                   <span>{displayText}</span>
                   <span className="agent-console__caret" aria-hidden />
                 </div>
-                <div className="agent-console__footer">Press enter to launch a prop challenge</div>
+                <div className="agent-console__footer">Press enter to launch an agent</div>
               </div>
             </div>
           </div>
@@ -677,12 +719,12 @@ export default function Home() {
                     <div className="text-[10px] uppercase tracking-[0.12em] text-white/50">PnL</div>
                     <div
                       className={`text-base font-semibold ${typeof agent.pnlUsd === "number"
-                          ? agent.pnlUsd > 0
-                            ? "text-accent"
-                            : agent.pnlUsd < 0
-                              ? "text-primary"
-                              : "text-white"
-                          : "text-white"
+                        ? agent.pnlUsd > 0
+                          ? "text-accent"
+                          : agent.pnlUsd < 0
+                            ? "text-primary"
+                            : "text-white"
+                        : "text-white"
                         }`}
                     >
                       {formatPnl(agent.pnlUsd)}
@@ -709,7 +751,7 @@ export default function Home() {
             <div className="token-copy">
               <span className="token-eyebrow">The Token We Deserve</span>
               <h2 className="section-title token-title">
-                <span className="text-gradient">$DSRV</span> supports liquidity and keeps the agent-token market flexible
+                <span className="text-gradient">{"$" + tokenSymbol}</span> supports liquidity and keeps the agent-token market flexible
               </h2>
               <p className="token-lede">
                 It is not equity and carries no governance rights, but it keeps capital moving
@@ -719,7 +761,7 @@ export default function Home() {
             <div className="token-panel">
 
               <ul className="token-list">
-                {tokenFacts.map((fact) => (
+                {tokenFactsResolved.map((fact) => (
                   <li key={fact}>
                     <span>●</span>
                     <span>{fact}</span>
@@ -776,7 +818,7 @@ export default function Home() {
                     <BrandMark className="token-coin__graphic" />
                   </div>
                   <div>
-                    <div className="font-display font-black text-5xl text-gradient">$DSRV</div>
+                    <div className="font-display font-black text-5xl text-gradient">{"$" + tokenSymbol}</div>
                     <div className="token-pump-hint">
                       {/* <PumpIcon className="pump-icon" /> */}
                       <span>launch venue TBD</span>
@@ -785,7 +827,7 @@ export default function Home() {
                 </div>
                 <div className="token-actions ">
                   <Button size="lg" className="rounded-full token-buy cursor-pointer">
-                    Buy ${token.symbol}
+                    Buy {"$" + tokenSymbol}
                   </Button>
                 </div>
               </div>
@@ -796,6 +838,7 @@ export default function Home() {
                   variant="outline"
                   className="token-contract-card__button"
                   onClick={handleCopyAddress}
+                  disabled={!tokenMint}
                 >
                   <FaCopy size={16} />
                   <span>{copyButtonLabel}</span>
@@ -875,7 +918,7 @@ export default function Home() {
         </div>
         <div className="faq-panel rounded-3xl p-6 sm:p-10">
           <Accordion defaultValue={[]} type="multiple">
-            {faq.map((item, index) => (
+            {faqResolved.map((item, index) => (
               <AccordionItem key={index} value={`item-${index + 1}`} className="faq-item">
                 <AccordionTrigger className="faq-trigger">
                   <span className="faq-index">{`0${index + 1}`}</span>
@@ -937,7 +980,9 @@ export default function Home() {
             <span className="text-white/40 uppercase tracking-[0.2em]">Sections</span>
             <a href="#how" className="hover:text-primary">How it works</a>
             <a href="#market" className="hover:text-primary">Agent market</a>
-            <a href="#token" className="hover:text-primary">$DSRV token</a>
+            <a href="#token" className="hover:text-primary">
+              {"$" + tokenSymbol} token
+            </a>
             <a href="#roadmap" className="hover:text-primary">Roadmap</a>
             <a href="#faq" className="hover:text-primary">FAQ</a>
           </nav>

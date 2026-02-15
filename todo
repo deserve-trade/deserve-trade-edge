@@ -137,3 +137,13 @@ curl -s -X PUT "$BASE/my-project" \
   "futureVision": "Ship Solana programs to mint/issue agent tokens, enforce immutable rules, and manage capital pools/escrow with transparent settlement. Add bonding-curve price discovery, liquidity migration to DEX venues, and verifiable performance reporting. Long-term: a market where strategies are launched from plain text, performance is public, and capital flows permissionlessly to the best agents."
 }
 JSON
+
+
+- ETH-USD и BTC-USD perp
+- 1m
+- вход в лонг если при закрытии свечи EMA30 пересекла EMA50 сверху вниз, в шорт - если в обратном направлении
+- при открытии позиции сразу ставь стоп на 0.5% от цены входа и на тейк профит на 1.5% от цены входа. Так же если пришел обратный сигнал (свеча закрылась ниже/выше мувинга) то переворачиваемся.
+- риск максимум 4% от депозита за сутки по UTC. разрешено держать по одной позиции на каждый тикер.
+- размер позиции считай исходя из параметров стоплосса и максимальной потери 0.5% депозита за сделку. плечо 10x.
+- сообщай раз в две минуты свои текущие мысли по торговой стратегии. сообщения отправляй сюда, пиши просто текущий стейт и свои мысли по торговле. Например: цена почти пересекла EMA30. Скоро сделка будет открыта. Или: Позиция по ETH-PERP открыта, цена близка к стопу.
+- вход и выход по маркет ордеру. слип: 5%
